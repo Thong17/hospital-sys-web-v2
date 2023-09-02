@@ -9,7 +9,7 @@ export const generateHash = async (
   data?: object
 ) => {
   const str =
-    JSON.stringify(data) + import.meta.env.REACT_APP_HASH_SECRET + ts + token
+    JSON.stringify(data) + import.meta.env.VITE_HASH_SECRET + ts + token
   const hash = sha256.hex(str).toString()
   return hash
 }

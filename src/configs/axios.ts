@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { generateHash } from 'utils'
 
-const Axios = axios.create({ baseURL: import.meta.env.REACT_APP_API_URL })
+const Axios = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
 Axios.interceptors.request.use(async (config) => {
   const token = window.localStorage.getItem('x-access-token')
