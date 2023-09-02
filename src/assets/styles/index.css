@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Hanuman';
+    src: url('/src/assets/fonts/Hanuman/Hanuman-Regular.ttf') format('truetype'), url('/src/assets/fonts/Hanuman/Hanuman-Bold.ttf') format('truetype');
+} 
+
+@font-face {
+    font-family: 'PTSans';
+    src: url('/src/assets/fonts/PTSans/PTSansNarrow-Bold.ttf') format('truetype'), url('/src/assets/fonts/PTSans/PTSansNarrow-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url('/src/assets/fonts/Baloo_2/Baloo2-Regular.ttf') format('truetype'), url('/src/assets/fonts/Baloo_2/Baloo2-Bold.ttf') format('truetype');
+}
