@@ -5,12 +5,14 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { persistor, store } from 'app/store'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+import { ToastContainer } from 'react-toastify'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <Router>
+          <ToastContainer className="toast-container" limit={5} newestOnTop />
           <App />
         </Router>
       </PersistGate>

@@ -1,4 +1,4 @@
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { createContext } from 'react'
 import { ToastOptions, TypeOptions } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -15,21 +15,19 @@ const initState: ToastOptions = {
   theme: 'colored',
   closeButton: false
 }
+export const notify = (message: any, type?: TypeOptions) => {
+  toast(message || 'Internal Server Error', { ...initState, type })
+}
 
 export const NotifyContext = createContext({
   ...initState,
-  notify: (message: any, type?: TypeOptions) => {},
+  notify: (_message: any, _type?: TypeOptions) => {},
 })
 
 const NotifyProvider = ({ children }: { children: React.ReactNode }) => {
-  const notify = (message: any, type?: TypeOptions) => {
-    toast(message || 'Internal Server Error', { ...initState, type })
-  }
-
   return (
     <NotifyContext.Provider value={{ ...initState, notify }}>
       {children}
-      <ToastContainer className="toast-container" limit={5} newestOnTop />
     </NotifyContext.Provider>
   )
 }
