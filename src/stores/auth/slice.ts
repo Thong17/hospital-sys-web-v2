@@ -4,12 +4,13 @@ import { getAuthLogin } from "./action";
 interface IAuth {
     login: {
         isLoading: boolean,
-        data: any
+        data: any,
+        error: any
     }
 }
 
 const initialState: IAuth = {
-    login: { isLoading: false, data: null }
+    login: { isLoading: false, data: null, error: null }
 }
 
 const authSlice = createSlice({
@@ -20,8 +21,9 @@ const authSlice = createSlice({
         builder.addCase(getAuthLogin.pending, (state) => {
             state.login.isLoading = true
         })
-        builder.addCase(getAuthLogin.rejected, (state) => {
+        builder.addCase(getAuthLogin.rejected, (state, action) => {
             state.login.isLoading = false
+            state.login.error = action.payload?.response?.data
         })
         builder.addCase(getAuthLogin.fulfilled, (state, action) => {
             state.login.isLoading = false
