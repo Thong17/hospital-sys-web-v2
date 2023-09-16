@@ -16,7 +16,11 @@ const initialState: IAuth = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        setSession: (state, action) => {
+            state.login.data = action.payload
+        }
+    },
     extraReducers(builder) {
         builder.addCase(getAuthLogin.pending, (state) => {
             state.login.isLoading = true
@@ -26,8 +30,9 @@ const authSlice = createSlice({
             state.login.error = action.payload?.response?.data
         })
         builder.addCase(getAuthLogin.fulfilled, (state, action) => {
+            state.login.error = null
             state.login.isLoading = false
-            state.login.data = action.payload?.data
+            state.login.data = action.payload
         })
     },
 })

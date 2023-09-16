@@ -4,8 +4,10 @@ import BACKGROUND from 'assets/backgrounds/login_background.jpg'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useLanguage from 'hooks/useLanguage'
-import { useAppDispatch } from 'app/store'
+import { useAppDispatch, useAppSelector } from 'app/store'
 import { getAuthLogin } from 'stores/auth/action'
+import { selectAuthLogin } from 'stores/auth/selector'
+import { useEffect } from 'react'
 
 const Login = () => {
   const dispatch = useAppDispatch()
@@ -13,7 +15,12 @@ const Login = () => {
   const { formState: { errors }, register, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
   })
+  const data = useAppSelector(selectAuthLogin)
 
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+  
   const submit = (data: any) => {
     dispatch(getAuthLogin(data))
   }

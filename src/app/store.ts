@@ -13,7 +13,7 @@ const rootReducer = (state: any, action: any) => {
 }
 
 const persistConfig: PersistConfig<any> = {
-    key: 'root',
+    key: 'hospital-system',
     version: 1,
     storage,
     whitelist:  ['auth']
