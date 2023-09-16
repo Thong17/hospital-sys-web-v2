@@ -32,7 +32,9 @@ Axios.interceptors.response.use(
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
             store.dispatch({ type: 'auth/setSession', payload: response.data })
-            return Axios({ ...originalRequest, data: JSON.parse(originalRequest.data) })
+            let config = originalRequest
+            if (config.data) config.data = JSON.parse(config.data)
+            return Axios(config)
           }
         })
         .catch(console.error)

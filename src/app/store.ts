@@ -3,9 +3,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "stores/auth/slice";
+import { homeReducer } from "stores/home/slice";
 
 const mainReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    home: homeReducer
 })
 
 const rootReducer = (state: any, action: any) => {
