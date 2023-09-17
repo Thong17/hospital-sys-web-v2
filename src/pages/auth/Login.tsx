@@ -25,6 +25,9 @@ const Login = () => {
   
   const submit = (data: any) => {
     dispatch(getAuthLogin(data))
+      .unwrap()
+      .then((data: any) => dispatch({ type: 'session/setSession', payload: data }))
+      .catch(console.error)
   }
   
   const handleRegister = () => {

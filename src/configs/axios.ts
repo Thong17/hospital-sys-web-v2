@@ -5,8 +5,7 @@ import { generateHash } from 'utils'
 const Axios = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
 Axios.interceptors.request.use(async (config) => {
-  const { auth } = store.getState()
-  const session = auth?.login?.data
+  const { session } = store.getState()
   if (session?.accessToken) config.headers!.Authorization = `Bearer ${session?.accessToken}`
   
   const timestamp = Date.now().toString()
@@ -25,13 +24,12 @@ Axios.interceptors.response.use(
     if (error?.response?.data?.message !== 'TOKEN_EXPIRED' || originalRequest?.url === '/auth/refresh-token') return Promise.reject(error)
     if (!originalRequest?._retry) {
       originalRequest._retry = true
-      const { auth } = store.getState()
-      const session = auth?.login?.data
+      const { session } = store.getState()
       if (!session?.refreshToken) return Promise.reject(error)
       Axios.post('/auth/refresh-token', { refreshToken: session?.refreshToken })
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
-            store.dispatch({ type: 'auth/setSession', payload: response.data })
+            store.dispatch({ type: 'session/setSession', payload: response.data })
             let config = originalRequest
             if (config.data) config.data = JSON.parse(config.data)
             return Axios(config)

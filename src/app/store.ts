@@ -4,10 +4,12 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, PersistConfig, persi
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "stores/auth/slice";
 import { homeReducer } from "stores/home/slice";
+import { sessionReducer } from "stores/session/slice";
 
 const mainReducer = combineReducers({
     auth: authReducer,
-    home: homeReducer
+    home: homeReducer,
+    session: sessionReducer
 })
 
 const rootReducer = (state: any, action: any) => {
@@ -18,7 +20,7 @@ const persistConfig: PersistConfig<any> = {
     key: 'hospital-system',
     version: 1,
     storage,
-    whitelist:  []
+    whitelist:  ['session']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

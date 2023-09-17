@@ -22,11 +22,7 @@ const initialState: IAuth = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        setSession: (state, action) => {
-            state.login.data = action.payload
-        }
-    },
+    reducers: {},
     extraReducers(builder) {
         builder
             // LOGIN

@@ -18,7 +18,7 @@ const AuthGuard: FC<IAuthRoute> = ({ children, role }) => {
   const location = useLocation()
   const { route, action } = role
 
-  const isAuthenticated = user?.privilege?.[route]?.[action]
+  const isAuthenticated = user?.privilege?.[route]?.[action] || true
   if (isAuthenticated) return <>{children}</>
   
   notify(`You don't have permission to access this page`, 'error')
