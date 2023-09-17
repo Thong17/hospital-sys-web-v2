@@ -18,7 +18,7 @@ const persistConfig: PersistConfig<any> = {
     key: 'hospital-system',
     version: 1,
     storage,
-    whitelist:  ['auth']
+    whitelist:  []
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

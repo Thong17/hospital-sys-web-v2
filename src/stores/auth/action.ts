@@ -8,3 +8,8 @@ export const getAuthLogin: any = createAsyncThunk(
     'auth/login',
     serviceWrapper(service.login)
 )
+
+export const getAuthRegister: any = createAsyncThunk(
+    'auth/register',
+    serviceWrapper(service.register)
+)

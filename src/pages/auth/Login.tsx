@@ -8,9 +8,11 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { getAuthLogin } from 'stores/auth/action'
 import { selectAuthLogin } from 'stores/auth/selector'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
 const Login = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { language } = useLanguage()
   const { formState: { errors }, register, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
@@ -23,6 +25,10 @@ const Login = () => {
   
   const submit = (data: any) => {
     dispatch(getAuthLogin(data))
+  }
+  
+  const handleRegister = () => {
+    navigate('/register')
   }
 
   return (
@@ -68,7 +74,10 @@ const Login = () => {
           style={{ width: '100%', margin: '10px 0' }}
           {...register('password')}
         />
-        <Button type='submit'>{language.LOGIN_BUTTON}</Button>
+        <Box>
+          <Button type='submit'>{language.LOGIN_BUTTON}</Button>
+          <Button onClick={handleRegister}>{language.REGISTER_BUTTON}</Button>
+        </Box>
       </Box>
     </Box>
   )

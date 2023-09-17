@@ -1,4 +1,4 @@
-import { EmptyLayout } from 'components/layouts/EmptyLayout'
+import { Layout } from 'components/layouts/Layout'
 import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
 import useWeb from 'hooks/useWeb'
@@ -9,7 +9,7 @@ const NotFound = () => {
   const { device } = useWeb()
   const { language } = useLanguage()
   return (
-    <EmptyLayout>
+    <Layout>
       <Container>
         <div
           style={{
@@ -26,7 +26,7 @@ const NotFound = () => {
           <p  style={{ fontSize: theme.responsive[device]?.text.quaternary, color: theme.text.tertiary }}>{language['PAGE_NOT_FOUND_DESCRIPTION']}</p>
         </div>
       </Container>
-    </EmptyLayout>
+    </Layout>
   )
 }
 

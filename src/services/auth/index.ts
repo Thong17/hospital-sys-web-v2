@@ -12,4 +12,14 @@ export class AuthService {
             throw error
         }
     }
+    async register(data: { username: string, password: string, segment: string }) {
+        try {
+            const response = await axios.post('/auth/register', data)
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
 }
