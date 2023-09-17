@@ -17,8 +17,8 @@ export const ConfigContext = createContext({
   ...initState,
   toggleSidebar: () => {},
   toggleInvoiceBar: () => {},
-  toggleDisplay: (display: any) => {},
-  resetTabs: (tabs: any) => {},
+  toggleDisplay: (_display: any) => {},
+  resetTabs: (_tabs: any) => {},
 })
 
 const ConfigProvider = ({ children }: any) => {

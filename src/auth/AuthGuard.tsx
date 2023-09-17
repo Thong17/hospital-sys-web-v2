@@ -1,8 +1,9 @@
+import { useAppSelector } from 'app/store'
 import Restrict from 'components/shared/Restrict'
-import useAuth from 'hooks/useAuth'
 import useNotify from 'hooks/useNotify'
 import { FC, ReactElement } from 'react'
 import { useLocation } from 'react-router-dom'
+import { selectSession } from 'stores/session/selector'
 
 interface IAuthRoute {
   children: ReactElement
@@ -13,7 +14,7 @@ interface IAuthRoute {
 }
 
 const AuthGuard: FC<IAuthRoute> = ({ children, role }) => {
-  const { user } = useAuth()
+  const { user } = useAppSelector(selectSession)
   const { notify } = useNotify()
   const location = useLocation()
   const { route, action } = role

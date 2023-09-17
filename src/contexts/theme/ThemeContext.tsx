@@ -1,21 +1,22 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { ThemeOptions, IThemeContext, IThemeStyle } from './interface'
 import { themeMode, themeStyle } from './constant'
-import useAuth from 'hooks/useAuth'
 import axios from 'configs/axios'
 import useNotify from 'hooks/useNotify'
 import 'assets/styles/index.css'
+import { useAppSelector } from 'app/store'
+import { selectSession } from 'stores/session/selector'
 
 const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Blue'
 
 export const ThemeContext = createContext<IThemeContext>({
   mode: initMode,
   theme: { ...themeMode[initMode], ...themeStyle },
-  changeTheme: (mode: ThemeOptions) => {},
+  changeTheme: (_mode: ThemeOptions) => {},
 })
 
 const ThemesProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { user } = useAppSelector(selectSession)
   const [mode, setMode] = useState<ThemeOptions>(initMode)
   const { notify } = useNotify()
 

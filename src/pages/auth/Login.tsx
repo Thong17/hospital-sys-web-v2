@@ -8,11 +8,12 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { getAuthLogin } from 'stores/auth/action'
 import { selectAuthLogin } from 'stores/auth/selector'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
 const Login = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { language } = useLanguage()
   const { formState: { errors }, register, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
@@ -26,7 +27,10 @@ const Login = () => {
   const submit = (data: any) => {
     dispatch(getAuthLogin(data))
       .unwrap()
-      .then((data: any) => dispatch({ type: 'session/setSession', payload: data }))
+      .then((data: any) => {
+        dispatch({ type: 'session/setSession', payload: data })
+        navigate(location.state ? (location.state as string) : '/')
+      })
       .catch(console.error)
   }
   
