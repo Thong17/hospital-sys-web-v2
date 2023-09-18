@@ -1,13 +1,13 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import { Role } from 'pages/admin'
+import { Admin, Role } from 'pages/admin'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
     {
-        path: '/',
+        path: '/home',
         element: <AuthGuard><Home /></AuthGuard>,
     },
     {
@@ -20,6 +20,7 @@ const routes: RouteObject[] = [
     },
     {
         path: '/admin',
+        element: <Admin />,
         children: [
             {
                 path: 'role',
