@@ -1,6 +1,6 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import Role from 'pages/admin/Role'
+import { Role } from 'pages/admin'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { RouteObject } from 'react-router'

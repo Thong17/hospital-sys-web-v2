@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "app/store"
+import { Layout } from "components/layouts/Layout"
 import { useEffect } from "react"
 import { getHomeContent } from "stores/home/action"
 import { selectHomeContent } from "stores/home/selector"
@@ -14,10 +15,11 @@ const Home = () => {
   useEffect(() => {
     console.log(data)
   }, [data])
-  
 
   return (
-    <div>Home</div>
+    <Layout>
+      <h1>Hello</h1>
+    </Layout>
   )
 }
 

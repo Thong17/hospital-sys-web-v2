@@ -1,11 +1,11 @@
 import { Container } from '@mui/material'
 import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
-import useWeb from 'hooks/useWeb'
+import useDevice from 'hooks/useDevice'
 import { Link } from 'react-router-dom'
 
 const Restrict = ({ redirect }: { redirect?: string }) => {
-  const { device } = useWeb()
+  const { device } = useDevice()
   const { theme } = useTheme()
   const { language } = useLanguage()
 

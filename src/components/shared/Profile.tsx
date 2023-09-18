@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { CustomProfile } from 'styles'
 import { Box } from '@mui/system'
 import { TextEllipsis } from './TextEllipsis'
-import useWeb from 'hooks/useWeb'
+import useDevice from 'hooks/useDevice'
 
 interface IProfile {
   username: string
@@ -13,7 +13,7 @@ interface IProfile {
 
 const Profile: FC<IProfile> = ({ username, picture, sidebar }) => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
 
   return (
     <>

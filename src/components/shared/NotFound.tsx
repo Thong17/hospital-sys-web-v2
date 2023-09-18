@@ -1,12 +1,12 @@
 import { Layout } from 'components/layouts/Layout'
 import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
-import useWeb from 'hooks/useWeb'
+import useDevice from 'hooks/useDevice'
 import Container from './Container'
 
 const NotFound = () => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
   const { language } = useLanguage()
   return (
     <Layout>

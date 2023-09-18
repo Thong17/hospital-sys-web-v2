@@ -1,6 +1,8 @@
 import { FC, ReactElement } from 'react'
-import useTheme from 'hooks/useTheme'
-import useWeb from 'hooks/useWeb'
+import { Box } from '@mui/material'
+import Sidebar from 'components/shared/Sidebar'
+import Navbar from 'components/shared/Navbar'
+import Container from 'components/shared/Container'
 
 interface ILayout {
   navbar?: ReactElement
@@ -8,19 +10,15 @@ interface ILayout {
 }
 
 export const Layout: FC<ILayout> = ({ children }) => {
-  const { theme } = useTheme()
-  const { device } = useWeb()
-
   return (
-    <div
-      style={{
-        background: theme.background.primary,
-        fontFamily: theme.font.family,
-        fontWeight: theme.font.weight,
-        fontSize: theme.responsive[device].text.primary,
-      }}
-    >
-      {children}
-    </div>
+    <Box component={'div'}>
+      <Sidebar />
+      <Box component={'div'}>
+        <Navbar />
+        <Container>
+          {children}
+        </Container>
+      </Box>
+    </Box>
   )
 }

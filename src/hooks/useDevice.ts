@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { WebContext } from "contexts/web/WebContext";
 
-const useWeb = () => useContext(WebContext)
+const useDevice = () => useContext(WebContext)
 
-export default useWeb
+export default useDevice

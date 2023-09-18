@@ -6,7 +6,7 @@ import {
   ReactElement,
 } from 'react'
 import { CustomInput, CustomMiniInput } from 'styles'
-import useWeb from 'hooks/useWeb'
+import useDevice from 'hooks/useDevice'
 
 interface ITextInput extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -26,7 +26,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, ITextInput> = (
   ref
 ) => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
 
   return (
     <CustomInput styled={theme} device={device} icon={icon}>
@@ -50,7 +50,7 @@ export const MiniInput: ForwardRefRenderFunction<HTMLInputElement, ITextInput> =
   ref
 ) => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
 
   return (
     <CustomMiniInput styled={theme} device={device} icon={icon}>
@@ -122,7 +122,7 @@ export const Nano: ForwardRefRenderFunction<HTMLInputElement, ITextInput> = (
 
 export const Detail: ForwardRefRenderFunction<HTMLTextAreaElement, IDetailInput> = ({ label, err, hint, ...props }, ref) => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
 
   return (
     <CustomInput styled={theme} device={device} icon={undefined}>
@@ -142,7 +142,7 @@ export const Detail: ForwardRefRenderFunction<HTMLTextAreaElement, IDetailInput>
 
 export const MiniDetail: ForwardRefRenderFunction<HTMLTextAreaElement, IDetailInput> = ({ label, err, hint, ...props }, ref) => {
   const { theme } = useTheme()
-  const { device } = useWeb()
+  const { device } = useDevice()
 
   return (
     <CustomMiniInput styled={theme} device={device} icon={undefined}>
