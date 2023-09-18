@@ -35,7 +35,10 @@ Axios.interceptors.response.use(
             return Axios(config)
           }
         })
-        .catch(console.error)
+        .catch((error) => {
+          console.error(error)
+          store.dispatch({ type: 'session/clearSession' })
+        })
     }
   }
 )
