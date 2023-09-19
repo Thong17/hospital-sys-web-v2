@@ -3,13 +3,15 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, PersistConfig, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "stores/auth/slice";
+import { configReducer } from "stores/config/slice";
 import { homeReducer } from "stores/home/slice";
 import { sessionReducer } from "stores/session/slice";
 
 const mainReducer = combineReducers({
     auth: authReducer,
     home: homeReducer,
-    session: sessionReducer
+    session: sessionReducer,
+    config: configReducer
 })
 
 const rootReducer = (state: any, action: any) => {
@@ -20,7 +22,7 @@ const persistConfig: PersistConfig<any> = {
     key: 'hospital-system',
     version: 1,
     storage,
-    whitelist:  ['session']
+    whitelist:  ['session', 'config']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

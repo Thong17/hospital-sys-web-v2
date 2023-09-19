@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IAuth {
+interface ISession {
     accessToken?: string
     refreshToken?: string
     user?: any
 }
 
-const initialState: IAuth = {
+const initialState: ISession = {
     accessToken: undefined,
     refreshToken: undefined,
     user: null

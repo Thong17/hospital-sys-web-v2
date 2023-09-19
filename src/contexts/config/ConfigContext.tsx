@@ -1,56 +1,29 @@
-import { createContext, useState } from 'react'
+import { store, useAppDispatch, useAppSelector } from 'app/store'
+import { createContext } from 'react'
+import { selectConfig } from 'stores/config/selector'
 
 interface IConfig {
-  sidebar: boolean,
-  invoiceBar: boolean,
-  display: 'grid' | 'list'
-  tabs: string[]
+  sidebar: boolean
 }
 
 const initState: IConfig = {
-  sidebar: localStorage.getItem('setting-sidebar') === 'true' ? true : false,
-  invoiceBar: localStorage.getItem('setting-invoiceBar') === 'true' ? true : false,
-  display: localStorage.getItem('setting-display') === 'list' ? 'list' : 'grid',
-  tabs: Array.isArray(JSON.parse(localStorage.getItem('setting-tabs') || '[]')) ? JSON.parse(localStorage.getItem('setting-tabs') || '[]') : [],
+  sidebar: !!store.getState()?.config?.sidebar
 }
 export const ConfigContext = createContext({
   ...initState,
   toggleSidebar: () => {},
-  toggleInvoiceBar: () => {},
-  toggleDisplay: (_display: any) => {},
-  resetTabs: (_tabs: any) => {},
 })
 
 const ConfigProvider = ({ children }: any) => {
-  const [sidebar, setSidebar] = useState(initState.sidebar)
-  const [invoiceBar, setInvoiceBar] = useState(initState.invoiceBar)
-  const [display, setDisplay] = useState<'grid' | 'list'>(initState.display)
-  const [tabs, setTabs] = useState<string[]>(initState.tabs)
+  const { sidebar } = useAppSelector(selectConfig)
+  const dispatch = useAppDispatch()
 
   const toggleSidebar = () => {
-    const toggleSidebar = !sidebar
-    setSidebar(toggleSidebar)
-    localStorage.setItem('setting-sidebar', toggleSidebar ? 'true' : 'false')
-  }
-
-  const toggleInvoiceBar = () => {
-    const toggleInvoiceBar = !invoiceBar
-    setInvoiceBar(toggleInvoiceBar)
-    localStorage.setItem('setting-invoiceBar', toggleInvoiceBar ? 'true' : 'false')
-  }
-
-  const toggleDisplay = (display: any) => {
-    setDisplay(display)
-    localStorage.setItem('setting-display', display)
-  }
-
-  const resetTabs = (tabs: any) => {
-    setTabs(tabs)
-    localStorage.setItem('setting-tabs', JSON.stringify(tabs))
+    dispatch({ type: 'config/toggleSidebar' })
   }
 
   return (
-    <ConfigContext.Provider value={{ sidebar, invoiceBar, display, tabs, toggleSidebar, toggleInvoiceBar, toggleDisplay, resetTabs }}>
+    <ConfigContext.Provider value={{ sidebar, toggleSidebar }}>
       {children}
     </ConfigContext.Provider>
   )
