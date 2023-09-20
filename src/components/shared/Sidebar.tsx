@@ -6,10 +6,14 @@ import { Box } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
 import { LAYOUT_TRANSITION } from 'components/layouts/Layout'
-import { COLLAPSED_SIDEBAR_WIDTH, EXPANDED_SIDEBAR_WIDTH } from 'constants/layout'
+import {
+  COLLAPSED_SIDEBAR_WIDTH,
+  EXPANDED_SIDEBAR_WIDTH,
+} from 'constants/layout'
+import useTheme from 'hooks/useTheme'
 
 const Sidebar = () => {
-  const { language } = useLanguage()
+  const { theme } = useTheme()
   const dispatch = useAppDispatch()
   const { isAttachedSidebar, isOpenedSidebar } = useAppSelector(selectConfig)
 
@@ -45,9 +49,14 @@ const Sidebar = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'start',
-          alignItems: 'center',
-          '& a': { color: 'black' },
-          '& a.active': { color: 'green' },
+          alignItems: 'start',
+          gap: 1,
+          '& a': { color: 'black', borderRadius: theme.radius.ternary },
+          '& a:hover': { backgroundColor: '#ffffff22' },
+          '& a.active': {
+            color: 'white',
+            backgroundColor: 'blueviolet',
+          },
         }}
       >
         <button onClick={handleToggle}>Toggle</button>
@@ -57,19 +66,42 @@ const Sidebar = () => {
         >
           Detach
         </button>
-        {sideBar.map((nav: any, key: number) => {
-          return (
-            <NavLink key={key} to={nav.route}>
-              {nav.icon}
-              <span>
-                {language[nav.title as keyof typeof languages.English] ||
-                  nav.title}
-              </span>
-            </NavLink>
-          )
-        })}
+        {sideBar.map((nav: any, key: number) => (
+          <SidebarItem key={key} nav={nav} />
+        ))}
       </Box>
     </Box>
+  )
+}
+
+const SidebarItem = ({ nav }: any) => {
+  const { language } = useLanguage()
+  const { isOpenedSidebar } = useAppSelector(selectConfig)
+  return (
+    <NavLink to={nav.route} style={{ width: '100%' }}>
+      <Box
+        sx={{
+          cursor: 'pointer',
+          padding: '15px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'start',
+          gap: '10px',
+          boxSizing: 'border-box',
+          transition: LAYOUT_TRANSITION,
+        }}
+      >
+        {nav.icon}
+        <span
+          style={{
+            opacity: isOpenedSidebar ? 1 : 0,
+            transition: isOpenedSidebar ? LAYOUT_TRANSITION : '0s ease',
+          }}
+        >
+          {language[nav.title as keyof typeof languages.English] || nav.title}
+        </span>
+      </Box>
+    </NavLink>
   )
 }
 
