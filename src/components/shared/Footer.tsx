@@ -1,6 +1,8 @@
 import useTheme from 'hooks/useTheme'
 import { CustomFooter } from 'styles'
 
+export const FOOTER_HEIGHT = 70
+
 const Footer = ({ ...props }) => {
   const { theme } = useTheme()
 

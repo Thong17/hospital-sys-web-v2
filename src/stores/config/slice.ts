@@ -1,19 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IConfig {
-    sidebar: boolean
+    isOpenedSidebar: boolean
+    isAttachedSidebar: boolean
 }
 
 const initialState: IConfig = {
-    sidebar: false
+    isOpenedSidebar: false,
+    isAttachedSidebar: false
 }
 
 const configSlice = createSlice({
     name: 'config',
     initialState,
     reducers: {
-        toggleSidebar: (state) => {
-            state.sidebar = !state.sidebar
+        toggleOpenSidebar: (state) => {
+            state.isOpenedSidebar = !state.isOpenedSidebar
+        },
+        toggleAttachSidebar: (state) => {
+            state.isAttachedSidebar = !state.isAttachedSidebar
         }
     },
 })
