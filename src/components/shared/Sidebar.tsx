@@ -51,8 +51,8 @@ const Sidebar = () => {
           justifyContent: 'start',
           alignItems: 'start',
           gap: 1,
-          '& a': { color: 'black', borderRadius: theme.radius.ternary },
-          '& a:hover': { backgroundColor: '#ffffff22' },
+          '& a': { color: 'black', borderRadius: theme.radius.ternary, width: '100%' },
+          '& a:hover': { backgroundColor: '#ffffff22', width: isOpenedSidebar ? '100%' : 'fit-content !important', boxShadow: theme.shadow.secondary },
           '& a.active': {
             color: 'white',
             backgroundColor: 'blueviolet',
@@ -78,7 +78,7 @@ const SidebarItem = ({ nav }: any) => {
   const { language } = useLanguage()
   const { isOpenedSidebar } = useAppSelector(selectConfig)
   return (
-    <NavLink to={nav.route} style={{ width: '100%' }}>
+    <NavLink to={nav.route}>
       <Box
         sx={{
           cursor: 'pointer',
@@ -89,6 +89,9 @@ const SidebarItem = ({ nav }: any) => {
           gap: '10px',
           boxSizing: 'border-box',
           transition: LAYOUT_TRANSITION,
+          '&:hover span': {
+            opacity: '1 !important'
+          }
         }}
       >
         {nav.icon}

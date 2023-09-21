@@ -8,6 +8,7 @@ const Navbar = () => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
   return (
     <Box
+      id='navbar'
       sx={{
         height: NAVBAR_HEIGHT,
         position: 'fixed',
@@ -18,7 +19,10 @@ const Navbar = () => {
         padding: `0 ${SIDE_PADDING}px`,
         backgroundColor: 'rebeccapurple',
         transition: LAYOUT_TRANSITION,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        '&.active': {
+          transform: 'translateY(-100%)'
+        }
       }}
     >
       <span>Icon</span>

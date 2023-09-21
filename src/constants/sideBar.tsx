@@ -11,7 +11,7 @@ export const sideBar: any = [
   },
   {
     route: '/admin',
-    title: 'ADMIN',
+    title: 'ADMINISTRATOR',
     icon: <AdminPanelSettingsIcon />,
     permission: 'admin',
     children: [
