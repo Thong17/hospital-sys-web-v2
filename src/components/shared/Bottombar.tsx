@@ -1,6 +1,6 @@
 import { APP_MENU } from 'constants/menu'
 import { Box } from '@mui/material'
-import { FOOTER_HEIGHT } from 'constants/layout'
+import { FOOTER_HEIGHT, OUTER_MENU_SPACING } from 'constants/layout'
 import useTheme from 'hooks/useTheme'
 import { NavLink } from 'react-router-dom'
 import { languages } from 'contexts/language/constant'
@@ -17,7 +17,7 @@ const Bottombar = () => {
         bottom: 0,
         backgroundColor: 'blueviolet',
         width: '100%',
-        padding: '0 10px 10px 10px',
+        padding: `0 ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px`,
         boxSizing: 'border-box',
         zIndex: 1000
       }}

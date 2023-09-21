@@ -9,6 +9,7 @@ import { LAYOUT_TRANSITION } from 'components/layouts/Layout'
 import {
   COLLAPSED_SIDEBAR_WIDTH,
   EXPANDED_SIDEBAR_WIDTH,
+  OUTER_MENU_SPACING,
 } from 'constants/layout'
 import useTheme from 'hooks/useTheme'
 
@@ -29,13 +30,13 @@ const Sidebar = () => {
     <Box
       component={'div'}
       sx={{
-        backgroundColor: 'indigo',
+        backgroundColor: 'blueviolet',
         height: '100vh',
         width: `${
           isOpenedSidebar ? EXPANDED_SIDEBAR_WIDTH : COLLAPSED_SIDEBAR_WIDTH
         }px`,
         position: 'fixed',
-        padding: '10px',
+        padding: `${OUTER_MENU_SPACING}px 0 ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px`,
         boxSizing: 'border-box',
         zIndex: 1000,
         transition: LAYOUT_TRANSITION,
@@ -50,6 +51,10 @@ const Sidebar = () => {
           flexDirection: 'column',
           justifyContent: 'start',
           alignItems: 'start',
+          backgroundColor: '#2E4053',
+          padding: '7px',
+          boxSizing: 'border-box',
+          borderRadius: theme.radius.ternary,
           gap: 1,
           '& a': { color: 'black', borderRadius: theme.radius.ternary, width: '100%' },
           '& a:hover': { backgroundColor: '#ffffff22', width: isOpenedSidebar ? '100%' : 'fit-content !important', boxShadow: theme.shadow.secondary },
@@ -82,7 +87,7 @@ const SidebarItem = ({ nav }: any) => {
       <Box
         sx={{
           cursor: 'pointer',
-          padding: '15px 18px',
+          padding: '13px 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'start',
