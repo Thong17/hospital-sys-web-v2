@@ -1,11 +1,14 @@
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, useEffect } from 'react'
 import { Box, styled } from '@mui/material'
 import Navbar from 'components/shared/Navbar'
 import { useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
-import Footer, { FOOTER_HEIGHT } from 'components/shared/Footer'
-import { COLLAPSED_SIDEBAR_WIDTH, EXPANDED_SIDEBAR_WIDTH, NAVBAR_HEIGHT, SIDE_PADDING } from 'constants/layout'
+import Footer from 'components/shared/Footer'
+import { COLLAPSED_SIDEBAR_WIDTH, EXPANDED_SIDEBAR_WIDTH, FOOTER_HEIGHT, NAVBAR_HEIGHT, SIDE_PADDING } from 'constants/layout'
 import Sidebar from 'components/shared/Sidebar'
+import useDevice from 'hooks/useDevice'
+import { TABLET_WIDTH } from 'contexts/web/constant'
+import Bottombar from 'components/shared/Bottombar'
 
 export const LAYOUT_TRANSITION: string = '0.3s ease'
 
@@ -30,27 +33,34 @@ const ContentContainer = styled('div')({
 
 export const Layout: FC<ILayout> = ({ children }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
+  const { device, width } = useDevice()
+
+  useEffect(() => {
+    console.log(device, width)
+  }, [device, width])
+  
 
   return (
     <Box component={'div'}>
-      <Sidebar />
+      { width > TABLET_WIDTH ? <Sidebar /> : <Bottombar /> }
+      
       <WrapContainer
         style={{
-          marginLeft: `${
+          marginLeft: width > TABLET_WIDTH ? `${
             (isOpenedSidebar && isAttachedSidebar)
               ? EXPANDED_SIDEBAR_WIDTH
               : COLLAPSED_SIDEBAR_WIDTH
-          }px`,
-          width: `calc(100% - ${
+          }px` : 0,
+          width: width > TABLET_WIDTH ? `calc(100% - ${
             (isOpenedSidebar && isAttachedSidebar)
               ? EXPANDED_SIDEBAR_WIDTH
               : COLLAPSED_SIDEBAR_WIDTH
-          }px)`,
+          }px)`: '100%',
         }}
       >
         <Navbar />
         <ContentContainer>{children}</ContentContainer>
-        <Footer />
+        {width > TABLET_WIDTH && <Footer />}
       </WrapContainer>
     </Box>
   )

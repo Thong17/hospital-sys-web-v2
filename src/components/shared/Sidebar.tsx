@@ -1,4 +1,4 @@
-import { sideBar } from 'constants/sideBar'
+import { APP_MENU } from 'constants/sideBar'
 import useLanguage from 'hooks/useLanguage'
 import { NavLink } from 'react-router-dom'
 import { languages } from 'contexts/language/constant'
@@ -66,7 +66,7 @@ const Sidebar = () => {
         >
           Detach
         </button>
-        {sideBar.map((nav: any, key: number) => (
+        {APP_MENU.map((nav: any, key: number) => (
           <SidebarItem key={key} nav={nav} />
         ))}
       </Box>

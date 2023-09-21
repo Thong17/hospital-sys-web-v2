@@ -3,7 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 
-export const sideBar: any = [
+export const APP_MENU: any = [
   {
     route: '/home',
     title: 'HOME',
