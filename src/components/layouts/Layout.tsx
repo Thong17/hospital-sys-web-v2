@@ -43,7 +43,6 @@ export const Layout: FC<ILayout> = ({ children }) => {
   return (
     <Box component={'div'}>
       { width > TABLET_WIDTH ? <Sidebar /> : <Bottombar /> }
-      
       <WrapContainer
         style={{
           marginLeft: width > TABLET_WIDTH ? `${

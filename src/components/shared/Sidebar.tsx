@@ -1,4 +1,4 @@
-import { APP_MENU } from 'constants/sideBar'
+import { APP_MENU } from 'constants/menu'
 import useLanguage from 'hooks/useLanguage'
 import { NavLink } from 'react-router-dom'
 import { languages } from 'contexts/language/constant'
