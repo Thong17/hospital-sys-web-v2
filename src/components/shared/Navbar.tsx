@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, IconButton, Stack } from '@mui/material'
 import { LAYOUT_TRANSITION } from 'components/layouts/Layout'
 import { useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
@@ -12,6 +12,10 @@ import {
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
 import useTheme from 'hooks/useTheme'
+import MenuButton from './MenuButton'
+import Profile from './Profile'
+import EventRoundedIcon from '@mui/icons-material/EventRounded'
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
 
 const Navbar = () => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
@@ -49,14 +53,20 @@ const Navbar = () => {
           boxSizing: 'border-box',
           backgroundColor: theme.layout.navbar,
           borderRadius: theme.radius.ternary,
-          boxShadow: theme.shadow.container,
+          boxShadow: theme.shadow.bottom,
           width: '100%',
           height: '100%',
-          color: theme.text.primary
+          '& *': { color: theme.text.secondary }
         }}
       >
-        <span>A</span>
-        <span>A</span>
+        <Stack direction={'row'}>
+          <MenuButton />
+        </Stack>
+        <Stack direction={'row'} gap={0}>
+          <IconButton><NotificationsRoundedIcon /></IconButton>
+          <IconButton><EventRoundedIcon /></IconButton>
+          <Profile sx={{ marginLeft: '8px' }} />
+        </Stack>
       </Box>
     </Box>
   )

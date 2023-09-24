@@ -12,7 +12,9 @@ export const languages = {
     PAGE_NOT_FOUND_DESCRIPTION: 'Page not found description',
     REGISTER_TITLE: 'REGISTER_TITLE',
     REGISTER_DESCRIPTION: 'REGISTER_DESCRIPTION',
-    SEGMENT: 'Segment'
+    SEGMENT: 'Segment',
+    PROFILE: 'Profile',
+    LOGOUT: 'Logout'
   },
   Khmer: {
     USERNAME: 'Username',
@@ -27,6 +29,8 @@ export const languages = {
     PAGE_NOT_FOUND_DESCRIPTION: 'Page not found description',
     REGISTER_TITLE: 'REGISTER_TITLE',
     REGISTER_DESCRIPTION: 'REGISTER_DESCRIPTION',
-    SEGMENT: 'Segment'
+    SEGMENT: 'Segment',
+    PROFILE: 'Profile',
+    LOGOUT: 'Logout'
   }
 }

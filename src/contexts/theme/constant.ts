@@ -2,9 +2,9 @@ export const themeMode = {
   Blue: {
     layout: {
       container: '#ffffff',
-      sidebar: '#777777',
-      navbar: '#777777',
-      footer: '#777777'
+      sidebar: '#bbbbbb',
+      navbar: '#bbbbbb',
+      footer: '#bbbbbb'
     },
     background: {
       primary: '#0e1928',
@@ -16,7 +16,7 @@ export const themeMode = {
       primary: '#ffffff',
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
-      quaternary: '#999999'
+      quaternary: '#bbbbbb'
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
@@ -46,9 +46,9 @@ export const themeMode = {
   Gray: {
     layout: {
       container: '#ffffff',
-      sidebar: '#777777',
-      navbar: '#777777',
-      footer: '#777777'
+      sidebar: '#bbbbbb',
+      navbar: '#bbbbbb',
+      footer: '#bbbbbb'
     },
     background: {
       primary: '#222831',
@@ -60,7 +60,7 @@ export const themeMode = {
       primary: '#ffffff',
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
-      quaternary: '#999999'
+      quaternary: '#bbbbbb'
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
@@ -90,9 +90,9 @@ export const themeMode = {
   Light: {
     layout: {
       container: '#ffffff',
-      sidebar: '#777777',
-      navbar: '#777777',
-      footer: '#777777'
+      sidebar: '#bbbbbb',
+      navbar: '#bbbbbb',
+      footer: '#bbbbbb'
     },
     background: {
       primary: '#f2f2f2',
@@ -108,7 +108,7 @@ export const themeMode = {
     },
     active: {
       primary: '#cccccc55',
-      secondary: '#99999922',
+      secondary: '#bbbbbb22',
       tertiary: '#555555',
       quaternary: '#666666'
     },
@@ -134,9 +134,9 @@ export const themeMode = {
   Dark: {
     layout: {
       container: '#ffffff',
-      sidebar: '#777777',
-      navbar: '#777777',
-      footer: '#777777'
+      sidebar: '#bbbbbb',
+      navbar: '#bbbbbb',
+      footer: '#bbbbbb'
     },
     background: {
       primary: '#313131',
@@ -148,12 +148,12 @@ export const themeMode = {
       primary: '#ffffff',
       secondary: '#cccccc',
       tertiary: '#aaaaaa',
-      quaternary: '#777777'
+      quaternary: '#bbbbbb'
     },
     active: {
       primary: '#cccccc55',
-      secondary: '#99999922',
-      tertiary: '#777777',
+      secondary: '#bbbbbb22',
+      tertiary: '#bbbbbb',
       quaternary: '#555555'
     },
     border: {

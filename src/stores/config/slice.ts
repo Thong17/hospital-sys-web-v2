@@ -7,7 +7,7 @@ interface IConfig {
 
 const initialState: IConfig = {
     isOpenedSidebar: false,
-    isAttachedSidebar: false
+    isAttachedSidebar: true
 }
 
 const configSlice = createSlice({

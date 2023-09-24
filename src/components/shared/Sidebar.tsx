@@ -3,7 +3,7 @@ import useLanguage from 'hooks/useLanguage'
 import { NavLink } from 'react-router-dom'
 import { languages } from 'contexts/language/constant'
 import { Box } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'app/store'
+import { useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
 import { LAYOUT_TRANSITION } from 'components/layouts/Layout'
 import {
@@ -15,16 +15,7 @@ import useTheme from 'hooks/useTheme'
 
 const Sidebar = () => {
   const { theme } = useTheme()
-  const dispatch = useAppDispatch()
-  const { isAttachedSidebar, isOpenedSidebar } = useAppSelector(selectConfig)
-
-  const handleToggle = () => {
-    dispatch({ type: 'config/toggleOpenSidebar' })
-  }
-
-  const handleToggleAttach = () => {
-    dispatch({ type: 'config/toggleAttachSidebar' })
-  }
+  const { isOpenedSidebar } = useAppSelector(selectConfig)
 
   return (
     <Box
@@ -64,13 +55,6 @@ const Sidebar = () => {
           },
         }}
       >
-        <button onClick={handleToggle}>Toggle</button>
-        <button
-          style={{ color: isAttachedSidebar ? 'blue' : 'black' }}
-          onClick={handleToggleAttach}
-        >
-          Detach
-        </button>
         {APP_MENU.map((nav: any, key: number) => (
           <SidebarItem key={key} nav={nav} />
         ))}
