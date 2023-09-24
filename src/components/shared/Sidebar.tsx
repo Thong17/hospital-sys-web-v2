@@ -30,7 +30,6 @@ const Sidebar = () => {
     <Box
       component={'div'}
       sx={{
-        backgroundColor: 'blueviolet',
         height: '100vh',
         width: `${
           isOpenedSidebar ? EXPANDED_SIDEBAR_WIDTH : COLLAPSED_SIDEBAR_WIDTH
@@ -51,16 +50,17 @@ const Sidebar = () => {
           flexDirection: 'column',
           justifyContent: 'start',
           alignItems: 'start',
-          backgroundColor: '#2E4053',
+          backgroundColor: theme.layout.sidebar,
           padding: '7px',
           boxSizing: 'border-box',
           borderRadius: theme.radius.ternary,
+          boxShadow: theme.shadow.container,
           gap: 1,
           '& a': { color: 'black', borderRadius: theme.radius.ternary, width: '100%' },
           '& a:hover': { backgroundColor: '#ffffff22', width: isOpenedSidebar ? '100%' : 'fit-content !important', boxShadow: theme.shadow.secondary },
           '& a.active': {
             color: 'white',
-            backgroundColor: 'blueviolet',
+            backgroundColor: theme.active.primary,
           },
         }}
       >
@@ -87,7 +87,7 @@ const SidebarItem = ({ nav }: any) => {
       <Box
         sx={{
           cursor: 'pointer',
-          padding: '13px 16px',
+          padding: '13px 14px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'start',

@@ -15,7 +15,7 @@ const Bottombar = () => {
         height: FOOTER_HEIGHT,
         position: 'fixed',
         bottom: 0,
-        backgroundColor: 'blueviolet',
+        backgroundColor: theme.layout.container,
         width: '100%',
         padding: `0 ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px`,
         boxSizing: 'border-box',
@@ -24,7 +24,7 @@ const Bottombar = () => {
     >
       <Box
         sx={{
-          backgroundColor: theme.background.primary,
+          backgroundColor: theme.layout.footer,
           display: 'flex',
           justifyContent: 'space-evenly',
           alignItems: 'center',

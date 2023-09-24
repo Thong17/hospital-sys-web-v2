@@ -7,7 +7,7 @@ import 'assets/styles/index.css'
 import { useAppSelector } from 'app/store'
 import { selectSession } from 'stores/session/selector'
 
-const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Blue'
+const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
 
 export const ThemeContext = createContext<IThemeContext>({
   mode: initMode,

@@ -9,6 +9,7 @@ import Sidebar from 'components/shared/Sidebar'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
 import Bottombar from 'components/shared/Bottombar'
+import useTheme from 'hooks/useTheme'
 
 export const LAYOUT_TRANSITION: string = '0.3s ease'
 
@@ -27,13 +28,13 @@ const ContentContainer = styled('div')({
   width: '100%',
   padding: `${NAVBAR_HEIGHT}px ${SIDE_PADDING}px 0 ${SIDE_PADDING}px`,
   minHeight: `calc(100vh - ${FOOTER_HEIGHT}px)`,
-  backgroundColor: 'blueviolet',
   boxSizing: 'border-box',
 })
 
 export const Layout: FC<ILayout> = ({ children }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
   const { device, width } = useDevice()
+  const { theme } = useTheme()
 
   useEffect(() => {
     console.log(device, width)
@@ -41,7 +42,7 @@ export const Layout: FC<ILayout> = ({ children }) => {
   
 
   return (
-    <Box component={'div'}>
+    <Box component={'div'} sx={{ backgroundColor: theme.layout.container }}>
       { width > TABLET_WIDTH ? <Sidebar /> : <Bottombar /> }
       <WrapContainer
         style={{

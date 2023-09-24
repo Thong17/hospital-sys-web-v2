@@ -23,6 +23,7 @@ const Navbar = () => {
       sx={{
         height: NAVBAR_HEIGHT,
         position: 'fixed',
+        backgroundColor: theme.layout.container,
         width:
           width > TABLET_WIDTH
             ? `calc(100% - ${
@@ -34,7 +35,6 @@ const Navbar = () => {
         transition: LAYOUT_TRANSITION,
         padding: `${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px 0 ${OUTER_MENU_SPACING}px`,
         boxSizing: 'border-box',
-        backgroundColor: 'blueviolet',
         '&.active': {
           transform: 'translateY(-100%)',
         },
@@ -47,8 +47,9 @@ const Navbar = () => {
           alignItems: 'center',
           padding: `0 ${SIDE_PADDING}px`,
           boxSizing: 'border-box',
-          backgroundColor: theme.background.primary,
+          backgroundColor: theme.layout.navbar,
           borderRadius: theme.radius.ternary,
+          boxShadow: theme.shadow.container,
           width: '100%',
           height: '100%',
           color: theme.text.primary

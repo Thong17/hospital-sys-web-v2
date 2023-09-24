@@ -1,5 +1,11 @@
 export const themeMode = {
   Blue: {
+    layout: {
+      container: '#ffffff',
+      sidebar: '#777777',
+      navbar: '#777777',
+      footer: '#777777'
+    },
     background: {
       primary: '#0e1928',
       secondary: '#132f4c',
@@ -38,6 +44,12 @@ export const themeMode = {
     },
   },
   Gray: {
+    layout: {
+      container: '#ffffff',
+      sidebar: '#777777',
+      navbar: '#777777',
+      footer: '#777777'
+    },
     background: {
       primary: '#222831',
       secondary: '#393E46',
@@ -76,6 +88,12 @@ export const themeMode = {
     },
   },
   Light: {
+    layout: {
+      container: '#ffffff',
+      sidebar: '#777777',
+      navbar: '#777777',
+      footer: '#777777'
+    },
     background: {
       primary: '#f2f2f2',
       secondary: '#e1e1e1',
@@ -114,6 +132,12 @@ export const themeMode = {
     },
   },
   Dark: {
+    layout: {
+      container: '#ffffff',
+      sidebar: '#777777',
+      navbar: '#777777',
+      footer: '#777777'
+    },
     background: {
       primary: '#313131',
       secondary: '#414141',

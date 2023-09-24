@@ -23,6 +23,12 @@ export declare type TextOptions = {
 }
 
 export interface IThemeMode {
+  layout: {
+    container: string,
+    sidebar: string,
+    navbar: string,
+    footer: string
+  }
   background: {
     primary: string
     secondary: string

@@ -1,6 +1,4 @@
 import { sha256 } from 'js-sha256'
-import { IToken } from 'contexts/auth/interface'
-import jwtDecode from 'jwt-decode'
 import moment from 'moment'
 
 export const generateHash = async (
@@ -23,14 +21,6 @@ export const serviceWrapper = (cb: (p: any, t: any) => any) => {
       throw (thunkApi as any).rejectWithValue(error)
     }
   }
-}
-
-export const isValidToken = (token: any) => {
-  if (!token) return false
-
-  const decodedToken: IToken = jwtDecode(token)
-  const currentTime = Date.now() / 1000
-  return decodedToken.exp > currentTime
 }
 
 export const throttle = (cb: any, delay = 1000) => {

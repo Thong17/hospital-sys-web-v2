@@ -8,6 +8,6 @@ export const CustomFooter = styled(Stack)(
     width: '100%',
     color: styled.text.primary,
     height: FOOTER_HEIGHT,
-    backgroundColor: 'blueviolet'
+    backgroundColor: styled.layout.container
   })
 )
