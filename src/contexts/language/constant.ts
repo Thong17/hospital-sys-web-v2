@@ -14,7 +14,8 @@ export const languages = {
     REGISTER_DESCRIPTION: 'REGISTER_DESCRIPTION',
     SEGMENT: 'Segment',
     PROFILE: 'Profile',
-    LOGOUT: 'Logout'
+    LOGOUT: 'Logout',
+    LOGIN: 'Login',
   },
   Khmer: {
     USERNAME: 'Username',
@@ -31,6 +32,7 @@ export const languages = {
     REGISTER_DESCRIPTION: 'REGISTER_DESCRIPTION',
     SEGMENT: 'Segment',
     PROFILE: 'Profile',
-    LOGOUT: 'Logout'
+    LOGOUT: 'Logout',
+    LOGIN: 'Login',
   }
 }

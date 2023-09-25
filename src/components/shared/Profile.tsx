@@ -3,24 +3,19 @@ import { Box } from '@mui/system'
 import { useAppSelector } from 'app/store'
 import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { selectSession } from 'stores/session/selector'
 
 const Profile = ({ ...props }) => {
   const session = useAppSelector(selectSession)
   const { theme } = useTheme()
-  const [user, setUser] = useState<any>(null)
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const { language } = useLanguage()
 
-  useEffect(() => {
-    setUser(session?.user)
-  }, [session?.user])
-
   return (
     <Box {...props}>
-      {user ? (
+      {session?.user ? (
         <>
           <Button
             id='profile-menu'
@@ -49,7 +44,7 @@ const Profile = ({ ...props }) => {
             >
               <img src='/public/logo.png' alt='' />
             </Box>
-            {user.username}
+            {session?.user?.username}
           </Button>
           <Menu
             id='profile-menu'
@@ -70,7 +65,7 @@ const Profile = ({ ...props }) => {
           </Menu>
         </>
       ) : (
-        <NavLink to={'/login'}>Login</NavLink>
+        <NavLink to={'/login'}>{language.LOGIN}</NavLink>
       )}
     </Box>
   )

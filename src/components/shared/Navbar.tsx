@@ -62,7 +62,7 @@ const Navbar = () => {
         <Stack direction={'row'}>
           <MenuButton />
         </Stack>
-        <Stack direction={'row'} gap={0}>
+        <Stack direction={'row'} gap={1}>
           <IconButton><NotificationsRoundedIcon /></IconButton>
           <IconButton><EventRoundedIcon /></IconButton>
           <Profile sx={{ marginLeft: '8px' }} />

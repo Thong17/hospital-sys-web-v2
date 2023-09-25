@@ -78,6 +78,9 @@ const SidebarItem = ({ nav }: any) => {
           gap: '10px',
           boxSizing: 'border-box',
           transition: LAYOUT_TRANSITION,
+          '& span': {
+            overflow: isOpenedSidebar ? 'visible' : 'hidden'
+          },
           '&:hover span': {
             opacity: '1 !important'
           }
