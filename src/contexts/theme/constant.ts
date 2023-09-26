@@ -179,10 +179,10 @@ export const themeMode = {
 
 export const themeStyle = {
   radius: {
-    primary: '5px',
-    secondary: '7px',
-    ternary: '10px',
-    quaternary: '13px',
+    primary: '9px',
+    secondary: '11px',
+    ternary: '13px',
+    quaternary: '15px',
     circle: '50%',
     rounded: '20px',
   },

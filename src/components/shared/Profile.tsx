@@ -42,7 +42,7 @@ const Profile = ({ ...props }) => {
                 },
               }}
             >
-              <img src='/public/logo.png' alt='' />
+              <img src='/logo.png' alt='' />
             </Box>
             {session?.user?.username}
           </Button>
