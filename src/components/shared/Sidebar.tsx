@@ -13,6 +13,7 @@ import {
 } from 'constants/layout'
 import useTheme from 'hooks/useTheme'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
+import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded'
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded'
 
 const Sidebar = () => {
@@ -154,7 +155,7 @@ const SidebarItem = ({ nav }: any) => {
                 transition: isOpenedSidebar ? LAYOUT_TRANSITION : 0,
               }}
             >
-              <ExpandMoreRoundedIcon />
+              { expandedSidebarItems?.includes(nav.title) ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />}
             </IconButton>
             {expandedSidebarItems?.includes(nav.title) && (
               <Box

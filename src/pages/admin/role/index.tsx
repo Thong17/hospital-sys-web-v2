@@ -1,10 +1,6 @@
-import { Layout } from "components/layouts/Layout"
-
 const Role = () => {
   return (
-    <Layout>
-      <h1>Hello</h1>
-    </Layout>
+    <h1>Role</h1>
   )
 }
 

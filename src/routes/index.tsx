@@ -1,6 +1,7 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
 import { Admin, Role } from 'pages/admin'
+import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { RouteObject } from 'react-router'
@@ -27,6 +28,14 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ route: 'role', action: 'view' }}>
                         <Role />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'user',
+                element: (
+                    <AuthGuard>
+                        <User />
                     </AuthGuard>
                 ),
             },
