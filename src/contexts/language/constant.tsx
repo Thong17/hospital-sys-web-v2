@@ -16,6 +16,7 @@ export const languages = {
     PROFILE: 'Profile',
     LOGOUT: 'Logout',
     LOGIN: 'Login',
+    FOOTER_CONTENT: <>Copyright &copy; 2023 All Rights Reserved by <span>Thong</span></>
   },
   Khmer: {
     USERNAME: 'Username',
@@ -34,5 +35,6 @@ export const languages = {
     PROFILE: 'Profile',
     LOGOUT: 'Logout',
     LOGIN: 'Login',
+    FOOTER_CONTENT: <>Copyright &copy; 2023 All Rights Reserved by <span>Thong</span></>
   }
 }

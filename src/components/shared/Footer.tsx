@@ -1,8 +1,10 @@
+import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
 import { CustomFooter } from 'styles'
 
 const Footer = ({ ...props }) => {
   const { theme } = useTheme()
+  const { language } = useLanguage()
 
   return (
     <CustomFooter
@@ -13,7 +15,7 @@ const Footer = ({ ...props }) => {
       {...props}
     >
       <p style={{ color: theme.text.tertiary }}>
-        Copyright &copy; 2023 All Rights Reserved by <span style={{ color: theme.text.primary }}>Thong</span>
+        {language.FOOTER_CONTENT}
       </p>
     </CustomFooter>
   )

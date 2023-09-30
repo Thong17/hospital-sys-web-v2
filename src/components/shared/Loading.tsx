@@ -1,12 +1,7 @@
-import React from 'react'
-import useTheme from 'hooks/useTheme'
-import { CustomLoading } from 'styles'
-import { CircularProgress } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 
-const Loading = () => {
-  const { theme } = useTheme()
-  
-  return <CustomLoading styled={theme}><CircularProgress /></CustomLoading>
+const Loading = () => {  
+  return <Box><CircularProgress /></Box>
 }
 
 export default Loading
