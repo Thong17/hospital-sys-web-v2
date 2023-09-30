@@ -43,24 +43,28 @@ const Sidebar = () => {
           flexDirection: 'column',
           justifyContent: 'start',
           alignItems: 'start',
-          backgroundColor: theme.layout.sidebar,
           padding: '7px',
           boxSizing: 'border-box',
           borderRadius: theme.radius.ternary,
-          boxShadow: theme.shadow.container,
+          boxShadow: theme.shadow.secondary,
           gap: 1,
-          '& a': {
-            color: 'black',
+          '& .sidebar-menu': {
             borderRadius: theme.radius.ternary,
             width: '100%',
           },
-          '& a:hover': {
+          '& .sidebar-menu a': {
+            color: theme.text.primary,
+            textDecoration: 'none'
+          },
+          '& .sidebar-menu a.active': {
+            color: theme.color.info,
+          },
+          '& .sidebar-menu:hover': {
             backgroundColor: '#ffffff22',
             width: isOpenedSidebar ? '100%' : 'fit-content !important',
             boxShadow: theme.shadow.secondary,
           },
-          '& a.active': {
-            color: theme.color.info,
+          '& .sidebar-menu:has(a.active)': {
             backgroundColor: `${theme.color.info}44`,
           },
         }}
@@ -74,6 +78,7 @@ const Sidebar = () => {
 }
 
 const SidebarItem = ({ nav }: any) => {
+  const { theme } = useTheme()
   const { language } = useLanguage()
   const { isOpenedSidebar, expandedSidebarItems } = useAppSelector(selectConfig)
   const dispatch = useAppDispatch()
@@ -86,20 +91,20 @@ const SidebarItem = ({ nav }: any) => {
   }
 
   return (
-    <NavLink to={nav.route} style={{ position: 'relative' }}>
+    <Box sx={{ width: '100%' }}>
       <Box
+        className='sidebar-menu'
         sx={{
+          position: 'relative',
           cursor: 'pointer',
-          padding: '13px 14px',
           display: 'flex',
           alignItems: 'start',
           justifyContent: 'start',
           flexDirection: 'column',
           boxSizing: 'border-box',
-          transition: LAYOUT_TRANSITION,
-          overflow: isOpenedSidebar ? 'visible' : 'hidden',
+          overflow: 'hidden',
           '&:hover': {
-            paddingRight: nav.children ? '50px' : '14px',
+            paddingRight: nav.children ? '50px' : '0',
           },
           '&:hover .sidebar-title': {
             opacity: '1 !important',
@@ -113,12 +118,16 @@ const SidebarItem = ({ nav }: any) => {
           },
         }}
       >
-        <Box
-          sx={{
+        <NavLink
+          to={nav.route}
+          style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'start',
             gap: '10px',
+            padding: '13px 14px',
+            boxSizing: 'border-box',
+            overflow: isOpenedSidebar ? 'visible' : 'hidden',
           }}
         >
           {nav.icon}
@@ -131,7 +140,7 @@ const SidebarItem = ({ nav }: any) => {
           >
             {language[nav.title as keyof typeof languages.English] || nav.title}
           </Typography>
-        </Box>
+        </NavLink>
         {nav.children && (
           <Box>
             <IconButton
@@ -148,18 +157,29 @@ const SidebarItem = ({ nav }: any) => {
               <ExpandMoreRoundedIcon />
             </IconButton>
             {expandedSidebarItems?.includes(nav.title) && (
-              <Box sx={{ marginTop: '15px' }}>
+              <Box
+                sx={{
+                  padding: '0 14px 13px 14px',
+                  boxSizing: 'border-box',
+                  '& .sidebar-menu-item': { color: 'black' },
+                  '& .sidebar-menu-item.active': { color: theme.color.info },
+                }}
+              >
                 {nav.children.map((item: any, key: number) => (
-                  <Box
+                  <NavLink
+                    className='sidebar-menu-item'
+                    to={item.route}
                     key={key}
-                    sx={{
+                    style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '10px',
-                      marginTop: '5px'
+                      marginTop: '5px',
                     }}
                   >
-                    <FiberManualRecordRoundedIcon />
+                    <FiberManualRecordRoundedIcon
+                      sx={{ fontSize: '13px', margin: '0 5px' }}
+                    />
                     <Typography
                       className='sidebar-item-title'
                       sx={{
@@ -171,14 +191,14 @@ const SidebarItem = ({ nav }: any) => {
                     >
                       {item.title}
                     </Typography>
-                  </Box>
+                  </NavLink>
                 ))}
               </Box>
             )}
           </Box>
         )}
       </Box>
-    </NavLink>
+    </Box>
   )
 }
 

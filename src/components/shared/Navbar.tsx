@@ -53,7 +53,7 @@ const Navbar = () => {
           boxSizing: 'border-box',
           backgroundColor: theme.layout.navbar,
           borderRadius: theme.radius.ternary,
-          boxShadow: theme.shadow.bottom,
+          boxShadow: theme.shadow.secondary,
           width: '100%',
           height: '100%',
           '& *': { color: theme.text.secondary }

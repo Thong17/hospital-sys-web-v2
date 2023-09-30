@@ -3,7 +3,7 @@ export const themeMode = {
     layout: {
       container: '#ffffff',
       sidebar: '#bbbbbb',
-      navbar: '#bbbbbb',
+      navbar: '#ffffff',
       footer: '#bbbbbb'
     },
     background: {
@@ -47,7 +47,7 @@ export const themeMode = {
     layout: {
       container: '#ffffff',
       sidebar: '#bbbbbb',
-      navbar: '#bbbbbb',
+      navbar: '#ffffff',
       footer: '#bbbbbb'
     },
     background: {
@@ -91,7 +91,7 @@ export const themeMode = {
     layout: {
       container: '#ffffff',
       sidebar: '#bbbbbb',
-      navbar: '#bbbbbb',
+      navbar: '#ffffff',
       footer: '#bbbbbb'
     },
     background: {
@@ -135,7 +135,7 @@ export const themeMode = {
     layout: {
       container: '#ffffff',
       sidebar: '#bbbbbb',
-      navbar: '#bbbbbb',
+      navbar: '#ffffff',
       footer: '#bbbbbb'
     },
     background: {

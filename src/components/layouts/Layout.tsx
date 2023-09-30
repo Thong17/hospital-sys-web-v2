@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect } from 'react'
+import { FC, ReactElement } from 'react'
 import { Box, styled } from '@mui/material'
 import Navbar from 'components/shared/Navbar'
 import { useAppSelector } from 'app/store'
@@ -33,13 +33,8 @@ const ContentContainer = styled('div')({
 
 export const Layout: FC<ILayout> = ({ children }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
-  const { device, width } = useDevice()
+  const { width } = useDevice()
   const { theme } = useTheme()
-
-  useEffect(() => {
-    console.log(device, width)
-  }, [device, width])
-  
 
   return (
     <Box component={'div'} sx={{ backgroundColor: theme.layout.container }}>

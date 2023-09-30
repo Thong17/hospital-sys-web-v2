@@ -23,7 +23,6 @@ const configSlice = createSlice({
             state.isAttachedSidebar = !state.isAttachedSidebar
         },
         toggleExpandedSidebarItem: (state, action) => {
-            console.log(action)
             const listExpanded = state.expandedSidebarItems || []
             const isExpanded = listExpanded.find(item => item === action.payload.item)
             if (isExpanded) state.expandedSidebarItems = listExpanded.filter(item => item !== action.payload.item)
