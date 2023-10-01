@@ -5,9 +5,11 @@ import { useOutlet } from 'react-router'
 const Admin = () => {
   const outlet = useOutlet()
   return (
-    <Layout>
-      {outlet || <h1>Admin</h1>}
-    </Layout>
+    outlet || (
+      <Layout>
+        <h1>Admin</h1>
+      </Layout>
+    )
   )
 }
 

@@ -1,8 +1,8 @@
-import { ReactElement } from "react"
+import { Box } from "@mui/material"
 
-const Container = ({ children }: { children: ReactElement }) => {
+const Container = ({ children }: { children: any }) => {
   return (
-    <div>{children}</div>
+    <Box sx={{ marginTop: '10px' }}>{children}</Box>
   )
 }
 

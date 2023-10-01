@@ -16,8 +16,9 @@ import MenuButton from './MenuButton'
 import Profile from './Profile'
 import EventRoundedIcon from '@mui/icons-material/EventRounded'
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
+import { ReactElement } from 'react'
 
-const Navbar = () => {
+const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
   const { width } = useDevice()
   const { theme } = useTheme()
@@ -59,8 +60,9 @@ const Navbar = () => {
           '& *': { color: theme.text.secondary }
         }}
       >
-        <Stack direction={'row'}>
+        <Stack direction={'row'} gap={2}>
           <MenuButton />
+          {navbar}
         </Stack>
         <Stack direction={'row'} gap={1}>
           <IconButton><NotificationsRoundedIcon /></IconButton>

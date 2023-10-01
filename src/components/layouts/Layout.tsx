@@ -31,7 +31,7 @@ const ContentContainer = styled('div')({
   boxSizing: 'border-box',
 })
 
-export const Layout: FC<ILayout> = ({ children }) => {
+export const Layout: FC<ILayout> = ({ navbar, children }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
   const { width } = useDevice()
   const { theme } = useTheme()
@@ -53,7 +53,7 @@ export const Layout: FC<ILayout> = ({ children }) => {
           }px)`: '100%',
         }}
       >
-        <Navbar />
+        <Navbar navbar={navbar} />
         <ContentContainer>{children}</ContentContainer>
         {width > TABLET_WIDTH && <Footer />}
       </WrapContainer>
