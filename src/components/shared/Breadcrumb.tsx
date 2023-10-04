@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, IconButton } from '@mui/material'
+import { Box, Breadcrumbs, IconButton, Stack } from '@mui/material'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 import ShortcutRoundedIcon from '@mui/icons-material/ShortcutRounded'
@@ -14,10 +14,12 @@ export interface IBreadcrumb {
   isCurrent?: boolean
 }
 
-const Breadcrumb = ({ list, step }: { list: IBreadcrumb[], step?: number }) => {
+const Breadcrumb = ({ list, step }: { list: IBreadcrumb[]; step?: number }) => {
   const { theme } = useTheme()
   const navigate = useNavigate()
-  const currentIndex = step ? step - 1 : list.findIndex((item) => item.isCurrent)
+  const currentIndex = step
+    ? step - 1
+    : list.findIndex((item) => item.isCurrent)
 
   const handleClickPrevious = () => {
     const targetPage = list[currentIndex - 1]
@@ -32,7 +34,7 @@ const Breadcrumb = ({ list, step }: { list: IBreadcrumb[], step?: number }) => {
   return (
     <Box
       sx={{
-        padding: '4px 15px 4px 4px',
+        padding: '4px 5px 4px 4px',
         width: 'fit-content',
         height: '42px',
         boxSizing: 'border-box',
@@ -43,31 +45,49 @@ const Breadcrumb = ({ list, step }: { list: IBreadcrumb[], step?: number }) => {
         alignItems: 'center',
       }}
     >
-      {(list.filter((item) => item.isCurrent).length > 0 || !!(step && step > 0)) && (
+      {(list.filter((item) => item.isCurrent).length > 0 ||
+        !!(step && step > 0)) && (
         <ActionButton
-          onClickNext={currentIndex < list.length - 1 ? handleClickNext : undefined}
+          onClickNext={
+            currentIndex < list.length - 1 ? handleClickNext : undefined
+          }
           onClickPrevious={currentIndex > 0 ? handleClickPrevious : undefined}
         />
       )}
       <Breadcrumbs
         separator={<ShortcutRoundedIcon sx={{ fontSize: '23px' }} />}
+        
         sx={{
           width: 'fit-content',
-          marginLeft: '15px',
+          marginLeft: '5px',
           '& a': { textDecoration: 'none' },
+          '& li.MuiBreadcrumbs-separator': { margin: '0 3px' },
+          '& li:has(a)': { padding: '4px 7px', borderRadius: theme.radius.quaternary },
+          '& li:hover:has(a)': { backgroundColor: `${theme.color.info}22`, '& *': { color: `${theme.color.info}` } },
+          '& li:has(a.active)': { backgroundColor: `${theme.color.info}22`, '& *': { color: `${theme.color.info}` } }
         }}
       >
         {list.map((item, key) => {
-            const isCurrent = currentIndex === key 
-            return <Link
-                key={key}
-                to={item.href}
-                style={{ color: isCurrent ? theme.text.quaternary : 'inherit', cursor: isCurrent ? 'default' : 'pointer' }}
+          const isCurrent = currentIndex === key
+          return (
+            <Link
+              key={key}
+              to={item.href}
+              className={isCurrent ? 'active' : 'inactive'}
+              style={{ cursor: isCurrent ? 'default' : 'pointer' }}
             >
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                gap={0.5}
+                sx={{ '& svg': { fontSize: '17px' } }}
+              >
                 {item.prefix && item.prefix}
                 {item.label && item.label}
                 {item.suffix && item.suffix}
+              </Stack>
             </Link>
+          )
         })}
       </Breadcrumbs>
     </Box>
