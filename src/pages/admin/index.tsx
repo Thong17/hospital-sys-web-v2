@@ -9,15 +9,31 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
+    id: 'admin',
     href: '/admin',
     label: translate('ADMIN'),
   },
   {
+    id: 'navbar',
     href: '/admin/user',
     label: translate('USER'),
     prefix: <PersonRoundedIcon />,
-    suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
-  },
+    suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />,
+    options: [
+      {
+        href: '/admin/user',
+        label: translate('USER'),
+        prefix: <PersonRoundedIcon />,
+        suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
+      },
+      {
+        href: '/admin/role',
+        label: translate('ROLE'),
+        prefix: <PersonRoundedIcon />,
+        suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
+      }
+    ]
+  }
 ]
 
 const Admin = () => {

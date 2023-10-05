@@ -26,7 +26,7 @@ const routes: RouteObject[] = [
             {
                 path: 'role',
                 element: (
-                    <AuthGuard role={{ route: 'role', action: 'view' }}>
+                    <AuthGuard>
                         <Role />
                     </AuthGuard>
                 ),

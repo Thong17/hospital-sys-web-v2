@@ -19,6 +19,7 @@ export const languages = {
     FOOTER_CONTENT: <>Copyright &copy; 2023 All Rights Reserved by <span>Thong</span></>,
     ADMIN: 'Admin',
     USER: 'User',
+    ROLE: 'Role',
   },
   Khmer: {
     USERNAME: 'Username',
@@ -40,5 +41,6 @@ export const languages = {
     FOOTER_CONTENT: <>Copyright &copy; 2023 All Rights Reserved by <span>Thong</span></>,
     ADMIN: 'Admin',
     USER: 'User',
+    ROLE: 'Role',
   }
 }

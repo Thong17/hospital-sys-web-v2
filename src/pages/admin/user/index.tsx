@@ -5,7 +5,7 @@ import { breadcrumbs } from '..'
 
 const User = () => {
   return (
-    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} />}>
+    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} selectedOption={{ navbar: '/admin/user' }} />}>
       <Container>
         <h1>User</h1>
       </Container>

@@ -1,20 +1,40 @@
-import { Box, Breadcrumbs, IconButton, Stack } from '@mui/material'
+import {
+  Box,
+  Breadcrumbs,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+} from '@mui/material'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ShortcutRoundedIcon from '@mui/icons-material/ShortcutRounded'
 import useTheme from 'hooks/useTheme'
 import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { translate } from 'contexts/language/LanguageContext'
 
+const BUTTON_SIZE = '27px'
 export interface IBreadcrumb {
+  id: string
   href: string
   label: any
   prefix?: any
   suffix?: any
-  options?: { label: String; value: any; prefix?: any; suffix?: any }[]
+  options?: { label: any; href: any; prefix?: any; suffix?: any }[]
   isCurrent?: boolean
 }
 
-const Breadcrumb = ({ list, step }: { list: IBreadcrumb[]; step?: number }) => {
+const Breadcrumb = ({
+  list,
+  step,
+  selectedOption,
+}: {
+  list: IBreadcrumb[]
+  step?: number
+  selectedOption?: any
+}) => {
   const { theme } = useTheme()
   const navigate = useNavigate()
   const currentIndex = step
@@ -56,36 +76,47 @@ const Breadcrumb = ({ list, step }: { list: IBreadcrumb[]; step?: number }) => {
       )}
       <Breadcrumbs
         separator={<ShortcutRoundedIcon sx={{ fontSize: '23px' }} />}
-        
         sx={{
           width: 'fit-content',
           marginLeft: '5px',
           '& a': { textDecoration: 'none' },
           '& li.MuiBreadcrumbs-separator': { margin: '0 3px' },
-          '& li:has(a)': { padding: '4px 7px', borderRadius: theme.radius.quaternary },
-          '& li:hover:has(a)': { backgroundColor: `${theme.color.info}22`, '& *': { color: `${theme.color.info}` } },
-          '& li:has(a.active)': { backgroundColor: `${theme.color.info}22`, '& *': { color: `${theme.color.info}` } }
+          '& li:has(a)': {
+            padding: '4px 7px',
+            borderRadius: theme.radius.quaternary,
+          },
+          '& li:has(.link-options):has(a)': { padding: '3px 5px 3px 7px' },
+          '& li:hover:has(a)': {
+            backgroundColor: `${theme.color.info}22`,
+            '& *': { color: `${theme.color.info}` },
+          },
+          '& li:has(a.active)': {
+            backgroundColor: `${theme.color.info}22`,
+            '& *': { color: `${theme.color.info}` },
+          },
         }}
       >
         {list.map((item, key) => {
           const isCurrent = currentIndex === key
-          return (
+          return item.options ? (
+            <OptionLink
+              key={key}
+              data={item}
+              selected={selectedOption?.[item.id]}
+              isCurrent={isCurrent}
+            />
+          ) : (
             <Link
               key={key}
               to={item.href}
               className={isCurrent ? 'active' : 'inactive'}
               style={{ cursor: isCurrent ? 'default' : 'pointer' }}
             >
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                gap={0.5}
-                sx={{ '& svg': { fontSize: '17px' } }}
-              >
-                {item.prefix && item.prefix}
-                {item.label && item.label}
-                {item.suffix && item.suffix}
-              </Stack>
+              <BreadcrumbLabel
+                label={item.label}
+                prefix={item.prefix}
+                suffix={item.suffix}
+              />
             </Link>
           )
         })}
@@ -94,7 +125,132 @@ const Breadcrumb = ({ list, step }: { list: IBreadcrumb[]; step?: number }) => {
   )
 }
 
-const BUTTON_SIZE = '27px'
+const OptionLink = ({ data, selected, isCurrent }: any) => {
+  const navigate = useNavigate()
+  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const item: IBreadcrumb = data?.options?.find(
+    (option: IBreadcrumb) => option.href === selected
+  )
+
+  const handleClick = (event: any) => {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleChange = (href: string) => {
+    navigate(href)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  if (!item)
+    return (
+      <SubBreadcrumb
+        href={data.href}
+        label={data.label}
+        prefix={data.prefix}
+        suffix={data.suffix}
+        isCurrent={isCurrent}
+        onClick={handleClick}
+        onClose={handleClose}
+        onChange={handleChange}
+        anchorEl={anchorEl}
+        options={data?.options}
+      />
+    )
+  return (
+    <SubBreadcrumb
+      href={item.href}
+      label={item.label}
+      prefix={item.prefix}
+      suffix={item.suffix}
+      isCurrent={isCurrent}
+      onClick={handleClick}
+      onClose={handleClose}
+      onChange={handleChange}
+      anchorEl={anchorEl}
+      options={data?.options}
+    />
+  )
+}
+
+const BreadcrumbLabel = ({ label, prefix, suffix }: any) => {
+  return (
+    <Stack
+      direction={'row'}
+      alignItems={'center'}
+      gap={0.5}
+      sx={{ '& svg': { fontSize: '17px' } }}
+    >
+      {prefix && prefix}
+      {label && translate(label)}
+      {suffix && suffix}
+    </Stack>
+  )
+}
+
+const SubBreadcrumb = ({
+  href,
+  label,
+  prefix,
+  suffix,
+  isCurrent,
+  onClick,
+  onClose,
+  onChange,
+  anchorEl,
+  options,
+}: any) => {
+  return (
+    <>
+      <Stack
+        className='link-option-menu'
+        direction={'row'}
+        alignItems={'center'}
+      >
+        <Link
+          to={href}
+          className={isCurrent ? 'active' : 'inactive'}
+          style={{ cursor: isCurrent ? 'default' : 'pointer' }}
+        >
+          <BreadcrumbLabel label={label} prefix={prefix} suffix={suffix} />
+        </Link>
+        <IconButton
+          onClick={(e) => onClick(e)}
+          sx={{ width: '25px', height: '25px' }}
+        >
+          <ExpandMoreRoundedIcon />
+        </IconButton>
+      </Stack>
+      <Menu
+        id='link-option-menu'
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => onClose()}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: -8,
+          horizontal: 'right',
+        }}
+      >
+        {options?.map((option: IBreadcrumb, key: number) => (
+          <MenuItem key={key} onClick={() => onChange(option.href)}>
+            <BreadcrumbLabel
+              label={option.label}
+              prefix={option.prefix}
+              suffix={option.suffix}
+            />
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  )
+}
 
 const ActionButton = ({
   onClickPrevious,
