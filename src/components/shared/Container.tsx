@@ -1,8 +1,9 @@
 import { Box } from "@mui/material"
+import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from "constants/layout"
 
 const Container = ({ children }: { children: any }) => {
   return (
-    <Box sx={{ marginTop: '10px' }}>{children}</Box>
+    <Box sx={{ marginTop: `${SPACE_TOP}px`, position: 'relative', minHeight: `calc(100vh - ${FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP}px)` }}>{children}</Box>
   )
 }
 

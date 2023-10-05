@@ -129,6 +129,7 @@ const SidebarItem = ({ nav }: any) => {
             padding: '13px 14px',
             boxSizing: 'border-box',
             overflow: isOpenedSidebar ? 'visible' : 'hidden',
+            width: '100%'
           }}
         >
           {nav.icon}
