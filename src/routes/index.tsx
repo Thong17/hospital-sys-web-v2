@@ -1,6 +1,6 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import { Admin, Role } from 'pages/admin'
+import { Admin, Role, RoleCreate } from 'pages/admin'
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
@@ -30,6 +30,16 @@ const routes: RouteObject[] = [
                         <Role />
                     </AuthGuard>
                 ),
+                children: [
+                    {
+                        path: 'create',
+                        element: (
+                            <AuthGuard>
+                                <RoleCreate />
+                            </AuthGuard>
+                        ),
+                    }
+                ]
             },
             {
                 path: 'user',

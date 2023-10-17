@@ -67,7 +67,7 @@ const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
         <Stack direction={'row'} gap={1}>
           <IconButton><NotificationsRoundedIcon /></IconButton>
           <IconButton><EventRoundedIcon /></IconButton>
-          <Profile sx={{ marginLeft: '8px' }} />
+          <Profile sx={{ marginLeft: '8px', display: 'grid', placeItems: 'center' }} />
         </Stack>
       </Box>
     </Box>

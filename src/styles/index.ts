@@ -1,8 +1,16 @@
 import { styled } from '@mui/system'
-import { Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { IThemeMode, IThemeStyle } from 'contexts/theme/interface'
 import { FOOTER_HEIGHT } from 'constants/layout'
 import { DeviceOptions } from 'contexts/web/interface'
+
+export const CustomButton = styled(Button)(
+  ({ styled }: { styled: IThemeStyle }) => ({
+    borderRadius: styled.radius.primary,
+    boxShadow: styled.shadow.secondary,
+    padding: '5px 10px'
+  })
+)
 
 export const CustomFooter = styled(Stack)(
   ({ styled }: { styled: IThemeMode }) => ({
