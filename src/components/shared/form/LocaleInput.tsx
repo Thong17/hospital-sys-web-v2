@@ -1,5 +1,5 @@
 import { languages } from 'contexts/language/constant'
-import { Section } from '../SectionContainer'
+import { SectionContainer } from '../SectionContainer'
 import { TextInput } from './TextInput'
 import { useEffect, useState } from 'react'
 
@@ -41,7 +41,7 @@ export const LocaleInput = ({
   return (
     <>
       {langs.length > 1 ? (
-        <Section label={label} style={{ marginBottom: 20, marginTop: 30 }}>
+        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30 }} error={error}>
           <div
             style={{
               display: 'grid',
@@ -64,7 +64,7 @@ export const LocaleInput = ({
               )
             })}
           </div>
-        </Section>
+        </SectionContainer>
       ) : (
         <TextInput
           error={error?.[langs[0]]?.message}
