@@ -58,6 +58,8 @@ export interface IThemeMode {
     container: string
     primary: string
     secondary: string
+    tertiary: string
+    quaternary: string
     inset: string
     bottom: string
   }

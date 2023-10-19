@@ -4,32 +4,32 @@ export const themeMode = {
       container: '#ffffff',
       sidebar: '#bbbbbb',
       navbar: '#ffffff',
-      footer: '#bbbbbb'
+      footer: '#bbbbbb',
     },
     background: {
       primary: '#0e1928',
       secondary: '#132f4c',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     text: {
       primary: '#ffffff',
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
-      quaternary: '#bbbbbb'
+      quaternary: '#bbbbbb',
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
       secondary: 'rgba(29, 77, 106, 0.2)',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     border: {
       primary: '1px solid rgba(255, 255, 255, 0.5)',
       secondary: '1px solid rgba(255, 255, 255, 0.3)',
       tertiary: '1px solid rgba(255, 255, 255, 0.2)',
       quaternary: '1px solid rgba(255, 255, 255, 0.1)',
-      dashed: '2px dashed rgba(255, 255, 255, 0.1)'
+      dashed: '2px dashed rgba(255, 255, 255, 0.1)',
     },
     shadow: {
       container:
@@ -38,6 +38,10 @@ export const themeMode = {
         '0 3px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
       secondary:
         '0 1px 3px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
+      tertiary:
+        '0 1px 2px 0 rgba(0, 0, 0, 0.18), 0 2px 10px 0 rgba(0, 0, 0, 0.15)',
+      quaternary:
+        '0 1px 1px 0 rgba(0, 0, 0, 0.18), 0 1px 5px 0 rgba(0, 0, 0, 0.15)',
       inset:
         '0 0 0 3px hsla(0, 0%, 100%, 0), 0 0 0 4px hsla(0, 0%, 83.9%, 0), inset 0 2px 2px 0 rgba(0, 0, 0, .2)',
       bottom: '0 5px 5px rgba(0, 0, 0, 0.18)',
@@ -48,32 +52,32 @@ export const themeMode = {
       container: '#ffffff',
       sidebar: '#bbbbbb',
       navbar: '#ffffff',
-      footer: '#bbbbbb'
+      footer: '#bbbbbb',
     },
     background: {
       primary: '#222831',
       secondary: '#393E46',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     text: {
       primary: '#ffffff',
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
-      quaternary: '#bbbbbb'
+      quaternary: '#bbbbbb',
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
       secondary: 'rgba(29, 77, 106, 0.2)',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     border: {
       primary: '1px solid rgba(255, 255, 255, 0.5)',
       secondary: '1px solid rgba(255, 255, 255, 0.3)',
       tertiary: '1px solid rgba(255, 255, 255, 0.2)',
       quaternary: '1px solid rgba(255, 255, 255, 0.1)',
-      dashed: '2px dashed rgba(255, 255, 255, 0.1)'
+      dashed: '2px dashed rgba(255, 255, 255, 0.1)',
     },
     shadow: {
       container:
@@ -82,6 +86,10 @@ export const themeMode = {
         '0 3px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
       secondary:
         '0 1px 3px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
+      tertiary:
+        '0 1px 2px 0 rgba(0, 0, 0, 0.18), 0 2px 10px 0 rgba(0, 0, 0, 0.15)',
+      quaternary:
+        '0 1px 1px 0 rgba(0, 0, 0, 0.18), 0 1px 5px 0 rgba(0, 0, 0, 0.15)',
       inset:
         '0 0 0 3px hsla(0, 0%, 100%, 0), 0 0 0 4px hsla(0, 0%, 83.9%, 0), inset 0 2px 2px 0 rgba(0, 0, 0, .2)',
       bottom: '0 5px 5px rgba(0, 0, 0, 0.18)',
@@ -92,32 +100,32 @@ export const themeMode = {
       container: '#ffffff',
       sidebar: '#bbbbbb',
       navbar: '#ffffff',
-      footer: '#bbbbbb'
+      footer: '#bbbbbb',
     },
     background: {
       primary: '#f2f2f2',
       secondary: '#e1e1e1',
       tertiary: '#eeeeee',
-      quaternary: '#dddddd'
+      quaternary: '#dddddd',
     },
     text: {
       primary: '#000000',
       secondary: '#333333',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     active: {
       primary: '#cccccc55',
       secondary: '#bbbbbb22',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     border: {
       primary: '1px solid rgba(0, 0, 0, 0.5)',
       secondary: '1px solid rgba(0, 0, 0, 0.3)',
       tertiary: '1px solid rgba(0, 0, 0, 0.2)',
       quaternary: '1px solid rgba(0, 0, 0, 0.1)',
-      dashed: '2px dashed rgba(0, 0, 0, 0.1)'
+      dashed: '2px dashed rgba(0, 0, 0, 0.1)',
     },
     shadow: {
       container:
@@ -125,7 +133,11 @@ export const themeMode = {
       primary:
         '0 3px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
       secondary:
-        '0 1px 3px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
+        '0 1px 3px 0 rgba(0, 0, 0, 0.18), 0 3px 15px 0 rgba(0, 0, 0, 0.15)',
+      tertiary:
+        '0 1px 2px 0 rgba(0, 0, 0, 0.18), 0 2px 10px 0 rgba(0, 0, 0, 0.15)',
+      quaternary:
+        '0 1px 1px 0 rgba(0, 0, 0, 0.18), 0 1px 5px 0 rgba(0, 0, 0, 0.15)',
       inset:
         '0 0 0 3px hsla(0, 0%, 100%, 0), 0 0 0 4px hsla(0, 0%, 83.9%, 0), inset 0 2px 2px 0 rgba(0, 0, 0, .2)',
       bottom: '0 5px 5px rgba(0, 0, 0, 0.18)',
@@ -136,32 +148,32 @@ export const themeMode = {
       container: '#ffffff',
       sidebar: '#bbbbbb',
       navbar: '#ffffff',
-      footer: '#bbbbbb'
+      footer: '#bbbbbb',
     },
     background: {
       primary: '#313131',
       secondary: '#414141',
       tertiary: '#555555',
-      quaternary: '#666666'
+      quaternary: '#666666',
     },
     text: {
       primary: '#ffffff',
       secondary: '#cccccc',
       tertiary: '#aaaaaa',
-      quaternary: '#bbbbbb'
+      quaternary: '#bbbbbb',
     },
     active: {
       primary: '#cccccc55',
       secondary: '#bbbbbb22',
       tertiary: '#bbbbbb',
-      quaternary: '#555555'
+      quaternary: '#555555',
     },
     border: {
       primary: '1px solid rgba(255, 255, 255, 0.5)',
       secondary: '1px solid rgba(255, 255, 255, 0.3)',
       tertiary: '1px solid rgba(255, 255, 255, 0.2)',
       quaternary: '1px solid rgba(255, 255, 255, 0.1)',
-      dashed: '2px dashed rgba(255, 255, 255, 0.1)'
+      dashed: '2px dashed rgba(255, 255, 255, 0.1)',
     },
     shadow: {
       container:
@@ -170,6 +182,10 @@ export const themeMode = {
         '0 3px 5px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
       secondary:
         '0 1px 3px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15)',
+      tertiary:
+        '0 1px 2px 0 rgba(0, 0, 0, 0.18), 0 2px 10px 0 rgba(0, 0, 0, 0.15)',
+      quaternary:
+        '0 1px 1px 0 rgba(0, 0, 0, 0.18), 0 1px 5px 0 rgba(0, 0, 0, 0.15)',
       inset:
         '0 0 0 3px hsla(0, 0%, 100%, 0), 0 0 0 4px hsla(0, 0%, 83.9%, 0), inset 0 2px 2px 0 rgba(0, 0, 0, .2)',
       bottom: '0 5px 5px rgba(0, 0, 0, 0.18)',
@@ -218,7 +234,7 @@ export const themeStyle = {
         l3: 51,
         l2: 53,
         l1: 55,
-      }
+      },
     },
     tablet: {
       text: {
@@ -241,7 +257,7 @@ export const themeStyle = {
         l3: 63,
         l2: 65,
         l1: 67,
-      }
+      },
     },
     laptop: {
       text: {
@@ -264,7 +280,7 @@ export const themeStyle = {
         l3: 63,
         l2: 65,
         l1: 67,
-      }
+      },
     },
     desktop: {
       text: {
@@ -287,7 +303,7 @@ export const themeStyle = {
         l3: 63,
         l2: 65,
         l1: 67,
-      }
+      },
     },
   },
 }
