@@ -52,10 +52,10 @@ export const LocaleInput = ({
             {langs.map((language, index) => {
               return (
                 <TextInput
-                  error={error?.[language]?.message}
+                  error={!!error?.[language]?.message}
+                  helperText={error?.[language]?.message}
                   onChange={handleChange}
                   key={index}
-                  type='text'
                   label={language}
                   name={`${name}.${language}`}
                   value={localeField?.[language] || ''}
@@ -67,9 +67,9 @@ export const LocaleInput = ({
         </SectionContainer>
       ) : (
         <TextInput
-          error={error?.[langs[0]]?.message}
+          error={!!error?.[langs[0]]?.message}
+          helperText={error?.[langs[0]]?.message}
           onChange={handleChange}
-          type='text'
           label={label}
           name={`${name}.${langs[0]}`}
           value={localeField?.[langs[0]] || ''}
