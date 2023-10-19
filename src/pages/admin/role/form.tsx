@@ -9,7 +9,8 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import { roleSchema } from './constant'
+import { ROLE_FORM_WIDTH, roleSchema } from './constant'
+import { FormControlLabel, Stack } from '@mui/material'
 
 type RoleForm = {
   name: any
@@ -31,23 +32,36 @@ const form = ({ defaultValues = {} }) => {
   const onSubmit: SubmitHandler<RoleForm> = (data) => {
     console.log(data)
   }
-  
+
   return (
-    <form style={{ padding: '50px' }} onSubmit={handleSubmit(onSubmit)}>
-      <LocaleInput
-        label={translate('NAME')}
-        name='name'
-        onChange={(data: any) => setValue('name', data)}
-        error={errors?.name}
-      />
-      <TextInput
-        {...register('description')}
-        label={translate('DESCRIPTION')}
-        multiline
-      />
-      <Checkbox {...register('status')} />
-      <CancelButton onClick={() => navigate(-1)} />
-      <CreateButton onClick={handleSubmit(onSubmit)} />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack
+        direction={'column'}
+        alignItems={'start'}
+        gap={1}
+        sx={{ width: ROLE_FORM_WIDTH }}
+      >
+        <LocaleInput
+          label={translate('NAME')}
+          name='name'
+          onChange={(data: any) => setValue('name', data)}
+          error={errors?.name}
+        />
+        <TextInput
+          {...register('description')}
+          label={translate('DESCRIPTION')}
+          multiline
+        />
+
+        <FormControlLabel
+          control={<Checkbox {...register('status')} />}
+          label={translate('STATUS')}
+        />
+        <Stack direction={'row'} justifyContent={'end'} gap={2} width={'100%'}>
+          <CancelButton onClick={() => navigate(-1)} />
+          <CreateButton onClick={handleSubmit(onSubmit)} />
+        </Stack>
+      </Stack>
     </form>
   )
 }

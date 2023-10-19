@@ -6,8 +6,22 @@ import useNotify from 'hooks/useNotify'
 import 'assets/styles/index.css'
 import { store, useAppSelector } from 'app/store'
 import { selectSession } from 'stores/session/selector'
+import { createTheme } from '@mui/material'
+import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
+import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 
 const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
+
+export const muiTheme = createTheme({
+  components: {
+    MuiCheckbox: {
+      defaultProps: {
+        icon: <CheckBoxOutlineBlankRoundedIcon />,
+        checkedIcon: <CheckBoxRoundedIcon />,
+      },
+    },
+  },
+})
 
 export const ThemeContext = createContext<IThemeContext>({
   mode: initMode,

@@ -41,12 +41,12 @@ export const LocaleInput = ({
   return (
     <>
       {langs.length > 1 ? (
-        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30 }} error={error}>
+        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30, width: '100%' }} error={error}>
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
-              gridColumnGap: 20,
+              gridGap: 20,
             }}
           >
             {langs.map((language, index) => {

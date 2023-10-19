@@ -3,6 +3,7 @@ import { getTheme } from 'contexts/theme/ThemeContext'
 const theme = getTheme()
 
 export const TextInput = styled(TextField)(() => ({
+  width: '100%',
   '& .MuiFormLabel-root': {
     top: '-5px',
     '&:is(.Mui-focused, .MuiFormLabel-filled)': {

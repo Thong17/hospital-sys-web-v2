@@ -10,3 +10,5 @@ export const roleSchema = yup.object().shape({
   privilege: yup.object().optional(),
   navigation: yup.object().optional(),
 })
+
+export const ROLE_FORM_WIDTH = 500

@@ -24,7 +24,6 @@ const RoleCreate = () => {
       }
     >
       <Container>
-        {translate('CREATE')} 
         <RoleForm />
       </Container>
     </Layout>
