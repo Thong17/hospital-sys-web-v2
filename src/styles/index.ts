@@ -7,7 +7,7 @@ import { DeviceOptions } from 'contexts/web/interface'
 export const CustomButton = styled(Button)(
   ({ styled }: { styled: IThemeStyle }) => ({
     borderRadius: styled.radius.primary,
-    boxShadow: styled.shadow.secondary,
+    boxShadow: styled.shadow.quaternary,
     padding: '5px 10px'
   })
 )

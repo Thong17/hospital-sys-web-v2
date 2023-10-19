@@ -4,7 +4,7 @@ import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { StickyTable } from 'components/shared/table/StickyTable'
 import { Stack, Typography } from '@mui/material'
-import CreateButton from 'components/shared/buttons/CreateButton'
+import { CreateButton } from 'components/shared/buttons/CustomButton'
 import { useNavigate, useOutlet } from 'react-router'
 
 const Role = () => {

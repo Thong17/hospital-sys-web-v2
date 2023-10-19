@@ -10,7 +10,8 @@ export const TextInput = styled(TextField)(() => ({
     },
   },
   '& .MuiOutlinedInput-root': {
-    '& .MuiInputBase-input': {
+    padding: 0,
+    '& input.MuiInputBase-input, & textarea.MuiInputBase-input': {
       padding: '11px 15px !important',
     },
     '& fieldset': {

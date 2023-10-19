@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { DetailField } from 'components/shared/form'
+import { DetailField } from 'components/shared/forms'
 
 export interface IAlertProps {
   title?: string

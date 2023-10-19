@@ -16,8 +16,8 @@ export const SectionContainer = ({ children, label, boxShadow, error, ...props }
     <div {...props}>
       <div
         style={{
-          padding: '20px',
-          border: error ? `1px solid ${theme.color.error}` : theme.border.quaternary,
+          padding: '30px 20px 20px',
+          border: error ? `1px solid ${theme.color.error}` : theme.border.tertiary,
           borderRadius: theme.radius.secondary,
           position: 'relative',
           boxShadow: boxShadow ?? ''
