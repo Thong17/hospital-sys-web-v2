@@ -40,6 +40,7 @@ export interface IThemeMode {
     secondary: string
     tertiary?: string
     quaternary?: string
+    contrast?: string
   }
   active: {
     primary: string

@@ -4,7 +4,7 @@ import { themeMode, themeStyle } from './constant'
 import axios from 'configs/axios'
 import useNotify from 'hooks/useNotify'
 import 'assets/styles/index.css'
-import { useAppSelector } from 'app/store'
+import { store, useAppSelector } from 'app/store'
 import { selectSession } from 'stores/session/selector'
 
 const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
@@ -14,6 +14,12 @@ export const ThemeContext = createContext<IThemeContext>({
   theme: { ...themeMode[initMode], ...themeStyle },
   changeTheme: (_mode: ThemeOptions) => {},
 })
+
+export const getTheme = () => {
+  const { session } = store.getState()
+  const mode = session.user?.theme || initMode
+  return { ...themeMode[mode as ThemeOptions], ...themeStyle }
+}
 
 const ThemesProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAppSelector(selectSession)

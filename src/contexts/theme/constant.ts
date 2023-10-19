@@ -17,6 +17,7 @@ export const themeMode = {
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
       quaternary: '#bbbbbb',
+      contrast: '#000000',
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
@@ -65,6 +66,7 @@ export const themeMode = {
       secondary: '#dddddd',
       tertiary: '#bbbbbb',
       quaternary: '#bbbbbb',
+      contrast: '#000000',
     },
     active: {
       primary: 'rgba(24, 67, 96, 0.4)',
@@ -113,6 +115,7 @@ export const themeMode = {
       secondary: '#333333',
       tertiary: '#555555',
       quaternary: '#666666',
+      contrast: '#ffffff',
     },
     active: {
       primary: '#cccccc55',
@@ -161,6 +164,7 @@ export const themeMode = {
       secondary: '#cccccc',
       tertiary: '#aaaaaa',
       quaternary: '#bbbbbb',
+      contrast: '#000000',
     },
     active: {
       primary: '#cccccc55',
