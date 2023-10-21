@@ -22,4 +22,15 @@ export class RoleService {
             throw error
         }
     }
+    async create(data: { name: Object, status: boolean, description: String, navigation: Object, privilege: Object }) {
+        try {
+            const response = await axios.post('/admin/role/create', data)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
 }

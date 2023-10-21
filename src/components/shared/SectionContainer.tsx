@@ -20,7 +20,7 @@ export const SectionContainer = ({ children, label, boxShadow, error, padding = 
           border: error ? `1px solid ${theme.color.error}` : theme.border.tertiary,
           borderRadius: theme.radius.secondary,
           position: 'relative',
-          boxShadow: boxShadow ?? ''
+          boxShadow: boxShadow ?? '',
         }}
       >
         <span

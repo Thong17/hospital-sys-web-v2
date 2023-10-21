@@ -13,6 +13,8 @@ import { ROLE_FORM_WIDTH, roleSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
 import PrivilegeBox from 'components/shared/forms/PrivilegeBox'
 import { useEffect, useState } from 'react'
+import { useAppDispatch } from 'app/store'
+import { getRoleCreate } from 'stores/role/action'
 
 type RoleForm = {
   name: any
@@ -24,6 +26,7 @@ type RoleForm = {
 
 const form = ({ defaultValues = {} }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const {
     watch,
     register,
@@ -51,7 +54,7 @@ const form = ({ defaultValues = {} }) => {
   }, [privilegeValue])
 
   const onSubmit: SubmitHandler<RoleForm> = (data) => {
-    console.log(data)
+    dispatch(getRoleCreate(data))
   }
 
   const handleChangeNavigation = (data: any) => {

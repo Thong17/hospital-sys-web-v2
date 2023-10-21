@@ -13,3 +13,8 @@ export const getRolePermissionShape: any = createAsyncThunk(
     'role/getPermissionShape',
     serviceWrapper(service.getPermissionShape)
 )
+
+export const getRoleCreate: any = createAsyncThunk(
+    'role/create',
+    serviceWrapper(service.create)
+)
