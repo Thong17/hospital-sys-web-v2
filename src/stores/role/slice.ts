@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRolePermission } from "./action";
+import { getRoleCreate } from "./action";
 
 interface IRole {
     create: {
@@ -18,14 +18,14 @@ const roleSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers(builder) {
-        builder.addCase(getRolePermission.pending, (state) => {
+        builder.addCase(getRoleCreate.pending, (state) => {
             state.create.isLoading = true
         })
-        builder.addCase(getRolePermission.rejected, (state, action) => {
+        builder.addCase(getRoleCreate.rejected, (state, action) => {
             state.create.isLoading = false
             state.create.error = action.payload?.response?.data
         })
-        builder.addCase(getRolePermission.fulfilled, (state, action) => {
+        builder.addCase(getRoleCreate.fulfilled, (state, action) => {
             state.create.error = null
             state.create.isLoading = false
             state.create.data = action.payload

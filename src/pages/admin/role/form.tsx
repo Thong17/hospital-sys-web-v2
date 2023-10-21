@@ -13,8 +13,9 @@ import { ROLE_FORM_WIDTH, roleSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
 import PrivilegeBox from 'components/shared/forms/PrivilegeBox'
 import { useEffect, useState } from 'react'
-import { useAppDispatch } from 'app/store'
+import { useAppDispatch, useAppSelector } from 'app/store'
 import { getRoleCreate } from 'stores/role/action'
+import { selectRoleCreate } from 'stores/role/selector'
 
 type RoleForm = {
   name: any
@@ -27,6 +28,7 @@ type RoleForm = {
 const form = ({ defaultValues = {} }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const { isLoading } = useAppSelector(selectRoleCreate)
   const {
     watch,
     register,
@@ -97,7 +99,7 @@ const form = ({ defaultValues = {} }) => {
             width={'100%'}
           >
             <CancelButton onClick={() => navigate(-1)} />
-            <CreateButton onClick={handleSubmit(onSubmit)} />
+            <CreateButton isLoading={isLoading} onClick={handleSubmit(onSubmit)} />
           </Stack>
         </Stack>
         <Box sx={{ width: `calc(100% - ${ROLE_FORM_WIDTH}px)` }}>
