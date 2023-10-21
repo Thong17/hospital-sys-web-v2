@@ -5,13 +5,15 @@ import storage from "redux-persist/lib/storage";
 import { authReducer } from "stores/auth/slice";
 import { configReducer } from "stores/config/slice";
 import { homeReducer } from "stores/home/slice";
+import { roleReducer } from "stores/role/slice";
 import { sessionReducer } from "stores/session/slice";
 
 const mainReducer = combineReducers({
     auth: authReducer,
     home: homeReducer,
     session: sessionReducer,
-    config: configReducer
+    config: configReducer,
+    role: roleReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
