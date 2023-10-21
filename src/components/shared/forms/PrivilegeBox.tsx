@@ -1,4 +1,4 @@
-import { Box, FormControlLabel } from '@mui/material'
+import { Box, FormControlLabel, Stack } from '@mui/material'
 import { useAppDispatch } from 'app/store'
 import { useEffect, useState } from 'react'
 import { getRolePermission, getRolePermissionShape } from 'stores/role/action'
@@ -10,6 +10,7 @@ import {
   filterSelectedMenu,
   mergeObjects,
 } from 'utils/index'
+import { SectionContainer } from '../SectionContainer'
 
 const INDENT_WIDTH = 30
 
@@ -133,8 +134,8 @@ const PrivilegeBox = ({
   }
 
   return (
-    <>
-      <Box>
+    <Stack direction={'column'} gap={5} sx={{ padding: '30px 0' }}>
+      <SectionContainer label={translate('NAVIGATION')} padding='10px 20px 20px'>
         <FormControlLabel
           control={
             <Checkbox
@@ -201,8 +202,8 @@ const PrivilegeBox = ({
             </Box>
           )
         })}
-      </Box>
-      <Box>
+      </SectionContainer>
+      <SectionContainer label={translate('PRIVILEGE')}>
         <FormControlLabel
           control={
             <Checkbox
@@ -293,8 +294,8 @@ const PrivilegeBox = ({
             )
           })}
         </Box>
-      </Box>
-    </>
+      </SectionContainer>
+    </Stack>
   )
 }
 

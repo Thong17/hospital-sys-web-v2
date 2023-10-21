@@ -9,14 +9,14 @@ interface ISectionContainer  {
     [key: string]: any
 }
 
-export const SectionContainer = ({ children, label, boxShadow, error, ...props }: ISectionContainer) => {
+export const SectionContainer = ({ children, label, boxShadow, error, padding = '20px', ...props }: ISectionContainer) => {
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
     <div {...props}>
       <div
         style={{
-          padding: '30px 20px 20px',
+          padding: padding,
           border: error ? `1px solid ${theme.color.error}` : theme.border.tertiary,
           borderRadius: theme.radius.secondary,
           position: 'relative',

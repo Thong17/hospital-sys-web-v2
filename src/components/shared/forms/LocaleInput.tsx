@@ -41,7 +41,7 @@ export const LocaleInput = ({
   return (
     <>
       {langs.length > 1 ? (
-        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30, width: '100%' }} error={error}>
+        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30, width: '100%' }} padding='30px 20px 20px' error={error}>
           <div
             style={{
               display: 'grid',
