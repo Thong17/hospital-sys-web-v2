@@ -54,7 +54,7 @@ export const CustomTableContainer = styled('div')(
         overflowX: 'initial',
       },
       '& thead tr': {
-        boxShadow: styled.shadow.secondary,
+        boxShadow: styled.shadow.quaternary,
         borderRadius: styled.radius.primary,
         '& th:first-of-type': {
           borderRadius: `${styled.radius.primary} 0 0 ${styled.radius.primary}`,

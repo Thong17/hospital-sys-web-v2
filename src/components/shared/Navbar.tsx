@@ -54,7 +54,7 @@ const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
           boxSizing: 'border-box',
           backgroundColor: theme.layout.navbar,
           borderRadius: theme.radius.ternary,
-          boxShadow: theme.shadow.secondary,
+          boxShadow: theme.shadow.quaternary,
           width: '100%',
           height: '100%',
           '& *': { color: theme.text.secondary }

@@ -83,7 +83,8 @@ export interface IThemeStyle extends IThemeMode {
     error: string,
     success: string,
     info: string,
-    warning: string
+    warning: string,
+    purple: string,
   },
   responsive: {
     mobile: {

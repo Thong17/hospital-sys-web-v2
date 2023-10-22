@@ -5,11 +5,13 @@ import {
   CircularProgress,
   Typography,
 } from '@mui/material'
-import { translate } from 'contexts/language/LanguageContext'
 import useTheme from 'hooks/useTheme'
 import { CustomButton } from 'styles/index'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { useEffect, useRef, useState } from 'react'
+import { translate } from 'contexts/language/LanguageContext'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded'
+import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded'
 interface IButton extends ButtonProps {
   isLoading?: boolean
 }
@@ -60,6 +62,52 @@ export const CancelButton = ({ isLoading, ...props }: IButton) => {
   )
 }
 
+export const DownloadButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomButton
+      {...props}
+      styled={theme}
+      disabled={isLoading}
+      sx={{
+        backgroundColor: `${theme.color.success}22`,
+        color: theme.color.success,
+        minWidth: '0',
+        padding: '5px 8px',
+        '&:hover': { backgroundColor: `${theme.color.success}44` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={21} sx={{ position: 'absolute' }} />
+      )}
+      <DownloadRoundedIcon />
+    </CustomButton>
+  )
+}
+
+export const UploadButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomButton
+      {...props}
+      styled={theme}
+      disabled={isLoading}
+      sx={{
+        backgroundColor: `${theme.color.purple}22`,
+        color: theme.color.purple,
+        minWidth: '0',
+        padding: '5px 8px',
+        '&:hover': { backgroundColor: `${theme.color.purple}44` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={21} sx={{ position: 'absolute' }} />
+      )}
+      <FileUploadRoundedIcon />
+    </CustomButton>
+  )
+}
+
 export const SearchButton = ({
   onChange,
 }: {
@@ -102,7 +150,7 @@ export const SearchButton = ({
         onClick={() => setToggle(!toggle)}
         sx={{
           minWidth: '0',
-          padding: '5px',
+          padding: '5px 8px',
           backgroundColor: 'none',
           '&:hover': { backgroundColor: '#00000000' },
           '& .MuiTouchRipple-root': { borderRadius: theme.radius.primary },

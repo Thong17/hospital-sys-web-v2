@@ -4,7 +4,7 @@ import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
 import { Stack, Typography } from '@mui/material'
-import { CreateButton, SearchButton } from 'components/shared/buttons/CustomButton'
+import { CreateButton, DownloadButton, SearchButton, UploadButton } from 'components/shared/buttons/CustomButton'
 import { useNavigate, useOutlet } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
@@ -64,18 +64,18 @@ const Role = () => {
     )
   }
 
-  const handleChangeQuery = debounce((newQuery: any) => {
+  const handleChangeQuery = (newQuery: any) => {
     const query = Object.fromEntries(queryParams.entries())
     setQueryParams({ ...query, ...newQuery })
-  }, 300)
+  }
 
   const handleChangePage = (page: string) => {
     handleChangeQuery({ page, limit: metaData?.limit })
   }
 
-  const handleChangeSearch = (value: string) => {
-    handleChangeQuery({ search: value })
-  }
+  const handleChangeSearch = debounce((value: string) => {
+    handleChangeQuery({ search: value, page: 0 })
+  }, 500)
 
   return (
     <>
@@ -99,6 +99,8 @@ const Role = () => {
               <Typography>Role</Typography>
               <Stack direction={'row'} gap={1}>
                 <SearchButton onChange={handleChangeSearch} />
+                <UploadButton></UploadButton>
+                <DownloadButton></DownloadButton>
                 <CreateButton onClick={handleCreate} />
               </Stack>
             </Stack>

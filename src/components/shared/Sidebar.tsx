@@ -47,7 +47,7 @@ const Sidebar = () => {
           padding: '7px',
           boxSizing: 'border-box',
           borderRadius: theme.radius.ternary,
-          boxShadow: theme.shadow.secondary,
+          boxShadow: theme.shadow.quaternary,
           gap: 1,
           '& .sidebar-menu': {
             borderRadius: theme.radius.ternary,
@@ -63,7 +63,7 @@ const Sidebar = () => {
           '& .sidebar-menu:hover': {
             backgroundColor: '#ffffff22',
             width: isOpenedSidebar ? '100%' : 'fit-content !important',
-            boxShadow: theme.shadow.secondary,
+            boxShadow: theme.shadow.quaternary,
           },
           '& .sidebar-menu:has(a.active)': {
             backgroundColor: `${theme.color.info}44`,

@@ -215,6 +215,7 @@ export const themeStyle = {
     success: '#43a047',
     info: '#2196f3',
     warning: '#ff9800',
+    purple: '#510ac9',
   },
   responsive: {
     mobile: {

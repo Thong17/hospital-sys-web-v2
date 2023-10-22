@@ -19,6 +19,7 @@ export const EditButton = ({ isLoading, ...props }: IButton) => {
       sx={{
         backgroundColor: `${theme.color.info}22`,
         color: theme.color.info,
+        boxShadow: theme.shadow.quaternary,
         '&:hover': { backgroundColor: `${theme.color.info}44` },
         '&.Mui-disabled': { backgroundColor: `${theme.color.info}22` },
       }}
@@ -45,6 +46,7 @@ export const DeleteButton = ({ isLoading, ...props }: IButton) => {
       sx={{
         backgroundColor: `${theme.color.error}22`,
         color: theme.color.error,
+        boxShadow: theme.shadow.quaternary,
         '&:hover': { backgroundColor: `${theme.color.error}44` },
         '&.Mui-disabled': { backgroundColor: `${theme.color.error}22` },
       }}
