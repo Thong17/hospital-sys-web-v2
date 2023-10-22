@@ -4,7 +4,7 @@ import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
 import { Stack, Typography } from '@mui/material'
-import { CreateButton } from 'components/shared/buttons/CustomButton'
+import { CreateButton, SearchButton } from 'components/shared/buttons/CustomButton'
 import { useNavigate, useOutlet } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { dateFormat } from 'utils/index'
+import { dateFormat, debounce } from 'utils/index'
 import { useSearchParams } from 'react-router-dom'
 
 const roleColumns: ITableColumn<any>[] = [
@@ -64,13 +64,17 @@ const Role = () => {
     )
   }
 
-  const handleChangeQuery = (newQuery: any) => {
+  const handleChangeQuery = debounce((newQuery: any) => {
     const query = Object.fromEntries(queryParams.entries())
     setQueryParams({ ...query, ...newQuery })
-  }
+  }, 300)
 
   const handleChangePage = (page: string) => {
     handleChangeQuery({ page, limit: metaData?.limit })
+  }
+
+  const handleChangeSearch = (value: string) => {
+    handleChangeQuery({ search: value })
   }
 
   return (
@@ -93,7 +97,10 @@ const Role = () => {
               py={1}
             >
               <Typography>Role</Typography>
-              <CreateButton onClick={handleCreate} />
+              <Stack direction={'row'} gap={1}>
+                <SearchButton onChange={handleChangeSearch} />
+                <CreateButton onClick={handleCreate} />
+              </Stack>
             </Stack>
             <StickyTable
               rows={data?.map((item: any) =>
