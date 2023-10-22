@@ -121,9 +121,9 @@ export const StickyTable = ({
                                     onToggleStatus && onToggleStatus(row.id)
                                   }
                                   size='small'
-                                  style={{ color: theme.color.success }}
+                                  style={{ color: theme.color.success, backgroundColor: `${theme.color.success}22` }}
                                 >
-                                  <ToggleOnIcon style={{ fontSize: 30 }} />
+                                  <ToggleOnIcon fontSize='small' />
                                 </IconButton>
                               ) : (
                                 <IconButton
@@ -131,9 +131,9 @@ export const StickyTable = ({
                                     onToggleStatus && onToggleStatus(row.id)
                                   }
                                   size='small'
-                                  style={{ color: theme.color.error }}
+                                  style={{ color: theme.color.error, backgroundColor: `${theme.color.error}22` }}
                                 >
-                                  <ToggleOffIcon style={{ fontSize: 30 }} />
+                                  <ToggleOffIcon fontSize='small' />
                                 </IconButton>
                               )
                             }
@@ -149,7 +149,7 @@ export const StickyTable = ({
                               >
                                 {column.format && typeof value === 'number'
                                   ? column.format(value)
-                                  : value}
+                                  : (value || '...')}
                               </TableCell>
                             )
                           })}

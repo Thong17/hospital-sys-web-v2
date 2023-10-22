@@ -1,0 +1,74 @@
+import { ButtonProps, CircularProgress, Stack } from '@mui/material'
+import useTheme from 'hooks/useTheme'
+import { CustomIconButton } from 'styles/index'
+import EditRoundedIcon from '@mui/icons-material/EditRounded'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+
+interface IButton extends ButtonProps {
+  isLoading?: boolean
+}
+
+export const EditButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      styled={theme}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        backgroundColor: `${theme.color.info}22`,
+        color: theme.color.info,
+        '&:hover': { backgroundColor: `${theme.color.info}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.info}22` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={16} sx={{ position: 'absolute' }} />
+      )}
+      <EditRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
+  )
+}
+
+export const DeleteButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      styled={theme}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        backgroundColor: `${theme.color.error}22`,
+        color: theme.color.error,
+        '&:hover': { backgroundColor: `${theme.color.error}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.error}22` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress
+          size={16}
+          color='error'
+          sx={{ position: 'absolute' }}
+        />
+      )}
+      <DeleteRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
+  )
+}
+
+export const ActionButton = ({ data, onEdit, onDelete }: { data: any, onEdit: (_data: any) => void, onDelete: (_data: any) => void }) => {
+  return (
+    <Stack direction={'row'} gap={1} justifyContent={'end'}>
+      <EditButton onClick={() => onEdit(data)} />
+      <DeleteButton onClick={() => onDelete(data)} />
+    </Stack>
+  )
+}
