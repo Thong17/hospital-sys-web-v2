@@ -21,7 +21,7 @@ const roleColumns: ITableColumn<any>[] = [
   { label: 'Status', id: 'status' },
   { label: 'Description', id: 'description' },
   { label: 'Created\u00a0By', id: 'createdBy' },
-  { label: 'Created\u00a0At', id: 'createdAt' },
+  { label: 'Created\u00a0At', id: 'createdAt', sort: 'desc' },
   { label: 'Action', id: 'action', align: 'right' },
 ]
 
@@ -55,15 +55,22 @@ const Role = () => {
       if (value === 'asc') return 'desc'
       return 'asc'
     }
+    const sort = toggleSort(column.sort)
+    handleChangeQuery({ [column.id]: sort })
     setColumns((prev: any) =>
       prev.map((item: any) =>
-        item.id === column.id ? { ...item, sort: toggleSort(item.sort) } : item
+        item.id === column.id ? { ...item, sort } : item
       )
     )
   }
 
+  const handleChangeQuery = (newQuery: any) => {
+    const query = Object.fromEntries(queryParams.entries())
+    setQueryParams({ ...query, ...newQuery })
+  }
+
   const handleChangePage = (page: string) => {
-    setQueryParams({ page, limit: metaData?.limit })
+    handleChangeQuery({ page, limit: metaData?.limit })
   }
 
   return (

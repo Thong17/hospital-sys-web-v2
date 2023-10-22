@@ -83,16 +83,22 @@ export const StickyTable = ({
                     key={column.id}
                     align={column.align}
                   >
-                    <TableSortLabel
-                      IconComponent={FilterListRoundedIcon}
-                      active={!!column.sort}
-                      direction={column.sort}
-                      onClick={() => onSort && onSort(column)}
-                    >
-                      {language[column.label as keyof typeof languages.English] ||
-                      column.label}
-                    </TableSortLabel>
-                    
+                    {!!column.sort ? (
+                      <TableSortLabel
+                        IconComponent={FilterListRoundedIcon}
+                        active={!!column.sort}
+                        direction={column.sort}
+                        onClick={() => onSort && onSort(column)}
+                      >
+                        {language[
+                          column.label as keyof typeof languages.English
+                        ] || column.label}
+                      </TableSortLabel>
+                    ) : (
+                      language[
+                        column.label as keyof typeof languages.English
+                      ] || column.label
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -100,66 +106,70 @@ export const StickyTable = ({
             {rows?.length > 0 &&
               (!loading && pagination ? (
                 <TableBody>
-                  {rows
-                    .slice(0, skip * limit + limit)
-                    .map((row, index) => {
-                      return (
-                        <TableRow
-                          onClick={() => {
-                            onClick && onClick(row.id)
-                          }}
-                          hover
-                          role='checkbox'
-                          tabIndex={-1}
-                          key={row.id || index}
-                          style={{
-                            cursor: onClick ? 'pointer' : 'default',
-                          }}
-                        >
-                          {columns.map((column) => {
-                            let value = row[column.id]
-                            if (typeof value === 'boolean') {
-                              value = value ? (
-                                <IconButton
-                                  onClick={() =>
-                                    onToggleStatus && onToggleStatus(row.id)
-                                  }
-                                  size='small'
-                                  style={{ color: theme.color.success, backgroundColor: `${theme.color.success}22` }}
-                                >
-                                  <ToggleOnIcon fontSize='small' />
-                                </IconButton>
-                              ) : (
-                                <IconButton
-                                  onClick={() =>
-                                    onToggleStatus && onToggleStatus(row.id)
-                                  }
-                                  size='small'
-                                  style={{ color: theme.color.error, backgroundColor: `${theme.color.error}22` }}
-                                >
-                                  <ToggleOffIcon fontSize='small' />
-                                </IconButton>
-                              )
-                            }
-
-                            return (
-                              <TableCell
-                                key={column.id}
-                                align={column.align}
+                  {rows.slice(0, skip * limit + limit).map((row, index) => {
+                    return (
+                      <TableRow
+                        onClick={() => {
+                          onClick && onClick(row.id)
+                        }}
+                        hover
+                        role='checkbox'
+                        tabIndex={-1}
+                        key={row.id || index}
+                        style={{
+                          cursor: onClick ? 'pointer' : 'default',
+                        }}
+                      >
+                        {columns.map((column) => {
+                          let value = row[column.id]
+                          if (typeof value === 'boolean') {
+                            value = value ? (
+                              <IconButton
+                                onClick={() =>
+                                  onToggleStatus && onToggleStatus(row.id)
+                                }
+                                size='small'
                                 style={{
-                                  minWidth: column.minWidth,
-                                  maxWidth: column.maxWidth,
+                                  color: theme.color.success,
+                                  backgroundColor: `${theme.color.success}22`,
                                 }}
                               >
-                                {column.format && typeof value === 'number'
-                                  ? column.format(value)
-                                  : (value || '...')}
-                              </TableCell>
+                                <ToggleOnIcon fontSize='small' />
+                              </IconButton>
+                            ) : (
+                              <IconButton
+                                onClick={() =>
+                                  onToggleStatus && onToggleStatus(row.id)
+                                }
+                                size='small'
+                                style={{
+                                  color: theme.color.error,
+                                  backgroundColor: `${theme.color.error}22`,
+                                }}
+                              >
+                                <ToggleOffIcon fontSize='small' />
+                              </IconButton>
                             )
-                          })}
-                        </TableRow>
-                      )
-                    })}
+                          }
+
+                          return (
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              style={{
+                                minWidth: column.minWidth,
+                                maxWidth: column.maxWidth,
+                              }}
+                            >
+                              {column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : value || '...'}
+                            </TableCell>
+                          )
+                        })}
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               ) : (
                 !loading && (
@@ -230,7 +240,12 @@ export const StickyTable = ({
       </div>
       {!loading && pagination && (
         <CustomPagination styled={theme}>
-          <Pagination count={Math.ceil(count / limit)} page={skip + 1} size='medium' onChange={(_event, page) => onChangePage && onChangePage(page)} />
+          <Pagination
+            count={Math.ceil(count / limit)}
+            page={skip + 1}
+            size='medium'
+            onChange={(_event, page) => onChangePage && onChangePage(page)}
+          />
         </CustomPagination>
       )}
     </CustomTableContainer>
