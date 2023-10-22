@@ -13,26 +13,30 @@ import { getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat } from 'utils/index'
+import { useSearchParams } from 'react-router-dom'
+
+const roleColumns: ITableColumn<any>[] = [
+  { label: 'No', id: 'no' },
+  { label: 'Name', id: 'name', sort: 'desc' },
+  { label: 'Status', id: 'status' },
+  { label: 'Description', id: 'description' },
+  { label: 'Created\u00a0By', id: 'createdBy' },
+  { label: 'Created\u00a0At', id: 'createdAt' },
+  { label: 'Action', id: 'action', align: 'right' },
+]
 
 const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const outlet = useOutlet()
   const { lang } = useLanguage()
-  const { data } = useAppSelector(selectRoleList)
-  const [columns, setColumns] = useState<ITableColumn<any>[]>([
-    { label: 'No', id: 'no' },
-    { label: 'Name', id: 'name', sort: 'desc' },
-    { label: 'Status', id: 'status' },
-    { label: 'Description', id: 'description' },
-    { label: 'Created\u00a0By', id: 'createdBy' },
-    { label: 'Created\u00a0At', id: 'createdAt' },
-    { label: 'Action', id: 'action', align: 'right' },
-  ])
+  const { data, metaData } = useAppSelector(selectRoleList)
+  const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
+  const [queryParams, setQueryParams] = useSearchParams()
 
   useEffect(() => {
-    dispatch(getRoleList())
-  }, [])
+    dispatch(getRoleList({ params: queryParams }))
+  }, [queryParams])
 
   const handleCreate = () => {
     navigate('/admin/role/create')
@@ -56,6 +60,10 @@ const Role = () => {
         item.id === column.id ? { ...item, sort: toggleSort(item.sort) } : item
       )
     )
+  }
+
+  const handleChangePage = (page: string) => {
+    setQueryParams({ page, limit: metaData?.limit })
   }
 
   return (
@@ -86,6 +94,10 @@ const Role = () => {
               )}
               columns={columns}
               onSort={handleSort}
+              count={metaData?.total}
+              limit={metaData?.limit}
+              skip={metaData?.skip}
+              onChangePage={handleChangePage}
             />
           </Container>
         </Layout>

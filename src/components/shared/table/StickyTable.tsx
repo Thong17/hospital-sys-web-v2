@@ -37,6 +37,7 @@ interface ITable {
   loading?: boolean
   onClick?: (_id: any) => void
   onToggleStatus?: (_id: any) => void
+  onChangePage?: (_page: any) => void
   onSort?: (_column: any) => void
   style?: React.CSSProperties
 }
@@ -46,28 +47,19 @@ export const StickyTable = ({
   pagination = true,
   columns,
   rows,
-  count,
+  count = 0,
   skip = 0,
   limit = 10,
   loading,
   onClick,
   onToggleStatus,
+  onChangePage,
   onSort,
   style,
 }: ITable) => {
-  const [page, setPage] = React.useState(skip || 0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(limit || 10)
   const { theme } = useTheme()
   const { device } = useDevice()
   const { language } = useLanguage()
-
-  React.useEffect(() => {
-    setPage(skip)
-  }, [skip])
-
-  React.useEffect(() => {
-    setRowsPerPage(limit)
-  }, [limit])
 
   return (
     <CustomTableContainer
@@ -109,7 +101,7 @@ export const StickyTable = ({
               (!loading && pagination ? (
                 <TableBody>
                   {rows
-                    .slice(0, page * rowsPerPage + rowsPerPage)
+                    .slice(0, skip * limit + limit)
                     .map((row, index) => {
                       return (
                         <TableRow
@@ -238,7 +230,7 @@ export const StickyTable = ({
       </div>
       {!loading && pagination && (
         <CustomPagination styled={theme}>
-          <Pagination count={count} size='medium' />
+          <Pagination count={Math.ceil(count / limit)} page={skip + 1} size='medium' onChange={(_event, page) => onChangePage && onChangePage(page)} />
         </CustomPagination>
       )}
     </CustomTableContainer>

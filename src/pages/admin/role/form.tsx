@@ -25,7 +25,7 @@ type RoleForm = {
   navigation: any
 }
 
-const form = ({ defaultValues = {} }) => {
+const form = ({ defaultValues = { privilege: {}, navigation: {} } }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isLoading } = useAppSelector(selectRoleCreate)
@@ -99,7 +99,7 @@ const form = ({ defaultValues = {} }) => {
             width={'100%'}
           >
             <CancelButton onClick={() => navigate(-1)} />
-            <CreateButton isLoading={isLoading} onClick={handleSubmit(onSubmit)} />
+            <CreateButton type='submit' isLoading={isLoading} onClick={handleSubmit(onSubmit)} />
           </Stack>
         </Stack>
         <Box sx={{ width: `calc(100% - ${ROLE_FORM_WIDTH}px)` }}>

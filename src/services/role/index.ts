@@ -33,9 +33,9 @@ export class RoleService {
             throw error
         }
     }
-    async list() {
+    async list({ params }: { params?: URLSearchParams }) {
         try {
-            const response = await axios.get('/admin/role/list')
+            const response = await axios.get('/admin/role/list', { params })
             return response
         } catch (error: any) {
             console.error(error)

@@ -10,13 +10,18 @@ interface IRole {
     list: {
         isLoading: boolean,
         data: any,
-        error: any
+        error: any,
+        metaData: {
+            skip: number,
+            limit: number,
+            total: number,
+        }
     }
 }
 
 const initialState: IRole = {
     create: { isLoading: false, data: null, error: null },
-    list: { isLoading: false, data: [], error: null },
+    list: { isLoading: false, data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
 
 const roleSlice = createSlice({
@@ -49,6 +54,7 @@ const roleSlice = createSlice({
             state.list.error = null
             state.list.isLoading = false
             state.list.data = action.payload?.data
+            state.list.metaData = action.payload?.metaData
         })
     },
 })
