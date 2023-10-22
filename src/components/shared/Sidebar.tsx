@@ -64,6 +64,7 @@ const Sidebar = () => {
             backgroundColor: '#ffffff22',
             width: isOpenedSidebar ? '100%' : 'fit-content !important',
             boxShadow: theme.shadow.quaternary,
+            backdropFilter: 'blur(3px)'
           },
           '& .sidebar-menu:has(a.active)': {
             backgroundColor: `${theme.color.info}44`,
