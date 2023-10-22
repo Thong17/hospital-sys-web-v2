@@ -11,6 +11,7 @@ import {
   mergeObjects,
 } from 'utils/index'
 import { SectionContainer } from '../SectionContainer'
+import Loading from '../Loading'
 
 const INDENT_WIDTH = 30
 
@@ -25,6 +26,7 @@ const PrivilegeBox = ({
   onChangeNavigation: (_data: any) => void
   onChangePrivilege: (_data: any) => void
 }) => {
+  const [isFetching, setIsFetching] = useState(true)
   const dispatch = useAppDispatch()
   const [navigation, setNavigation] = useState({})
   const [privilege, setPrivilege] = useState({})
@@ -48,6 +50,9 @@ const PrivilegeBox = ({
   useEffect(() => {
     const fetchPermissionShape = async () => {
       const response = await dispatch(getRolePermissionShape()).unwrap()
+      setTimeout(() => {
+        setIsFetching(false)
+      }, 500);
       if (response?.code !== 'SUCCESS') return
       const { preRole, preMenu } = response
       setCheckedNavigation((prev: any) => mergeObjects(preMenu, prev))
@@ -134,167 +139,181 @@ const PrivilegeBox = ({
   }
 
   return (
-    <Stack direction={'column'} gap={5} sx={{ padding: '30px 0' }}>
-      <SectionContainer label={translate('NAVIGATION')} padding='10px 20px 20px'>
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={handleChangeAllNavigation}
-              checked={determineCheckAll(checkedNavigation) === true}
-              indeterminate={
-                determineCheckAll(checkedNavigation) === 'indeterminate'
-              }
-            />
-          }
-          label={translate('CHECK_ALL')}
-        />
-        {Object.keys(navigation).map((nav, index) => {
-          return (
-            <Box key={index} sx={{ marginLeft: `${INDENT_WIDTH}px` }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name={nav}
-                    onChange={handleChangeMenu}
-                    checked={
-                      determineObjectValue(
-                        checkedNavigation?.[nav as keyof typeof navigation]
-                      ) === true
-                    }
-                    indeterminate={
-                      determineObjectValue(
-                        checkedNavigation?.[nav as keyof typeof navigation]
-                      ) === 'indeterminate'
-                    }
-                  />
-                }
-                label={translate(nav.toUpperCase())}
-              />
-              <Box
-                sx={{
-                  marginLeft: `${INDENT_WIDTH}px`,
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-                }}
-              >
-                {Object.keys(navigation[nav as keyof typeof navigation]).map(
-                  (sub, key) => {
-                    return (
-                      <FormControlLabel
-                        key={key}
-                        control={
-                          <Checkbox
-                            name={`${nav}.${sub}`}
-                            onChange={handleChangeSubNav}
-                            checked={
-                              checkedNavigation?.[
-                                nav as keyof typeof navigation
-                              ]?.[sub]
-                            }
-                          />
-                        }
-                        label={translate(sub.toUpperCase())}
-                      />
-                    )
+    <Stack
+      direction={'column'}
+      gap={5}
+      sx={{ padding: '30px 0', position: 'relative' }}
+    >
+      {isFetching ? (
+        <Loading />
+      ) : (
+        <>
+          <SectionContainer
+            label={translate('NAVIGATION')}
+            padding='10px 20px 20px'
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={handleChangeAllNavigation}
+                  checked={determineCheckAll(checkedNavigation) === true}
+                  indeterminate={
+                    determineCheckAll(checkedNavigation) === 'indeterminate'
                   }
-                )}
-              </Box>
-            </Box>
-          )
-        })}
-      </SectionContainer>
-      <SectionContainer label={translate('PRIVILEGE')}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={handleChangeAllPrivilege}
-              checked={
-                determineCheckAll(
-                  filterSelectedMenu(checkedPrivilege, checkedNavigation)
-                ) === true
+                />
               }
-              indeterminate={
-                determineCheckAll(
-                  filterSelectedMenu(checkedPrivilege, checkedNavigation)
-                ) === 'indeterminate'
-              }
+              label={translate('CHECK_ALL')}
             />
-          }
-          label={translate('CHECK_ALL')}
-        />
-        <Box sx={{ marginLeft: `${INDENT_WIDTH}px` }}>
-          {Object.keys(privilege).map((menu, index) => {
-            return (
-              <Box key={index}>
-                {Object.keys(privilege[menu as keyof typeof privilege]).map(
-                  (nav, key) => {
-                    return (
-                      <Box
-                        key={key}
-                        sx={{
-                          display: !!checkedNavigation[menu]?.[nav]
-                            ? 'block'
-                            : 'none',
-                        }}
-                      >
+            {Object.keys(navigation).map((nav, index) => {
+              return (
+                <Box key={index} sx={{ marginLeft: `${INDENT_WIDTH}px` }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        name={nav}
+                        onChange={handleChangeMenu}
+                        checked={
+                          determineObjectValue(
+                            checkedNavigation?.[nav as keyof typeof navigation]
+                          ) === true
+                        }
+                        indeterminate={
+                          determineObjectValue(
+                            checkedNavigation?.[nav as keyof typeof navigation]
+                          ) === 'indeterminate'
+                        }
+                      />
+                    }
+                    label={translate(nav.toUpperCase())}
+                  />
+                  <Box
+                    sx={{
+                      marginLeft: `${INDENT_WIDTH}px`,
+                      display: 'grid',
+                      gridTemplateColumns:
+                        'repeat(auto-fill, minmax(140px, 1fr))',
+                    }}
+                  >
+                    {Object.keys(
+                      navigation[nav as keyof typeof navigation]
+                    ).map((sub, key) => {
+                      return (
                         <FormControlLabel
+                          key={key}
                           control={
                             <Checkbox
-                              name={`${menu}.${nav}`}
-                              onChange={handleChangeNavigation}
+                              name={`${nav}.${sub}`}
+                              onChange={handleChangeSubNav}
                               checked={
-                                determineObjectValue(
-                                  checkedPrivilege?.[menu]?.[nav]
-                                ) === true
-                              }
-                              indeterminate={
-                                determineObjectValue(
-                                  checkedPrivilege?.[menu]?.[nav]
-                                ) === 'indeterminate'
+                                checkedNavigation?.[
+                                  nav as keyof typeof navigation
+                                ]?.[sub]
                               }
                             />
                           }
-                          label={translate(nav.toUpperCase())}
+                          label={translate(sub.toUpperCase())}
                         />
-                        <Box
-                          sx={{
-                            marginLeft: `${INDENT_WIDTH}px`,
-                            display: 'grid',
-                            gridTemplateColumns:
-                              'repeat(auto-fill, minmax(140px, 1fr))',
-                          }}
-                        >
-                          {Object.keys(
-                            privilege[menu as keyof typeof privilege]?.[nav]
-                          ).map((action, key) => {
-                            return (
-                              <FormControlLabel
-                                key={key}
-                                control={
-                                  <Checkbox
-                                    name={`${menu}.${nav}.${action}`}
-                                    onChange={handleChangePrivilege}
-                                    checked={
-                                      checkedPrivilege?.[menu]?.[
-                                        nav as keyof typeof navigation
-                                      ]?.[action]
-                                    }
-                                  />
-                                }
-                                label={translate(action.toUpperCase())}
-                              />
-                            )
-                          })}
-                        </Box>
-                      </Box>
-                    )
+                      )
+                    })}
+                  </Box>
+                </Box>
+              )
+            })}
+          </SectionContainer>
+          <SectionContainer label={translate('PRIVILEGE')}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={handleChangeAllPrivilege}
+                  checked={
+                    determineCheckAll(
+                      filterSelectedMenu(checkedPrivilege, checkedNavigation)
+                    ) === true
                   }
-                )}
-              </Box>
-            )
-          })}
-        </Box>
-      </SectionContainer>
+                  indeterminate={
+                    determineCheckAll(
+                      filterSelectedMenu(checkedPrivilege, checkedNavigation)
+                    ) === 'indeterminate'
+                  }
+                />
+              }
+              label={translate('CHECK_ALL')}
+            />
+            <Box sx={{ marginLeft: `${INDENT_WIDTH}px` }}>
+              {Object.keys(privilege).map((menu, index) => {
+                return (
+                  <Box key={index}>
+                    {Object.keys(privilege[menu as keyof typeof privilege]).map(
+                      (nav, key) => {
+                        return (
+                          <Box
+                            key={key}
+                            sx={{
+                              display: !!checkedNavigation[menu]?.[nav]
+                                ? 'block'
+                                : 'none',
+                            }}
+                          >
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  name={`${menu}.${nav}`}
+                                  onChange={handleChangeNavigation}
+                                  checked={
+                                    determineObjectValue(
+                                      checkedPrivilege?.[menu]?.[nav]
+                                    ) === true
+                                  }
+                                  indeterminate={
+                                    determineObjectValue(
+                                      checkedPrivilege?.[menu]?.[nav]
+                                    ) === 'indeterminate'
+                                  }
+                                />
+                              }
+                              label={translate(nav.toUpperCase())}
+                            />
+                            <Box
+                              sx={{
+                                marginLeft: `${INDENT_WIDTH}px`,
+                                display: 'grid',
+                                gridTemplateColumns:
+                                  'repeat(auto-fill, minmax(140px, 1fr))',
+                              }}
+                            >
+                              {Object.keys(
+                                privilege[menu as keyof typeof privilege]?.[nav]
+                              ).map((action, key) => {
+                                return (
+                                  <FormControlLabel
+                                    key={key}
+                                    control={
+                                      <Checkbox
+                                        name={`${menu}.${nav}.${action}`}
+                                        onChange={handleChangePrivilege}
+                                        checked={
+                                          checkedPrivilege?.[menu]?.[
+                                            nav as keyof typeof navigation
+                                          ]?.[action]
+                                        }
+                                      />
+                                    }
+                                    label={translate(action.toUpperCase())}
+                                  />
+                                )
+                              })}
+                            </Box>
+                          </Box>
+                        )
+                      }
+                    )}
+                  </Box>
+                )
+              })}
+            </Box>
+          </SectionContainer>
+        </>
+      )}
     </Stack>
   )
 }

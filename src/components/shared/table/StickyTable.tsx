@@ -10,10 +10,11 @@ import Loading from '../Loading'
 import { CustomPagination, CustomTableContainer } from 'styles'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import ToggleOffIcon from '@mui/icons-material/ToggleOff'
-import { IconButton, Pagination } from '@mui/material'
+import { IconButton, Pagination, TableSortLabel } from '@mui/material'
 import useLanguage from 'hooks/useLanguage'
 import useDevice from 'hooks/useDevice'
 import { languages } from 'contexts/language/constant'
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded'
 
 export interface ITableColumn<Column> {
   id: Column
@@ -22,6 +23,7 @@ export interface ITableColumn<Column> {
   maxWidth?: number
   align?: 'left' | 'right' | 'center'
   format?: (value: any) => any
+  sort?: 'asc' | 'desc'
 }
 
 interface ITable {
@@ -33,8 +35,9 @@ interface ITable {
   skip?: number
   limit?: number
   loading?: boolean
-  handleClick?: (_id: any) => void
+  onClick?: (_id: any) => void
   onToggleStatus?: (_id: any) => void
+  onSort?: (_column: any) => void
   style?: React.CSSProperties
 }
 
@@ -47,8 +50,9 @@ export const StickyTable = ({
   skip = 0,
   limit = 10,
   loading,
-  handleClick,
+  onClick,
   onToggleStatus,
+  onSort,
   style,
 }: ITable) => {
   const [page, setPage] = React.useState(skip || 0)
@@ -87,8 +91,16 @@ export const StickyTable = ({
                     key={column.id}
                     align={column.align}
                   >
-                    {language[column.label as keyof typeof languages.English] ||
+                    <TableSortLabel
+                      IconComponent={FilterListRoundedIcon}
+                      active={!!column.sort}
+                      direction={column.sort}
+                      onClick={() => onSort && onSort(column)}
+                    >
+                      {language[column.label as keyof typeof languages.English] ||
                       column.label}
+                    </TableSortLabel>
+                    
                   </TableCell>
                 ))}
               </TableRow>
@@ -102,14 +114,14 @@ export const StickyTable = ({
                       return (
                         <TableRow
                           onClick={() => {
-                            handleClick && handleClick(row.id)
+                            onClick && onClick(row.id)
                           }}
                           hover
                           role='checkbox'
                           tabIndex={-1}
                           key={row.id || index}
                           style={{
-                            cursor: handleClick ? 'pointer' : 'default',
+                            cursor: onClick ? 'pointer' : 'default',
                           }}
                         >
                           {columns.map((column) => {
@@ -164,14 +176,14 @@ export const StickyTable = ({
                       return (
                         <TableRow
                           onClick={() => {
-                            handleClick && handleClick(row.id)
+                            onClick && onClick(row.id)
                           }}
                           hover
                           role='checkbox'
                           tabIndex={-1}
                           key={row.id || index}
                           style={{
-                            cursor: handleClick ? 'pointer' : 'default',
+                            cursor: onClick ? 'pointer' : 'default',
                           }}
                         >
                           {columns.map((column) => {
