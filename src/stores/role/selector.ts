@@ -6,3 +6,7 @@ export const selectRoleCreate = createSelector(
     (state) => state
 )
 
+export const selectRoleList = createSelector(
+    (state: RootState) => state.role.list,
+    (state) => state
+)

@@ -33,4 +33,14 @@ export class RoleService {
             throw error
         }
     }
+    async list() {
+        try {
+            const response = await axios.get('/admin/role/list')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
 }
