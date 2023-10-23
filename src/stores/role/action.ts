@@ -19,6 +19,11 @@ export const getRoleCreate: any = createAsyncThunk(
     serviceWrapper(service.create)
 )
 
+export const getRoleDelete: any = createAsyncThunk(
+    'role/delete',
+    serviceWrapper(service.delete)
+)
+
 export const getRoleList: any = createAsyncThunk(
     'role/list',
     serviceWrapper(service.list)

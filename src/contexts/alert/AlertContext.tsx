@@ -1,24 +1,32 @@
 import { createContext, useRef, useState } from 'react'
-import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
-import { DetailField } from 'components/shared/forms'
+import { TextInput } from 'components/shared/forms/TextInput'
+import { translate } from 'contexts/language/LanguageContext'
+import useTheme from 'hooks/useTheme'
+import { CustomButton } from 'styles/index'
+import { Box } from '@mui/material'
 
 export interface IAlertProps {
-  title?: string
-  description?: string
+  title?: any
+  description?: any
   reason?: boolean
   variant?: 'info' | 'warning' | 'error'
 }
 
-export const AlertContext = createContext<(options: IAlertProps) => Promise<void>>(Promise.reject)
+export const AlertContext = createContext<
+  (options: IAlertProps) => Promise<void>
+>(Promise.reject)
 
 const AlertProvider = ({ children }: { children: React.ReactNode }) => {
-  const [dialog, setDialog] = useState<IAlertProps & { open: boolean }>({ open: false })
-  const reasonRef = useRef(document.createElement('textarea'))
+  const [dialog, setDialog] = useState<IAlertProps & { open: boolean }>({
+    open: false,
+  })
+  const { theme } = useTheme()
+  const reasonRef = useRef(document.createElement('input'))
 
   const awaitingPromiseRef = useRef<{
     resolve: (data: any) => void
@@ -32,7 +40,8 @@ const AlertProvider = ({ children }: { children: React.ReactNode }) => {
     setDialog({ ...dialog, open: false })
   }
 
-  const confirmDialog = () => {
+  const confirmDialog = (event: any) => {
+    event.preventDefault()
     if (awaitingPromiseRef.current) {
       awaitingPromiseRef.current.resolve({ reason: reasonRef.current?.value })
     }
@@ -55,32 +64,37 @@ const AlertProvider = ({ children }: { children: React.ReactNode }) => {
         onClose={closeDialog}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
+        sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: theme.radius.ternary,
+            minWidth: '400px',
+          },
+        }}
       >
-        <DialogTitle id='alert-dialog-title'>{dialog?.title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {dialog?.description}
-          </DialogContentText>
-          {dialog?.reason && <div>
-            <DetailField
-              ref={reasonRef}
-              type='text'
-              placeholder='Reason'
-              style={{ height: 70, minWidth: '370px', color: '#111', borderColor: '#00000022' }}
-            />
-          </div>}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog}>Cancel</Button>
-          <Button
-            onClick={confirmDialog}
-            variant='contained'
-            color={dialog?.variant || 'info'}
-            autoFocus
-          >
-            Confirm
-          </Button>
-        </DialogActions>
+        <form onSubmit={confirmDialog}>
+          <DialogTitle id='alert-dialog-title'>{dialog?.title}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              {dialog?.description}
+            </DialogContentText>
+            <Box pt={3} sx={{ display: dialog?.reason ? 'block' : 'none' }}>
+              <TextInput inputProps={{ ref: reasonRef }} label={translate('DESCRIPTION')} />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <CustomButton onClick={closeDialog}>
+              {translate('CANCEL')}
+            </CustomButton>
+            <CustomButton
+              type='submit'
+              variant='contained'
+              color={dialog?.variant || 'info'}
+              autoFocus
+            >
+              {translate('CONFIRM')}
+            </CustomButton>
+          </DialogActions>
+        </form>
       </Dialog>
     </AlertContext.Provider>
   )

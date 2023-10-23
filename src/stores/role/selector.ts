@@ -10,3 +10,8 @@ export const selectRoleList = createSelector(
     (state: RootState) => state.role.list,
     (state) => state
 )
+
+export const selectRoleForm = createSelector(
+    (state: RootState) => state.role.form,
+    (state) => state
+)

@@ -4,16 +4,18 @@ import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
 import { Stack, Typography } from '@mui/material'
-import { CreateButton, DownloadButton, SearchButton, UploadButton } from 'components/shared/buttons/CustomButton'
+import { CreateButton, OptionButton, SearchButton } from 'components/shared/buttons/CustomButton'
 import { useNavigate, useOutlet } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
-import { getRoleList } from 'stores/role/action'
+import { getRoleDelete, getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat, debounce } from 'utils/index'
 import { useSearchParams } from 'react-router-dom'
+import useAlert from 'hooks/useAlert'
+import { translate } from 'contexts/language/LanguageContext'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: 'No', id: 'no' },
@@ -28,6 +30,7 @@ const roleColumns: ITableColumn<any>[] = [
 const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const confirm = useAlert()
   const outlet = useOutlet()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectRoleList)
@@ -47,7 +50,14 @@ const Role = () => {
   }
 
   const handleDelete = (data: any) => {
-    console.log(data)
+    confirm({
+      title: translate('DELETE_ROLE_TITLE'),
+      description: translate('DELETE_ROLE_DESCRIPTION'),
+      reason: true,
+      variant: 'error'
+    }).then((confirmData: any) => {
+      dispatch(getRoleDelete({ id: data._id, reason: confirmData?.reason }))
+    }).catch(() => {})
   }
 
   const handleSort = (column: any) => {
@@ -99,8 +109,7 @@ const Role = () => {
               <Typography>Role</Typography>
               <Stack direction={'row'} gap={1}>
                 <SearchButton onChange={handleChangeSearch} />
-                <UploadButton></UploadButton>
-                <DownloadButton></DownloadButton>
+                <OptionButton />
                 <CreateButton onClick={handleCreate} />
               </Stack>
             </Stack>

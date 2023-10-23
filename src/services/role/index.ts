@@ -33,6 +33,17 @@ export class RoleService {
             throw error
         }
     }
+    async delete({ id, reason }: { id: string, reason: string }) {
+        try {
+            const response = await axios.delete(`/admin/role/delete/${id}?reason=${reason}`)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async list({ params }: { params?: URLSearchParams }) {
         try {
             const response = await axios.get('/admin/role/list', { params })

@@ -1,34 +1,35 @@
 import { styled } from '@mui/system'
 import { Button, IconButton, Stack } from '@mui/material'
-import { IThemeMode, IThemeStyle } from 'contexts/theme/interface'
 import { FOOTER_HEIGHT } from 'constants/layout'
 import { DeviceOptions } from 'contexts/web/interface'
+import { getTheme } from 'contexts/theme/ThemeContext'
+const theme = getTheme()
 
 export const CustomButton = styled(Button)(
-  ({ styled }: { styled: IThemeStyle }) => ({
-    borderRadius: styled.radius.primary,
-    boxShadow: styled.shadow.quaternary,
+  () => ({
+    borderRadius: theme.radius.primary,
+    boxShadow: theme.shadow.quaternary,
     padding: '5px 10px'
   })
 )
 
 export const CustomIconButton = styled(IconButton)(
-  ({ styled }: { styled: IThemeStyle }) => ({
-    borderRadius: styled.radius.primary,
+  () => ({
+    borderRadius: theme.radius.primary,
   })
 )
 
 export const CustomFooter = styled(Stack)(
-  ({ styled }: { styled: IThemeMode }) => ({
+  () => ({
     width: '100%',
-    color: styled.text.primary,
+    color: theme.text.primary,
     height: FOOTER_HEIGHT,
-    backgroundColor: styled.layout.container
+    backgroundColor: theme.layout.container
   })
 )
 
 export const CustomPagination = styled('div')(
-  ({ styled }: { styled: IThemeStyle }) => ({
+  () => ({
     position: 'absolute',
     bottom: 0,
     right: 37,
@@ -38,14 +39,14 @@ export const CustomPagination = styled('div')(
     alignItems: 'center',
     overflow: 'hidden',
     '& div, & div div svg': {
-      color: styled.text.secondary,
+      color: theme.text.secondary,
     },
   })
 )
 
 export const CustomTableContainer = styled('div')(
-  ({ styled, device }: { styled: IThemeStyle; device: DeviceOptions }) => ({
-    backgroundColor: styled.layout.container,
+  ({ device }: { device: DeviceOptions }) => ({
+    backgroundColor: theme.layout.container,
     '& .table-container': {
       maxWidth: '100%',
       position: 'relative',
@@ -54,31 +55,31 @@ export const CustomTableContainer = styled('div')(
         overflowX: 'initial',
       },
       '& thead tr': {
-        boxShadow: styled.shadow.quaternary,
-        borderRadius: styled.radius.primary,
+        boxShadow: theme.shadow.quaternary,
+        borderRadius: theme.radius.primary,
         '& th:first-of-type': {
-          borderRadius: `${styled.radius.primary} 0 0 ${styled.radius.primary}`,
+          borderRadius: `${theme.radius.primary} 0 0 ${theme.radius.primary}`,
           overflow: 'hidden',
         },
         '& th:last-of-type': {
-          borderRadius: `0 ${styled.radius.primary} ${styled.radius.primary} 0`,
+          borderRadius: `0 ${theme.radius.primary} ${theme.radius.primary} 0`,
           overflow: 'hidden',
         }
       },
       '& th': {
-        backgroundColor: styled.layout.container,
-        color: styled.text.primary,
+        backgroundColor: theme.layout.container,
+        color: theme.text.primary,
         borderBottom: 0,
-        fontWeight: styled.font.weight,
-        fontSize: styled.responsive[device]?.text.tertiary,
+        fontWeight: theme.font.weight,
+        fontSize: theme.responsive[device]?.text.tertiary,
         padding: '11px 20px',
         wordWrap: 'break-word',
       },
       '& tr td': {
-        color: styled.text.secondary,
-        borderBottom: styled.border.quaternary,
-        fontSize: styled.responsive[device]?.text.tertiary,
-        fontWeight: styled.font.weight,
+        color: theme.text.secondary,
+        borderBottom: theme.border.quaternary,
+        fontSize: theme.responsive[device]?.text.tertiary,
+        fontWeight: theme.font.weight,
         padding: '11px 20px',
         overflow: 'hidden',
       },
