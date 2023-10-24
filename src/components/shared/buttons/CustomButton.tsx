@@ -41,6 +41,28 @@ export const CreateButton = ({ isLoading, ...props }: IButton) => {
   )
 }
 
+export const UpdateButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomButton
+      {...props}
+      disabled={isLoading}
+      sx={{
+        backgroundColor: `${theme.color.info}22`,
+        color: theme.color.info,
+        '&:hover': { backgroundColor: `${theme.color.info}44` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={21} sx={{ position: 'absolute' }} />
+      )}
+      <Typography sx={{ opacity: isLoading ? 0 : 1 }}>
+        {translate('UPDATE')}
+      </Typography>
+    </CustomButton>
+  )
+}
+
 export const CancelButton = ({ isLoading, ...props }: IButton) => {
   const { theme } = useTheme()
   return (

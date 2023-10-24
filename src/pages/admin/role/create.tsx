@@ -4,6 +4,7 @@ import { breadcrumbs } from '..'
 import { translate } from 'contexts/language/LanguageContext'
 import Container from 'components/shared/Container'
 import RoleForm from './form'
+import { initRole } from './constant'
 
 const RoleCreate = () => {
   return (
@@ -24,7 +25,7 @@ const RoleCreate = () => {
       }
     >
       <Container>
-        <RoleForm />
+        <RoleForm defaultValues={initRole} />
       </Container>
     </Layout>
   )

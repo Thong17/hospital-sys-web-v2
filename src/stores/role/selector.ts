@@ -15,3 +15,8 @@ export const selectRoleForm = createSelector(
     (state: RootState) => state.role.form,
     (state) => state
 )
+
+export const selectRoleDetail = createSelector(
+    (state: RootState) => state.role.detail,
+    (state) => state
+)

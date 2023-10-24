@@ -33,10 +33,31 @@ export class RoleService {
             throw error
         }
     }
-    async delete({ id, reason }: { id: string, reason: string }) {
+    async update({ id, data }: { id: String, data: { name: Object, status: boolean, description: String, navigation: Object, privilege: Object } }) {
+        try {
+            const response = await axios.put(`/admin/role/update/${id}`, data)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async delete({ id, reason }: { id: String, reason: String }) {
         try {
             const response = await axios.delete(`/admin/role/delete/${id}?reason=${reason}`)
             notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async detail({ id }: { id: String }) {
+        try {
+            const response = await axios.get(`/admin/role/detail/${id}`)
             return response
         } catch (error: any) {
             console.error(error)

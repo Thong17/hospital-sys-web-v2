@@ -4,7 +4,11 @@ import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
 import { Stack, Typography } from '@mui/material'
-import { CreateButton, OptionButton, SearchButton } from 'components/shared/buttons/CustomButton'
+import {
+  CreateButton,
+  OptionButton,
+  SearchButton,
+} from 'components/shared/buttons/CustomButton'
 import { useNavigate, useOutlet } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
@@ -37,8 +41,12 @@ const Role = () => {
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
   const [queryParams, setQueryParams] = useSearchParams()
 
-  useEffect(() => {
+  const fetchListRole = (queryParams: any) => {
     dispatch(getRoleList({ params: queryParams }))
+  }
+
+  useEffect(() => {
+    fetchListRole(queryParams)
   }, [queryParams])
 
   const handleCreate = () => {
@@ -46,7 +54,7 @@ const Role = () => {
   }
 
   const handleEdit = (data: any) => {
-    console.log(data)
+    navigate(`/admin/role/update/${data._id}`)
   }
 
   const handleDelete = (data: any) => {
@@ -54,10 +62,15 @@ const Role = () => {
       title: translate('DELETE_ROLE_TITLE'),
       description: translate('DELETE_ROLE_DESCRIPTION'),
       reason: true,
-      variant: 'error'
-    }).then((confirmData: any) => {
-      dispatch(getRoleDelete({ id: data._id, reason: confirmData?.reason }))
-    }).catch(() => {})
+      variant: 'error',
+    })
+      .then((confirmData: any) => {
+        dispatch(getRoleDelete({ id: data._id, reason: confirmData?.reason }))
+          .unwrap()
+          .then(() => fetchListRole(queryParams))
+          .catch(console.error)
+      })
+      .catch(() => {})
   }
 
   const handleSort = (column: any) => {
