@@ -453,7 +453,7 @@ export const determineCheckAll = (obj: any) => {
   return 'indeterminate'
 }
 
-export const mergeObjects = (obj1: Object, obj2: Object) => {
+export const mergeObjects = (obj1: Object = {}, obj2: Object = {}) => {
   const mergedObj: any = {}
 
   for (let key in obj1) {

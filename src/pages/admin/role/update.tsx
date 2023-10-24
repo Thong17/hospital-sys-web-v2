@@ -50,8 +50,8 @@ const mapRoleBody = (data: any):IRoleForm => {
     name: data.name,
     description: data.description,
     status: data.status,
-    navigation: data.navigation,
-    privilege: data.privilege,
+    navigation: data.navigation ?? {},
+    privilege: data.privilege ?? {},
   }
 }
 

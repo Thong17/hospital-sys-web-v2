@@ -35,16 +35,10 @@ const PrivilegeBox = ({
 
   useEffect(() => {
     setCheckedNavigation((prev: any) => mergeObjects(prev, defaultNavigation))
-    return () => {
-      setCheckedNavigation({})
-    }
   }, [defaultNavigation])
 
   useEffect(() => {
     setCheckedPrivilege((prev: any) => mergeObjects(prev, defaultPrivilege))
-    return () => {
-      setCheckedPrivilege({})
-    }
   }, [defaultPrivilege])
 
   useEffect(() => {

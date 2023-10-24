@@ -47,16 +47,10 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
 
   useEffect(() => {
     setNavigation(navigationValue)
-    return () => {
-      setNavigation({})
-    }
   }, [navigationValue])
 
   useEffect(() => {
     setPrivilege(privilegeValue)
-    return () => {
-      setPrivilege({})
-    }
   }, [privilegeValue])
 
   useEffect(() => {
