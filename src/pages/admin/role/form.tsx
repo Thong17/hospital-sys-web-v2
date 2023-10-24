@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router'
 import { ROLE_FORM_WIDTH, roleSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
 import PrivilegeBox from 'components/shared/forms/PrivilegeBox'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { getRoleCreate, getRoleUpdate } from 'stores/role/action'
 import { selectRoleCreate } from 'stores/role/selector'
@@ -40,18 +40,6 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<any>({ resolver: yupResolver(roleSchema), defaultValues })
-  const [navigation, setNavigation] = useState({})
-  const [privilege, setPrivilege] = useState({})
-  const navigationValue = watch('navigation')
-  const privilegeValue = watch('privilege')
-
-  useEffect(() => {
-    setNavigation(navigationValue)
-  }, [navigationValue])
-
-  useEffect(() => {
-    setPrivilege(privilegeValue)
-  }, [privilegeValue])
 
   useEffect(() => {
     reset(defaultValues)
@@ -92,7 +80,7 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
             multiline
           />
           <FormControlLabel
-            control={<Checkbox {...register('status')} />}
+            control={<Checkbox {...register('status')} checked={watch('status')} />}
             label={translate('STATUS')}
           />
           <Stack
@@ -119,8 +107,8 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
         </Stack>
         <Box sx={{ width: `calc(100% - ${ROLE_FORM_WIDTH}px)` }}>
           <PrivilegeBox
-            defaultNavigation={navigation}
-            defaultPrivilege={privilege}
+            defaultNavigation={watch('navigation')}
+            defaultPrivilege={watch('privilege')}
             onChangeNavigation={handleChangeNavigation}
             onChangePrivilege={handleChangePrivilege}
           />

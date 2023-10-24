@@ -32,13 +32,21 @@ const PrivilegeBox = ({
   const [privilege, setPrivilege] = useState({})
   const [checkedNavigation, setCheckedNavigation] = useState<any>({})
   const [checkedPrivilege, setCheckedPrivilege] = useState<any>({})
+  const [preNavigation, setPreNavigation] = useState({})
+  const [prePrivilege, setPrePrivilege] = useState({})
 
   useEffect(() => {
     setCheckedNavigation((prev: any) => mergeObjects(prev, defaultNavigation))
+    return () => {
+      setCheckedNavigation(preNavigation)
+    }
   }, [defaultNavigation])
 
   useEffect(() => {
     setCheckedPrivilege((prev: any) => mergeObjects(prev, defaultPrivilege))
+    return () => {
+      setCheckedPrivilege(prePrivilege)
+    }
   }, [defaultPrivilege])
 
   useEffect(() => {
@@ -49,6 +57,8 @@ const PrivilegeBox = ({
       }, 500);
       if (response?.code !== 'SUCCESS') return
       const { preRole, preMenu } = response
+      setPreNavigation(preMenu)
+      setPrePrivilege(preRole)
       setCheckedNavigation((prev: any) => mergeObjects(preMenu, prev))
       setCheckedPrivilege((prev: any) => mergeObjects(preRole, prev))
     }
