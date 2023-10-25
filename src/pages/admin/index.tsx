@@ -2,6 +2,7 @@ import { Layout } from 'components/layouts/Layout'
 import Role from './role'
 import RoleCreate from './role/create'
 import RoleUpdate from './role/update'
+import RoleDetail from './role/detail'
 import { useOutlet } from 'react-router'
 import Breadcrumb, { IBreadcrumb } from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
@@ -52,4 +53,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail }

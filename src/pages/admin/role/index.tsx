@@ -9,7 +9,7 @@ import {
   OptionButton,
   SearchButton,
 } from 'components/shared/buttons/CustomButton'
-import { useNavigate, useOutlet } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
@@ -35,7 +35,6 @@ const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
-  const outlet = useOutlet()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
@@ -53,11 +52,23 @@ const Role = () => {
     navigate('/admin/role/create')
   }
 
-  const handleEdit = (data: any) => {
+  const handleEdit = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    data: any
+  ) => {
+    event.stopPropagation()
     navigate(`/admin/role/update/${data._id}`)
   }
 
-  const handleDelete = (data: any) => {
+  const handleClick = (data: any) => {
+    navigate(`/admin/role/detail/${data._id}`)
+  }
+
+  const handleDelete = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    data: any
+  ) => {
+    event.stopPropagation()
     confirm({
       title: translate('DELETE_ROLE_TITLE'),
       description: translate('DELETE_ROLE_DESCRIPTION'),
@@ -101,56 +112,54 @@ const Role = () => {
   }, 500)
 
   return (
-    <>
-      {outlet ?? (
-        <Layout
-          navbar={
-            <Breadcrumb
-              list={breadcrumbs}
-              step={2}
-              selectedOption={{ navbar: '/admin/role' }}
-            />
-          }
+    <Layout
+      navbar={
+        <Breadcrumb
+          list={breadcrumbs}
+          step={2}
+          selectedOption={{ navbar: '/admin/role' }}
+        />
+      }
+    >
+      <Container>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          py={1}
         >
-          <Container>
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              py={1}
-            >
-              <Typography>Role</Typography>
-              <Stack direction={'row'} gap={1}>
-                <SearchButton onChange={handleChangeSearch} />
-                <OptionButton />
-                <CreateButton onClick={handleCreate} />
-              </Stack>
-            </Stack>
-            <StickyTable
-              rows={data?.map((item: any) =>
-                mapData(item, lang, handleEdit, handleDelete)
-              )}
-              columns={columns}
-              onSort={handleSort}
-              count={metaData?.total}
-              limit={metaData?.limit}
-              skip={metaData?.skip}
-              onChangePage={handleChangePage}
-            />
-          </Container>
-        </Layout>
-      )}
-    </>
+          <Typography>Role</Typography>
+          <Stack direction={'row'} gap={1}>
+            <SearchButton onChange={handleChangeSearch} />
+            <OptionButton />
+            <CreateButton onClick={handleCreate} />
+          </Stack>
+        </Stack>
+        <StickyTable
+          rows={data?.map((item: any) =>
+            mapData(item, lang, handleEdit, handleDelete)
+          )}
+          columns={columns}
+          onSort={handleSort}
+          count={metaData?.total}
+          limit={metaData?.limit}
+          skip={metaData?.skip}
+          onChangePage={handleChangePage}
+          onClick={handleClick}
+        />
+      </Container>
+    </Layout>
   )
 }
 
 const mapData = (
   item: any,
   lang: string,
-  onEdit: (_data: any) => void,
-  onDelete: (_data: any) => void
+  onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
   return {
+    _id: item._id,
     no: 1,
     name: item.name[lang] ?? item.name['English'],
     status: item.status,

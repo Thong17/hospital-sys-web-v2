@@ -13,7 +13,6 @@ export const EditButton = ({ isLoading, ...props }: IButton) => {
   return (
     <CustomIconButton
       {...props}
-      styled={theme}
       disabled={isLoading}
       size='small'
       sx={{
@@ -40,7 +39,6 @@ export const DeleteButton = ({ isLoading, ...props }: IButton) => {
   return (
     <CustomIconButton
       {...props}
-      styled={theme}
       disabled={isLoading}
       size='small'
       sx={{
@@ -66,11 +64,11 @@ export const DeleteButton = ({ isLoading, ...props }: IButton) => {
   )
 }
 
-export const ActionButton = ({ data, onEdit, onDelete }: { data: any, onEdit: (_data: any) => void, onDelete: (_data: any) => void }) => {
+export const ActionButton = ({ data, onEdit, onDelete }: { data: any, onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void, onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void }) => {
   return (
     <Stack direction={'row'} gap={1} justifyContent={'end'}>
-      <EditButton onClick={() => onEdit(data)} />
-      <DeleteButton onClick={() => onDelete(data)} />
+      <EditButton onClick={(event) => onEdit(event, data)} />
+      <DeleteButton onClick={(event) => onDelete(event, data)} />
     </Stack>
   )
 }

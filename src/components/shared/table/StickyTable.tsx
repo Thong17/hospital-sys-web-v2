@@ -64,7 +64,6 @@ export const StickyTable = ({
   return (
     <CustomTableContainer
       color={backgroundColor}
-      styled={theme}
       device={device}
       style={style}
     >
@@ -110,7 +109,7 @@ export const StickyTable = ({
                     return (
                       <TableRow
                         onClick={() => {
-                          onClick && onClick(row.id)
+                          onClick && onClick(row)
                         }}
                         hover
                         role='checkbox'
@@ -178,7 +177,7 @@ export const StickyTable = ({
                       return (
                         <TableRow
                           onClick={() => {
-                            onClick && onClick(row.id)
+                            onClick && onClick(row)
                           }}
                           hover
                           role='checkbox'
@@ -239,7 +238,7 @@ export const StickyTable = ({
         </TableContainer>
       </div>
       {!loading && pagination && (
-        <CustomPagination styled={theme}>
+        <CustomPagination>
           <Pagination
             count={Math.ceil(count / limit)}
             page={skip + 1}
