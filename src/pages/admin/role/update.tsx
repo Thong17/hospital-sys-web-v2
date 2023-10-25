@@ -2,7 +2,6 @@ import { Layout } from "components/layouts/Layout"
 import Breadcrumb from "components/shared/Breadcrumb"
 import { breadcrumbs } from ".."
 import { translate } from "contexts/language/LanguageContext"
-import { Container } from "@mui/material"
 import RoleForm, { IRoleForm } from './form'
 import { useParams } from "react-router"
 import { useEffect } from "react"
@@ -10,11 +9,12 @@ import { useAppDispatch, useAppSelector } from "app/store"
 import { selectRoleDetail } from "stores/role/selector"
 import { getRoleDetail } from "stores/role/action"
 import { initRole } from "./constant"
+import Container from "components/shared/Container"
 
 const RoleUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
-  const { data } = useAppSelector(selectRoleDetail)
+  const { data, isLoading } = useAppSelector(selectRoleDetail)
   
   useEffect(() => {
     dispatch(getRoleDetail({ id }))
@@ -38,7 +38,7 @@ const RoleUpdate = () => {
       }
     >
       <Container>
-        <RoleForm defaultValues={mapRoleBody(data)} />
+        {!isLoading && <RoleForm defaultValues={mapRoleBody(data)} />}
       </Container>
     </Layout>
   )
