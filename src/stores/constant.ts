@@ -1,0 +1,1 @@
+export declare type TypeStatus = 'INIT' | 'PENDING' | 'FAILED' | 'COMPLETED'
