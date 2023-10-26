@@ -1,25 +1,28 @@
-import { Layout } from "components/layouts/Layout"
-import Breadcrumb from "components/shared/Breadcrumb"
-import { breadcrumbs } from ".."
-import { translate } from "contexts/language/LanguageContext"
+import { Layout } from 'components/layouts/Layout'
+import Breadcrumb from 'components/shared/Breadcrumb'
+import { breadcrumbs } from '..'
+import { translate } from 'contexts/language/LanguageContext'
 import RoleForm, { IRoleForm } from './form'
-import { useParams } from "react-router"
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "app/store"
-import { selectRoleDetail } from "stores/role/selector"
-import { getRoleDetail } from "stores/role/action"
-import { initRole } from "./constant"
-import Container from "components/shared/Container"
+import { useParams } from 'react-router'
+import { useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from 'app/store'
+import { selectRoleDetail } from 'stores/role/selector'
+import { getRoleDetail } from 'stores/role/action'
+import { initRole } from './constant'
+import Container from 'components/shared/Container'
 
 const RoleUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
-  const { data, isLoading } = useAppSelector(selectRoleDetail)
-  
+  const [isLoading, setIsLoading] = useState(true)
+  const { data } = useAppSelector(selectRoleDetail)
+
   useEffect(() => {
     dispatch(getRoleDetail({ id }))
+      .unwrap()
+      .then(() => setIsLoading(false))
   }, [id])
-  
+
   return (
     <Layout
       navbar={
@@ -44,7 +47,7 @@ const RoleUpdate = () => {
   )
 }
 
-const mapRoleBody = (data: any):IRoleForm => {
+const mapRoleBody = (data: any): IRoleForm => {
   if (!data) return initRole
   return {
     name: data.name,
