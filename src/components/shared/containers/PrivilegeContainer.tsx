@@ -4,6 +4,7 @@ import { SectionContainer } from './SectionContainer'
 import ShortcutRoundedIcon from '@mui/icons-material/ShortcutRounded'
 import ItemContainer from './ItemContainer'
 import useTheme from 'hooks/useTheme'
+import { renderColor } from 'utils/index'
 
 const PrivilegeContainer = ({
   navigation = {},
@@ -14,25 +15,7 @@ const PrivilegeContainer = ({
 }) => {
   const { theme } = useTheme()
 
-  const renderColor = (color: String) => {
-    switch (true) {
-      case ['list', 'detail'].includes(color as any):
-        return theme.color.info
-
-      case ['create'].includes(color as any):
-        return theme.color.success
-
-      case ['delete'].includes(color as any):
-        return theme.color.error
-
-      case ['update'].includes(color as any):
-        return theme.color.warning
-
-      default:
-        return theme.color.info
-    }
-    return
-  }
+  
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
       {Object.keys(navigation)?.map((nav, key) => {
@@ -63,7 +46,7 @@ const PrivilegeContainer = ({
                           <ItemContainer
                             text={translate(action.toUpperCase())}
                             key={key}
-                            color={renderColor(action)}
+                            color={renderColor(action, theme)}
                           />
                         )
                       ) : translate('NO_ITEM')}

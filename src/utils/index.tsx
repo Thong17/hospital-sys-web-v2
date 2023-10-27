@@ -1,3 +1,4 @@
+import { IThemeStyle } from 'contexts/theme/interface'
 import { sha256 } from 'js-sha256'
 import moment from 'moment'
 
@@ -500,4 +501,23 @@ export const filterSelectedMenu = (privilege: any, selectedMenu: any) => {
     })
   })
   return filteredObj
+}
+
+export const renderColor = (color: String, theme: IThemeStyle) => {
+  switch (true) {
+    case ['list', 'detail'].includes(color as any):
+      return theme.color.info
+
+    case ['create'].includes(color as any):
+      return theme.color.success
+
+    case ['delete'].includes(color as any):
+      return theme.color.error
+
+    case ['update'].includes(color as any):
+      return theme.color.warning
+
+    default:
+      return theme.color.info
+  }
 }

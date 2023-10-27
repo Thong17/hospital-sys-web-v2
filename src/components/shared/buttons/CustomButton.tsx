@@ -27,14 +27,13 @@ export const CreateButton = ({ isLoading, ...props }: IButton) => {
       disabled={isLoading}
       sx={{
         backgroundColor: `${theme.color.info}22`,
-        color: theme.color.info,
         '&:hover': { backgroundColor: `${theme.color.info}44` },
       }}
     >
       {isLoading && (
         <CircularProgress size={21} sx={{ position: 'absolute' }} />
       )}
-      <Typography sx={{ opacity: isLoading ? 0 : 1 }}>
+      <Typography sx={{ opacity: isLoading ? 0 : 1, color: theme.color.info }}>
         {translate('CREATE')}
       </Typography>
     </CustomButton>
@@ -167,8 +166,14 @@ export const OptionButton = ({ isLoading, ...props }: IButton) => {
         }}
         sx={{ marginTop: '5px' }}
       >
-        <MenuItem><FileUploadRoundedIcon sx={{ marginRight: '5px' }} />{translate('IMPORT')}</MenuItem>
-        <MenuItem><DownloadRoundedIcon sx={{ marginRight: '5px' }} />{translate('EXPORT')}</MenuItem>
+        <MenuItem>
+          <FileUploadRoundedIcon sx={{ marginRight: '5px' }} />
+          {translate('IMPORT')}
+        </MenuItem>
+        <MenuItem>
+          <DownloadRoundedIcon sx={{ marginRight: '5px' }} />
+          {translate('EXPORT')}
+        </MenuItem>
       </Menu>
     </>
   )

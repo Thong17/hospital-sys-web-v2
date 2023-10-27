@@ -9,9 +9,11 @@ import {
   determineObjectValue,
   filterSelectedMenu,
   mergeObjects,
+  renderColor,
 } from 'utils/index'
 import { SectionContainer } from '../containers/SectionContainer'
 import Loading from '../Loading'
+import useTheme from 'hooks/useTheme'
 
 const INDENT_WIDTH = 30
 
@@ -26,6 +28,7 @@ const PrivilegeBox = ({
   onChangeNavigation: (_data: any) => void
   onChangePrivilege: (_data: any) => void
 }) => {
+  const { theme } = useTheme()
   const [isFetching, setIsFetching] = useState(true)
   const dispatch = useAppDispatch()
   const [navigation, setNavigation] = useState({})
@@ -300,6 +303,11 @@ const PrivilegeBox = ({
                                             nav as keyof typeof navigation
                                           ]?.[action]
                                         }
+                                        sx={{
+                                          '&.Mui-checked': {
+                                            color: renderColor(action, theme)
+                                          }
+                                        }}
                                       />
                                     }
                                     label={translate(action.toUpperCase())}
