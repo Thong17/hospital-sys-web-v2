@@ -66,6 +66,14 @@ export interface IThemeMode {
   }
 }
 
+export declare type IColorOption = {
+  error: string,
+  success: string,
+  info: string,
+  warning: string,
+  purple: string,
+}
+
 export interface IThemeStyle extends IThemeMode {
   radius: {
     primary: string
@@ -79,13 +87,7 @@ export interface IThemeStyle extends IThemeMode {
     family: string
     weight: number
   }
-  color: {
-    error: string,
-    success: string,
-    info: string,
-    warning: string,
-    purple: string,
-  },
+  color: IColorOption,
   responsive: {
     mobile: {
       text: TextOptions

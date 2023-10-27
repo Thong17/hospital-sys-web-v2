@@ -12,6 +12,13 @@ import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 
 const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
 
+export const getTheme = () => {
+  const { session } = store.getState()
+  const mode = session.user?.theme || initMode
+  return { ...themeMode[mode as ThemeOptions], ...themeStyle }
+}
+const theme = getTheme()
+
 export const muiTheme = createTheme({
   components: {
     MuiCheckbox: {
@@ -20,6 +27,11 @@ export const muiTheme = createTheme({
         checkedIcon: <CheckBoxRoundedIcon />,
       },
     },
+    MuiTypography: {
+      defaultProps: {
+        color: theme.text.secondary
+      }
+    }
   },
 })
 
@@ -28,12 +40,6 @@ export const ThemeContext = createContext<IThemeContext>({
   theme: { ...themeMode[initMode], ...themeStyle },
   changeTheme: (_mode: ThemeOptions) => {},
 })
-
-export const getTheme = () => {
-  const { session } = store.getState()
-  const mode = session.user?.theme || initMode
-  return { ...themeMode[mode as ThemeOptions], ...themeStyle }
-}
 
 const ThemesProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAppSelector(selectSession)

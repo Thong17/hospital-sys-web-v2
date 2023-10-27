@@ -1,5 +1,5 @@
 import { languages } from 'contexts/language/constant'
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../containers/SectionContainer'
 import { TextInput } from './TextInput'
 import { useEffect, useState } from 'react'
 

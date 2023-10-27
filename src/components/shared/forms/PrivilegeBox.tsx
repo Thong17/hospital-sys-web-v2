@@ -10,7 +10,7 @@ import {
   filterSelectedMenu,
   mergeObjects,
 } from 'utils/index'
-import { SectionContainer } from '../SectionContainer'
+import { SectionContainer } from '../containers/SectionContainer'
 import Loading from '../Loading'
 
 const INDENT_WIDTH = 30

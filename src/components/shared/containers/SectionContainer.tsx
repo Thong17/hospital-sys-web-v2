@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import useDevice from 'hooks/useDevice'
 import useTheme from 'hooks/useTheme'
 
@@ -13,8 +14,8 @@ export const SectionContainer = ({ children, label, boxShadow, error, padding = 
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
-    <div {...props}>
-      <div
+    <Box {...props}>
+      <Box
         style={{
           padding: padding,
           border: error ? `1px solid ${theme.color.error}` : theme.border.tertiary,
@@ -35,7 +36,7 @@ export const SectionContainer = ({ children, label, boxShadow, error, padding = 
           {label}
         </span>
         {children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
