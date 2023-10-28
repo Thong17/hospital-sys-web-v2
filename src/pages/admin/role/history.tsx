@@ -3,11 +3,25 @@ import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '..'
 import { useParams } from 'react-router'
 import { translate } from 'contexts/language/LanguageContext'
-import TimelineContainer from 'components/shared/containers/TimelineContainer'
+import TimelineContainer, {
+  ITimelineItem,
+} from 'components/shared/containers/TimelineContainer'
 import Container from 'components/shared/Container'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from 'app/store'
+import { getRoleHistory } from 'stores/role/action'
+import { selectRoleHistory } from 'stores/role/selector'
+import { timeFormat } from 'utils/index'
 
 const RoleHistory = () => {
   const { id } = useParams()
+  const dispatch = useAppDispatch()
+  const { data } = useAppSelector(selectRoleHistory)
+
+  useEffect(() => {
+    dispatch(getRoleHistory({ id }))
+  }, [id])
+
   return (
     <Layout
       navbar={
@@ -26,10 +40,21 @@ const RoleHistory = () => {
       }
     >
       <Container>
-        <h1>Hello</h1>
-        <TimelineContainer /></Container>
+        <TimelineContainer data={mapData(data)} />
+      </Container>
     </Layout>
   )
 }
+
+const mapData = (data: any): ITimelineItem[] =>
+  data.map((item: any) => {
+    const description = item?.data
+    return {
+      timeline: `${timeFormat(item?.updatedAt, 'YYYY MMM DD')}\n${timeFormat(item?.updatedAt)}`,
+      actionType: item?.type,
+      title: `${translate(`${item?.type}_BY`)}  ${item?.createdBy?.username}`,
+      content: description,
+    }
+  })
 
 export default RoleHistory

@@ -20,3 +20,8 @@ export const selectRoleDetail = createSelector(
     (state: RootState) => state.role.detail,
     (state) => state
 )
+
+export const selectRoleHistory = createSelector(
+    (state: RootState) => state.role.history,
+    (state) => state
+)

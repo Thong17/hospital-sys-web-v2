@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRoleCreate, getRoleDelete, getRoleDetail, getRoleList, getRoleUpdate } from "./action";
+import { getRoleCreate, getRoleDelete, getRoleDetail, getRoleHistory, getRoleList, getRoleUpdate } from "./action";
 import { TypeStatus } from "stores/constant";
 
 interface IRole {
@@ -36,6 +36,16 @@ interface IRole {
         data: any,
         error: any
     }
+    history: {
+        status: TypeStatus
+        data: any,
+        error: any,
+        metaData: {
+            skip: number,
+            limit: number,
+            total: number,
+        }
+    }
 }
 
 const initialState: IRole = {
@@ -44,6 +54,7 @@ const initialState: IRole = {
     update: { isLoading: false, data: null, error: null },
     delete: { isLoading: false, data: null, error: null },
     detail: { status: 'INIT', data: null, error: null },
+    history: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
     list: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
 
@@ -112,6 +123,20 @@ const roleSlice = createSlice({
             state.detail.error = null
             state.detail.status = 'COMPLETED'
             state.detail.data = action.payload?.data
+        })
+
+        // History
+        builder.addCase(getRoleHistory.pending, (state) => {
+            state.history.status = 'PENDING'
+        })
+        builder.addCase(getRoleHistory.rejected, (state, action) => {
+            state.history.status = 'FAILED'
+            state.history.error = action.payload?.response?.data
+        })
+        builder.addCase(getRoleHistory.fulfilled, (state, action) => {
+            state.history.error = null
+            state.history.status = 'COMPLETED'
+            state.history.data = action.payload?.data
         })
 
         // Update

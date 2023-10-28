@@ -13,39 +13,14 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import ChangeHistoryRoundedIcon from '@mui/icons-material/ChangeHistoryRounded'
+import { Tooltip } from '@mui/material'
 
-const list = [
-  {
-    timeline: '13 Oct 2023\n9:30 am',
-    actionType: 'REJECT',
-    title: 'Update',
-    content: 'Description',
-  },
-  {
-    timeline: '19:30 am',
-    actionType: 'DELETE',
-    title: 'Eat',
-    content: 'Description',
-  },
-  {
-    timeline: '9:30 am',
-    actionType: 'APPROVE',
-    title: 'Eat',
-    content: 'Description',
-  },
-  {
-    timeline: '9:30 am',
-    actionType: 'UPDATE',
-    title: 'Eat',
-    content: 'Description',
-  },
-  {
-    timeline: '9:30 am',
-    actionType: 'CREATE',
-    title: 'Eat',
-    content: 'Description',
-  },
-]
+export interface ITimelineItem {
+  timeline: String
+  actionType: String
+  title: String
+  content: String
+}
 
 const Item = ({
   timeline,
@@ -54,32 +29,52 @@ const Item = ({
   content,
 }: {
   timeline: String
-  type: string
+  type: String
   title: String
   content: String
 }) => {
   const { theme } = useTheme()
-  const renderType = (type: string) => {
+  const renderType = (type: String) => {
     switch (true) {
       case type === 'CREATE':
-        return <AddRoundedIcon />
+        return (
+          <TimelineDot color='success'>
+            <AddRoundedIcon color='success' />
+          </TimelineDot>
+        )
       case type === 'UPDATE':
-        return <CreateRoundedIcon />
+        return (
+          <TimelineDot color='info'>
+            <CreateRoundedIcon />
+          </TimelineDot>
+        )
       case type === 'DELETE':
-        return <DeleteRoundedIcon />
+        return (
+          <TimelineDot color='error'>
+            <DeleteRoundedIcon />
+          </TimelineDot>
+        )
       case type === 'APPROVE':
-        return <DoneRoundedIcon />
+        return (
+          <TimelineDot color='info'>
+            <DoneRoundedIcon />
+          </TimelineDot>
+        )
       case type === 'REJECT':
-        return <CloseRoundedIcon />
+        return (
+          <TimelineDot color='error'>
+            <CloseRoundedIcon />
+          </TimelineDot>
+        )
 
       default:
         return <ChangeHistoryRoundedIcon />
     }
   }
   return (
-    <TimelineItem>
+    <TimelineItem sx={{ width: '100%' }}>
       <TimelineOppositeContent
-        sx={{ m: 'auto 0', color: theme.text.quaternary, width: '80px' }}
+        sx={{ m: 'auto 0', color: theme.text.quaternary, maxWidth: '80px' }}
         align='right'
         variant='body2'
       >
@@ -87,20 +82,24 @@ const Item = ({
       </TimelineOppositeContent>
       <TimelineSeparator>
         <TimelineConnector />
-        <TimelineDot>{renderType(type)}</TimelineDot>
+        {renderType(type)}
         <TimelineConnector />
       </TimelineSeparator>
-      <TimelineContent sx={{ py: '12px', px: 2 }}>
+      <TimelineContent sx={{ py: '12px', px: 2, width: '80%' }}>
         <Typography variant='h6' component='span'>
           {title}
         </Typography>
-        <Typography>{content}</Typography>
+        <Tooltip title={content}>
+          <Typography noWrap textOverflow={'ellipsis'} overflow={'hidden'}>
+            {content}
+          </Typography>
+        </Tooltip>
       </TimelineContent>
     </TimelineItem>
   )
 }
 
-const TimelineContainer = () => {
+const TimelineContainer = ({ data }: { data: ITimelineItem[] }) => {
   return (
     <Timeline
       sx={{
@@ -108,7 +107,7 @@ const TimelineContainer = () => {
         '& .MuiTimelineConnector-root': { flex: 1 },
       }}
     >
-      {list.map((item, key) => (
+      {data?.map((item, key) => (
         <Item
           key={key}
           title={item.title}

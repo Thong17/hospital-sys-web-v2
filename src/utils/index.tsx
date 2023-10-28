@@ -168,7 +168,7 @@ export const dateFormat = (date: any = null) => {
   return localDate
 }
 
-export const timeFormat = (date: any, format = 'HH:mm') => {
+export const timeFormat = (date: any, format = 'h:mm A') => {
   if (!date) return new Date().toLocaleTimeString()
 
   const localDate = moment(date).format(format)

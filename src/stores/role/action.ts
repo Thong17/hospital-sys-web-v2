@@ -38,3 +38,8 @@ export const getRoleDetail: any = createAsyncThunk(
     'role/detail',
     serviceWrapper(service.detail)
 )
+
+export const getRoleHistory: any = createAsyncThunk(
+    'role/history',
+    serviceWrapper(service.history)
+)
