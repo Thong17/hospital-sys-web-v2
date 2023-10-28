@@ -45,13 +45,13 @@ const RoleDetail = () => {
       }
     >
       <Container>
-        <Stack direction={'row'}>
+        <Stack direction={'row'} mb={2}>
           <LocaleDetail label={translate('NAME') as String} data={data?.name} />
           <Stack sx={{ width: '100%' }}>
             <LabelDetail label={translate('DESCRIPTION') as String}>
-              <Typography>{data?.description}</Typography>
+              <Typography>{data?.description || '...'}</Typography>
             </LabelDetail>
-            <LabelDetail label={translate('STATUS') as String}>
+            <LabelDetail marginTop='10px' label={translate('STATUS') as String}>
               <ItemContainer text={data?.status ? translate('ENABLED') : translate('DISABLED')} color={data?.status ? theme.color.success : theme.color.error} />
             </LabelDetail>
           </Stack>

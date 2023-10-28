@@ -3,15 +3,16 @@ import { SectionContainer } from './SectionContainer'
 interface ILocaleDetail {
   label?: String
   children?: any
+  marginTop?: String
 }
 
-export const LabelDetail = ({ label, children }: ILocaleDetail) => {
+export const LabelDetail = ({ label, children, marginTop = '50px' }: ILocaleDetail) => {
   return (
     <SectionContainer
       label={label}
       sx={{
         marginBottom: '20px',
-        marginTop: '50px',
+        marginTop: marginTop,
         width: '100%',
         '& div': { border: 'none !important' },
       }}

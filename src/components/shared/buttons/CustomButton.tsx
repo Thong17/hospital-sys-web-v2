@@ -48,14 +48,13 @@ export const UpdateButton = ({ isLoading, ...props }: IButton) => {
       disabled={isLoading}
       sx={{
         backgroundColor: `${theme.color.info}22`,
-        color: theme.color.info,
         '&:hover': { backgroundColor: `${theme.color.info}44` },
       }}
     >
       {isLoading && (
         <CircularProgress size={21} sx={{ position: 'absolute' }} />
       )}
-      <Typography sx={{ opacity: isLoading ? 0 : 1 }}>
+      <Typography sx={{ opacity: isLoading ? 0 : 1, color: theme.color.info }}>
         {translate('UPDATE')}
       </Typography>
     </CustomButton>

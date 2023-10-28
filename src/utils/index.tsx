@@ -508,10 +508,10 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
     case ['list', 'detail'].includes(color as any):
       return theme.color.info
 
-    case ['create'].includes(color as any):
+    case ['create', 'approve'].includes(color as any):
       return theme.color.success
 
-    case ['delete'].includes(color as any):
+    case ['delete', 'reject'].includes(color as any):
       return theme.color.error
 
     case ['update'].includes(color as any):
