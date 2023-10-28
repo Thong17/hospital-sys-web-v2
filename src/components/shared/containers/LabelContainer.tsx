@@ -6,7 +6,7 @@ interface ILocaleDetail {
   marginTop?: String
 }
 
-export const LabelDetail = ({ label, children, marginTop = '50px' }: ILocaleDetail) => {
+export const LabelDetail = ({ label, children, marginTop = '40px' }: ILocaleDetail) => {
   return (
     <SectionContainer
       label={label}

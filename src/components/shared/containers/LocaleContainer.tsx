@@ -20,7 +20,7 @@ export const LocaleDetail = ({ label, data }: ILocaleDetail) => {
       {langs.length > 1 ? (
         <SectionContainer
           label={label}
-          sx={{ marginBottom: '20px', marginTop: '50px', width: '100%', '& div': { border: 'none !important' } }}
+          sx={{ marginBottom: '20px', marginTop: '40px', width: '100%', '& div': { border: 'none !important' } }}
           padding='10px'
         >
           <Stack

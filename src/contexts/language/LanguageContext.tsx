@@ -14,7 +14,7 @@ export const LanguageContext = createContext<ILanguageContext>({
   changeLanguage: (_language: LanguageOptions) => {},
 })
 
-export const translate = (key: string) => {
+export const translate = (key: String) => {
   const { session } = store.getState()
   const lang = session.user?.language || initState
   return languages?.[lang as keyof typeof languages]?.[key as keyof typeof languages.English] || key

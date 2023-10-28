@@ -13,7 +13,10 @@ import { Stack, Typography } from '@mui/material'
 import PrivilegeContainer from 'components/shared/containers/PrivilegeContainer'
 import { LabelDetail } from 'components/shared/containers/LabelContainer'
 import ItemContainer from 'components/shared/containers/ItemContainer'
+import RestoreRoundedIcon from '@mui/icons-material/RestoreRounded'
 import useTheme from 'hooks/useTheme'
+import TitleContainer from 'components/shared/containers/TitleContainer'
+import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 
 const RoleDetail = () => {
   const dispatch = useAppDispatch()
@@ -45,6 +48,13 @@ const RoleDetail = () => {
       }
     >
       <Container>
+        <TitleContainer text={translate('TITLE_ROLE_DETAIL') as String}>
+          <Stack direction={'row'} gap={1}>
+            <EditButton />
+            <DeleteButton />
+            <CustomizedIconButton color={theme.color.info} tooltip={translate('HISTORY_BUTTON')} icon={<RestoreRoundedIcon fontSize='small' />} />
+          </Stack>
+        </TitleContainer>
         <Stack direction={'row'} mb={2}>
           <LocaleDetail label={translate('NAME') as String} data={data?.name} />
           <Stack sx={{ width: '100%' }}>
@@ -52,11 +62,19 @@ const RoleDetail = () => {
               <Typography>{data?.description || '...'}</Typography>
             </LabelDetail>
             <LabelDetail marginTop='10px' label={translate('STATUS') as String}>
-              <ItemContainer text={data?.status ? translate('ENABLED') : translate('DISABLED')} color={data?.status ? theme.color.success : theme.color.error} />
+              <ItemContainer
+                text={
+                  data?.status ? translate('ENABLED') : translate('DISABLED')
+                }
+                color={data?.status ? theme.color.success : theme.color.error}
+              />
             </LabelDetail>
           </Stack>
         </Stack>
-        <PrivilegeContainer navigation={data?.navigation} privilege={data?.privilege} />
+        <PrivilegeContainer
+          navigation={data?.navigation}
+          privilege={data?.privilege}
+        />
       </Container>
     </Layout>
   )

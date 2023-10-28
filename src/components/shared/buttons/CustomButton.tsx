@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Menu,
   MenuItem,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import useTheme from 'hooks/useTheme'
@@ -17,6 +18,34 @@ import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded'
 import KeyboardOptionKeyRoundedIcon from '@mui/icons-material/KeyboardOptionKeyRounded'
 interface IButton extends ButtonProps {
   isLoading?: boolean
+}
+
+interface ICustomizedButton {
+  label: any
+  color?: string
+  isLoading?: boolean
+  tooltip?: any
+}
+
+export const CustomizedButton = ({ isLoading, color, label, tooltip = '', ...props }: ICustomizedButton) => {
+  const { theme } = useTheme()
+  return <Tooltip title={tooltip}>
+    <CustomButton
+      {...props}
+      disabled={isLoading}
+      title='action'
+      sx={{
+        backgroundColor: `${color || theme.color.info}22`,
+        color: color || theme.color.info,
+        '&:hover': { backgroundColor: `${color || theme.color.info}44` },
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={21} sx={{ position: 'absolute' }} />
+      )}
+      {label}
+    </CustomButton>
+  </Tooltip>
 }
 
 export const CreateButton = ({ isLoading, ...props }: IButton) => {

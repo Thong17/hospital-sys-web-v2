@@ -28,6 +28,7 @@ const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
       sx={{
         height: NAVBAR_HEIGHT,
         position: 'fixed',
+        zIndex: 1000,
         backgroundColor: theme.layout.container,
         width:
           width > TABLET_WIDTH

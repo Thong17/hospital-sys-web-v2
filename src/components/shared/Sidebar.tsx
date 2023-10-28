@@ -31,7 +31,7 @@ const Sidebar = () => {
         position: 'fixed',
         padding: `${OUTER_MENU_SPACING}px 0 ${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px`,
         boxSizing: 'border-box',
-        zIndex: 1000,
+        zIndex: 1001,
         transition: LAYOUT_TRANSITION,
       }}
     >
@@ -64,7 +64,7 @@ const Sidebar = () => {
             backgroundColor: '#ffffff22',
             width: isOpenedSidebar ? '100%' : 'fit-content !important',
             boxShadow: theme.shadow.quaternary,
-            backdropFilter: 'blur(3px)'
+            backdropFilter: 'blur(2px)'
           },
           '& .sidebar-menu:has(a.active)': {
             backgroundColor: `${theme.color.info}44`,
