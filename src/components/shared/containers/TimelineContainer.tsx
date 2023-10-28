@@ -38,31 +38,31 @@ const Item = ({
     switch (true) {
       case type === 'CREATE':
         return (
-          <TimelineDot color='success'>
-            <AddRoundedIcon color='success' />
+          <TimelineDot sx={{ backgroundColor: `${theme.color.info}44`, color: theme.color.info }}>
+            <AddRoundedIcon />
           </TimelineDot>
         )
       case type === 'UPDATE':
         return (
-          <TimelineDot color='info'>
+          <TimelineDot sx={{ backgroundColor: `${theme.color.info}44`, color: theme.color.info }}>
             <CreateRoundedIcon />
           </TimelineDot>
         )
       case type === 'DELETE':
         return (
-          <TimelineDot color='error'>
+          <TimelineDot sx={{ backgroundColor: `${theme.color.error}44`, color: theme.color.error }}>
             <DeleteRoundedIcon />
           </TimelineDot>
         )
       case type === 'APPROVE':
         return (
-          <TimelineDot color='info'>
+          <TimelineDot sx={{ backgroundColor: `${theme.color.info}44`, color: theme.color.info }}>
             <DoneRoundedIcon />
           </TimelineDot>
         )
       case type === 'REJECT':
         return (
-          <TimelineDot color='error'>
+          <TimelineDot sx={{ backgroundColor: `${theme.color.error}44`, color: theme.color.error }}>
             <CloseRoundedIcon />
           </TimelineDot>
         )
@@ -85,7 +85,7 @@ const Item = ({
         {renderType(type)}
         <TimelineConnector />
       </TimelineSeparator>
-      <TimelineContent sx={{ py: '12px', px: 2, width: '80%' }}>
+      <TimelineContent sx={{ py: '12px', px: 2, minWidth: '80%' }}>
         <Typography variant='h6' component='span'>
           {title}
         </Typography>
