@@ -27,7 +27,7 @@ interface ICustomizedButton {
   tooltip?: any
 }
 
-export const CustomizedButton = ({ isLoading, color, label, tooltip = '', ...props }: ICustomizedButton) => {
+export const CustomizedButton = ({ isLoading, color, label, tooltip = '', ...props }: ICustomizedButton & Omit<ButtonProps, 'color'>) => {
   const { theme } = useTheme()
   return <Tooltip title={tooltip}>
     <CustomButton

@@ -1,6 +1,6 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import { Admin, Role, RoleCreate, RoleDetail, RoleUpdate } from 'pages/admin'
+import { Admin, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate } from 'pages/admin'
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
@@ -52,6 +52,14 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard>
                         <RoleDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'role/detail/:id/history',
+                element: (
+                    <AuthGuard>
+                        <RoleHistory />
                     </AuthGuard>
                 ),
             },

@@ -19,7 +19,7 @@ export const CustomizedIconButton = ({
   icon: any
   color: string
   tooltip?: any
-}) => {
+} & Omit<ButtonProps, 'color'>) => {
   const { theme } = useTheme()
   return (
     <Tooltip title={tooltip}>

@@ -9,6 +9,7 @@ import Container from 'components/shared/Container'
 import { translate } from 'contexts/language/LanguageContext'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
+import RoleHistory from './role/history'
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
@@ -53,4 +54,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory }

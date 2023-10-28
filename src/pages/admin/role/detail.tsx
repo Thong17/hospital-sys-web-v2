@@ -2,11 +2,11 @@ import { Layout } from 'components/layouts/Layout'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '..'
 import { translate } from 'contexts/language/LanguageContext'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleDetail } from 'stores/role/selector'
-import { getRoleDetail } from 'stores/role/action'
+import { getRoleDelete, getRoleDetail } from 'stores/role/action'
 import Container from 'components/shared/Container'
 import { LocaleDetail } from 'components/shared/containers/LocaleContainer'
 import { Stack, Typography } from '@mui/material'
@@ -17,18 +17,49 @@ import RestoreRoundedIcon from '@mui/icons-material/RestoreRounded'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
+import useAlert from 'hooks/useAlert'
 
 const RoleDetail = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const confirm = useAlert()
   const { id } = useParams()
   const { theme } = useTheme()
   const { data } = useAppSelector(selectRoleDetail)
 
-  console.log(data)
-
   useEffect(() => {
     dispatch(getRoleDetail({ id }))
   }, [id])
+
+  const handleEdit = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation()
+    navigate(`/admin/role/update/${id}`)
+  }
+
+  const handleClickHistory = () => {
+    navigate(`/admin/role/detail/${id}/history`)
+  }
+
+  const handleDelete = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.stopPropagation()
+    confirm({
+      title: translate('DELETE_ROLE_TITLE'),
+      description: translate('DELETE_ROLE_DESCRIPTION'),
+      reason: true,
+      variant: 'error',
+    })
+      .then((confirmData: any) => {
+        dispatch(getRoleDelete({ id: id, reason: confirmData?.reason }))
+          .unwrap()
+          .then(() => navigate('/admin/role'))
+          .catch(console.error)
+      })
+      .catch(() => {})
+  }
 
   return (
     <Layout
@@ -50,9 +81,9 @@ const RoleDetail = () => {
       <Container>
         <TitleContainer text={translate('TITLE_ROLE_DETAIL') as String}>
           <Stack direction={'row'} gap={1}>
-            <EditButton />
-            <DeleteButton />
-            <CustomizedIconButton color={theme.color.info} tooltip={translate('HISTORY_BUTTON')} icon={<RestoreRoundedIcon fontSize='small' />} />
+            <EditButton onClick={handleEdit} />
+            <DeleteButton onClick={handleDelete} />
+            <CustomizedIconButton onClick={handleClickHistory} color={theme.color.info} tooltip={translate('HISTORY_BUTTON')} icon={<RestoreRoundedIcon fontSize='small' />} />
           </Stack>
         </TitleContainer>
         <Stack direction={'row'} mb={2}>
