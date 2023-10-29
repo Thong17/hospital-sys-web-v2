@@ -88,14 +88,19 @@ export class RoleService {
     }
     async _export({ params }: { params?: URLSearchParams }) {
         try {
-            const config = {
-                responseType: "arraybuffer",
-                body: { languages: Object.keys(languages) },
-                headers: {
-                  Accept: "application/octet-stream",
-                },
-              }
-            const response = await axios.post('/admin/role/export', { params, ...config })
+            const response = await axios.post('/admin/role/export', { languages: Object.keys(languages) }, { params } )
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async _import({ file }: { file: Blob }) {
+        try {
+            const formData = new FormData()
+            formData.append('excel', file)
+            const response = await axios.post('/admin/role/import', formData)
             return response
         } catch (error: any) {
             console.error(error)

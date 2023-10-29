@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
-import { getRoleDelete, getRoleExport, getRoleList } from 'stores/role/action'
+import { getRoleDelete, getRoleExport, getRoleImport, getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat, debounce } from 'utils/index'
@@ -98,7 +98,8 @@ const Role = () => {
   }
 
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files)
+    const file = event.target.files?.[0]
+    dispatch(getRoleImport({ file }))
   }
 
   const handleSort = (column: any) => {

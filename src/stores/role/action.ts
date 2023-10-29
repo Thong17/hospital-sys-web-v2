@@ -48,3 +48,8 @@ export const getRoleExport: any = createAsyncThunk(
     'role/export',
     serviceWrapper(service._export)
 )
+
+export const getRoleImport: any = createAsyncThunk(
+    'role/import',
+    serviceWrapper(service._import)
+)

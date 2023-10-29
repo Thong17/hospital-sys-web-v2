@@ -30,3 +30,8 @@ export const selectRoleExport = createSelector(
     (state: RootState) => state.role.export,
     (state) => state
 )
+
+export const selectRoleImport = createSelector(
+    (state: RootState) => state.role.import,
+    (state) => state
+)
