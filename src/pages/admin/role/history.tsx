@@ -47,7 +47,7 @@ const RoleHistory = () => {
 }
 
 const mapData = (data: any): ITimelineItem[] =>
-  data.map((item: any) => {
+  data?.map((item: any) => {
     const description = item?.data
     return {
       timeline: `${timeFormat(item?.updatedAt, 'YYYY MMM DD')}\n${timeFormat(item?.updatedAt)}`,

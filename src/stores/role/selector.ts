@@ -25,3 +25,8 @@ export const selectRoleHistory = createSelector(
     (state: RootState) => state.role.history,
     (state) => state
 )
+
+export const selectRoleExport = createSelector(
+    (state: RootState) => state.role.export,
+    (state) => state
+)

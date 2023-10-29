@@ -521,3 +521,16 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
       return theme.color.info
   }
 }
+
+export const downloadBuffer = (buffer: any, filename: string) => {
+  const url = window.URL.createObjectURL(
+    new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
+    }),
+  );
+  const link = document.createElement("a")
+  link.href = url
+  link.setAttribute("download", filename)
+  document.body.appendChild(link)
+  link.click()
+}

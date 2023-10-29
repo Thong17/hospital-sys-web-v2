@@ -27,25 +27,33 @@ interface ICustomizedButton {
   tooltip?: any
 }
 
-export const CustomizedButton = ({ isLoading, color, label, tooltip = '', ...props }: ICustomizedButton & Omit<ButtonProps, 'color'>) => {
+export const CustomizedButton = ({
+  isLoading,
+  color,
+  label,
+  tooltip = '',
+  ...props
+}: ICustomizedButton & Omit<ButtonProps, 'color'>) => {
   const { theme } = useTheme()
-  return <Tooltip title={tooltip}>
-    <CustomButton
-      {...props}
-      disabled={isLoading}
-      title='action'
-      sx={{
-        backgroundColor: `${color || theme.color.info}22`,
-        color: color || theme.color.info,
-        '&:hover': { backgroundColor: `${color || theme.color.info}44` },
-      }}
-    >
-      {isLoading && (
-        <CircularProgress size={21} sx={{ position: 'absolute' }} />
-      )}
-      {label}
-    </CustomButton>
-  </Tooltip>
+  return (
+    <Tooltip title={tooltip}>
+      <CustomButton
+        {...props}
+        disabled={isLoading}
+        title='action'
+        sx={{
+          backgroundColor: `${color || theme.color.info}22`,
+          color: color || theme.color.info,
+          '&:hover': { backgroundColor: `${color || theme.color.info}44` },
+        }}
+      >
+        {isLoading && (
+          <CircularProgress size={21} sx={{ position: 'absolute' }} />
+        )}
+        {label}
+      </CustomButton>
+    </Tooltip>
+  )
 }
 
 export const CreateButton = ({ isLoading, ...props }: IButton) => {
@@ -155,7 +163,12 @@ export const UploadButton = ({ isLoading, ...props }: IButton) => {
   )
 }
 
-export const OptionButton = ({ isLoading, ...props }: IButton) => {
+export const OptionButton = ({
+  isLoading,
+  onImport,
+  onExport,
+  ...props
+}: IButton & { onImport: (_event: React.ChangeEvent<HTMLInputElement>) => void; onExport: () => void }) => {
   const { theme } = useTheme()
   const [anchorEl, setAnchorEl] = useState<any>(null)
   return (
@@ -194,10 +207,13 @@ export const OptionButton = ({ isLoading, ...props }: IButton) => {
         sx={{ marginTop: '5px' }}
       >
         <MenuItem>
-          <FileUploadRoundedIcon sx={{ marginRight: '5px' }} />
-          {translate('IMPORT')}
+          <label htmlFor='export-file'>
+            <FileUploadRoundedIcon sx={{ marginRight: '5px' }} />
+            {translate('IMPORT')}
+            <input type='file' onChange={onImport} name='export-file' id='export-file' style={{ display: 'none' }} />
+          </label>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={onExport}>
           <DownloadRoundedIcon sx={{ marginRight: '5px' }} />
           {translate('EXPORT')}
         </MenuItem>

@@ -13,13 +13,15 @@ import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
-import { getRoleDelete, getRoleList } from 'stores/role/action'
+import { getRoleDelete, getRoleExport, getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat, debounce } from 'utils/index'
 import { useSearchParams } from 'react-router-dom'
 import useAlert from 'hooks/useAlert'
 import { translate } from 'contexts/language/LanguageContext'
+import { convertBufferToArrayBuffer, downloadBuffer } from 'utils/index'
+import useNotify from 'hooks/useNotify'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: 'No', id: 'no' },
@@ -35,6 +37,7 @@ const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
+  const { notify } = useNotify()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
@@ -84,6 +87,20 @@ const Role = () => {
       .catch(() => {})
   }
 
+  const handleExport = () => {
+    dispatch(getRoleExport({ params: queryParams }))
+      .unwrap()
+      .then((data: any) => {
+        if (data?.code !== 'SUCCESS') return
+        downloadBuffer(convertBufferToArrayBuffer(data?.file?.data), data?.name)
+      })
+      .catch((error: any) => notify(error?.response?.data?.message, 'error'))
+  }
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.files)
+  }
+
   const handleSort = (column: any) => {
     const toggleSort = (value: 'asc' | 'desc') => {
       if (value === 'asc') return 'desc'
@@ -131,7 +148,7 @@ const Role = () => {
           <Typography>Role</Typography>
           <Stack direction={'row'} gap={1}>
             <SearchButton onChange={handleChangeSearch} />
-            <OptionButton />
+            <OptionButton onImport={handleImport} onExport={handleExport} />
             <CreateButton onClick={handleCreate} />
           </Stack>
         </Stack>

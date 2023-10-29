@@ -1,4 +1,5 @@
 import axios from 'configs/axios'
+import { languages } from 'contexts/language/constant'
 import { notify } from 'contexts/notify/NotifyContext'
 
 export class RoleService {
@@ -78,6 +79,23 @@ export class RoleService {
     async list({ params }: { params?: URLSearchParams }) {
         try {
             const response = await axios.get('/admin/role/list', { params })
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async _export({ params }: { params?: URLSearchParams }) {
+        try {
+            const config = {
+                responseType: "arraybuffer",
+                body: { languages: Object.keys(languages) },
+                headers: {
+                  Accept: "application/octet-stream",
+                },
+              }
+            const response = await axios.post('/admin/role/export', { params, ...config })
             return response
         } catch (error: any) {
             console.error(error)
