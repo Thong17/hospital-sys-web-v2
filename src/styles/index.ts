@@ -38,9 +38,13 @@ export const CustomPagination = styled('div')(
     justifyContent: 'end',
     alignItems: 'center',
     overflow: 'hidden',
-    '& div, & div div svg': {
+    '& .MuiPagination-root ul li button': {
       color: theme.text.secondary,
+      backgroundColor: `${theme.text.secondary}11`,
     },
+    '& .Mui-selected': {
+      backgroundColor: `${theme.text.secondary}22 !important`,
+    }
   })
 )
 
