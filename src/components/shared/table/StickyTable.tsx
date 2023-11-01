@@ -15,6 +15,7 @@ import useLanguage from 'hooks/useLanguage'
 import useDevice from 'hooks/useDevice'
 import { languages } from 'contexts/language/constant'
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded'
+import { translate } from 'contexts/language/LanguageContext'
 
 export interface ITableColumn<Column> {
   id: Column
@@ -31,6 +32,7 @@ interface ITable {
   pagination?: Boolean
   columns: ITableColumn<string>[]
   rows: any[]
+  hasNumOrder?: boolean
   count?: number
   skip?: number
   limit?: number
@@ -47,6 +49,7 @@ export const StickyTable = ({
   pagination = true,
   columns,
   rows,
+  hasNumOrder = true,
   count = 0,
   skip = 0,
   limit = 10,
@@ -62,17 +65,14 @@ export const StickyTable = ({
   const { language } = useLanguage()
 
   return (
-    <CustomTableContainer
-      color={backgroundColor}
-      device={device}
-      style={style}
-    >
+    <CustomTableContainer color={backgroundColor} device={device} style={style}>
       {loading && <Loading />}
       <div className='table-container'>
         <TableContainer className='table'>
           <Table stickyHeader>
             <TableHead>
               <TableRow>
+                {hasNumOrder && <TableCell>{translate('NO')}</TableCell>}
                 {columns.map((column) => (
                   <TableCell
                     style={{
@@ -119,6 +119,7 @@ export const StickyTable = ({
                           cursor: onClick ? 'pointer' : 'default',
                         }}
                       >
+                        {hasNumOrder && <TableCell>{(skip * limit) + index + 1}</TableCell>}
                         {columns.map((column) => {
                           let value = row[column.id]
                           if (typeof value === 'boolean') {
@@ -187,6 +188,7 @@ export const StickyTable = ({
                             cursor: onClick ? 'pointer' : 'default',
                           }}
                         >
+                          {hasNumOrder && <TableCell>{index + 1}</TableCell>}
                           {columns.map((column) => {
                             let value = row[column.id]
                             if (typeof value === 'boolean') {

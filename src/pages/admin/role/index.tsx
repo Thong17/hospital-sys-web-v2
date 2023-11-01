@@ -3,9 +3,11 @@ import Container from 'components/shared/Container'
 import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
-import { Stack, Typography } from '@mui/material'
+import { Box, DialogActions, Stack, Typography } from '@mui/material'
 import {
+  CancelButton,
   CreateButton,
+  CustomizedButton,
   OptionButton,
   SearchButton,
 } from 'components/shared/buttons/CustomButton'
@@ -13,7 +15,12 @@ import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
-import { getRoleDelete, getRoleExport, getRoleList, getRoleValidate } from 'stores/role/action'
+import {
+  getRoleDelete,
+  getRoleExport,
+  getRoleList,
+  getRoleValidate,
+} from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat, debounce } from 'utils/index'
@@ -26,7 +33,6 @@ import ContainerDialog from 'components/shared/dialogs/Dialog'
 import RoleImportTable from './components/RoleImportTable'
 
 const roleColumns: ITableColumn<any>[] = [
-  { label: 'No', id: 'no' },
   { label: 'Name', id: 'name', sort: 'desc' },
   { label: 'Status', id: 'status' },
   { label: 'Description', id: 'description' },
@@ -138,6 +144,21 @@ const Role = () => {
     handleChangeQuery({ search: value, page: 0 })
   }, 500)
 
+  const handleRemoveImport = (data: any) => {
+    confirm({
+      title: translate('CONFIRM_REMOVE_TITLE'),
+      description: translate('CONFIRM_REMOVE_DESCRIPTION'),
+      variant: 'error',
+    })
+      .then(() => {
+        setImportDialog((prev: any) => ({
+          ...prev,
+          data: prev.data?.filter((item: any) => item.data?.id !== data?.id),
+        }))
+      })
+      .catch(() => {})
+  }
+
   return (
     <Layout
       navbar={
@@ -148,8 +169,25 @@ const Role = () => {
         />
       }
     >
-      <ContainerDialog justify='center' isOpen={importDialog.open} onClose={() => setImportDialog({ open: false, data: [] })}>
-        <RoleImportTable data={importDialog.data} />
+      <ContainerDialog
+        justify='center'
+        isOpen={importDialog.open}
+        onClose={() => setImportDialog({ open: false, data: [] })}
+      >
+        <Box sx={{ position: 'relative' }}>
+          <RoleImportTable
+            data={importDialog.data}
+            onRemove={handleRemoveImport}
+          />
+        </Box>
+        <DialogActions
+          sx={{ display: 'flex', justifyContent: 'end' }}
+        >
+          <CancelButton
+            onClick={() => setImportDialog({ open: false, data: [] })}
+          />
+          <CustomizedButton label={translate('CONFIRM')} />
+        </DialogActions>
       </ContainerDialog>
       <Container>
         <Stack
@@ -190,7 +228,6 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    no: 1,
     name: item.name[lang] ?? item.name['English'],
     status: item.status,
     description: item.description,

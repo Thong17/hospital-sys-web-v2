@@ -10,7 +10,6 @@ import { translate } from 'contexts/language/LanguageContext'
 const theme = getTheme()
 
 let columns: ITableColumn<any>[] = [
-  { label: translate('NO') as string, id: 'no' },
   ...Object.keys(languages).map((key) => ({
     label: `Name\u00a0${key}`,
     id: `name${key}`,
@@ -23,21 +22,22 @@ let columns: ITableColumn<any>[] = [
   { label: translate('ACTION') as string, id: 'action', align: 'right' },
 ]
 
-const RoleImportTable = ({ data }: any) => {
+const RoleImportTable = ({ data, onRemove }: any) => {
   const { width } = useDevice()
   return (
     <Box
       sx={{
-        height: '100vh',
+        height: '80vh',
         width: width > 1024 ? '90vw' : 'calc(100vw - 64px)',
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         padding: '10px',
+        overflow: 'auto'
       }}
     >
       <StickyTable
-        rows={data?.map((item: any) => mapData(item))}
+        rows={data?.map((item: any) => mapData(item, onRemove))}
         pagination={false}
         columns={columns}
       />
@@ -45,7 +45,7 @@ const RoleImportTable = ({ data }: any) => {
   )
 }
 
-const mapData = ({ data, result }: any) => {
+const mapData = ({ data, result }: any, onRemove: (_data: any) => void) => {
   const validation = (
     <Stack direction={'column'}>
       {Object.keys(result?.error)?.map((key, index) => (
@@ -68,7 +68,6 @@ const mapData = ({ data, result }: any) => {
     </Stack>
   )
   const obj: any = {
-    no: data?.no,
     status: data?.status,
     description: data?.description,
     navigation: (
@@ -85,6 +84,7 @@ const mapData = ({ data, result }: any) => {
     action: (
       <Stack direction={'row'} gap={1} justifyContent={'end'}>
         <CustomizedIconButton
+          onClick={() => onRemove(data)}
           color={theme.color.error}
           icon={<CloseRoundedIcon fontSize='small' />}
         />

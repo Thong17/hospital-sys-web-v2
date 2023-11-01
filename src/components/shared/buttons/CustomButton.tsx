@@ -40,7 +40,6 @@ export const CustomizedButton = ({
       <CustomButton
         {...props}
         disabled={isLoading}
-        title='action'
         sx={{
           backgroundColor: `${color || theme.color.info}22`,
           color: color || theme.color.info,
