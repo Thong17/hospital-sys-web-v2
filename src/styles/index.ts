@@ -67,13 +67,16 @@ export const CustomTableContainer = styled('div')(
         }
       },
       '& th': {
-        backgroundColor: theme.layout.container,
-        color: theme.text.primary,
+        backgroundColor: theme.layout.navbar,
+        color: `${theme.text.primary} !important`,
         borderBottom: 0,
         fontWeight: theme.font.weight,
         fontSize: theme.responsive[device]?.text.tertiary,
         padding: '11px 20px',
         wordWrap: 'break-word',
+        '& *': {
+          color: `${theme.text.primary} !important`,
+        }
       },
       '& tr td': {
         color: theme.text.secondary,

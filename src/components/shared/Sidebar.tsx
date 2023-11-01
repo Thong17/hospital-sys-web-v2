@@ -48,6 +48,7 @@ const Sidebar = () => {
           boxSizing: 'border-box',
           borderRadius: theme.radius.ternary,
           boxShadow: theme.shadow.quaternary,
+          backgroundColor: theme.layout.sidebar,
           gap: 1,
           '& .sidebar-menu': {
             borderRadius: theme.radius.ternary,

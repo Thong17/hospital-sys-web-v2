@@ -31,6 +31,11 @@ export const selectRoleExport = createSelector(
     (state) => state
 )
 
+export const selectRoleValidate = createSelector(
+    (state: RootState) => state.role.validate,
+    (state) => state
+)
+
 export const selectRoleImport = createSelector(
     (state: RootState) => state.role.import,
     (state) => state

@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectRoleList } from 'stores/role/selector'
 import { useEffect, useState } from 'react'
-import { getRoleDelete, getRoleExport, getRoleImport, getRoleList } from 'stores/role/action'
+import { getRoleDelete, getRoleExport, getRoleList, getRoleValidate } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
 import { dateFormat, debounce } from 'utils/index'
@@ -22,6 +22,8 @@ import useAlert from 'hooks/useAlert'
 import { translate } from 'contexts/language/LanguageContext'
 import { convertBufferToArrayBuffer, downloadBuffer } from 'utils/index'
 import useNotify from 'hooks/useNotify'
+import ContainerDialog from 'components/shared/dialogs/Dialog'
+import RoleImportTable from './components/RoleImportTable'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: 'No', id: 'no' },
@@ -42,6 +44,7 @@ const Role = () => {
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
   const [queryParams, setQueryParams] = useSearchParams()
+  const [importDialog, setImportDialog] = useState({ open: true, data: [] })
 
   const fetchListRole = (queryParams: any) => {
     dispatch(getRoleList({ params: queryParams }))
@@ -99,7 +102,13 @@ const Role = () => {
 
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    dispatch(getRoleImport({ file }))
+    dispatch(getRoleValidate({ file }))
+      .unwrap()
+      .then((response: any) => {
+        if (response?.code !== 'SUCCESS') return
+        setImportDialog({ open: true, data: response?.data })
+      })
+      .catch(console.error)
   }
 
   const handleSort = (column: any) => {
@@ -139,6 +148,9 @@ const Role = () => {
         />
       }
     >
+      <ContainerDialog justify='center' isOpen={importDialog.open} onClose={() => setImportDialog({ open: false, data: [] })}>
+        <RoleImportTable data={importDialog.data} />
+      </ContainerDialog>
       <Container>
         <Stack
           direction={'row'}

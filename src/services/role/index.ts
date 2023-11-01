@@ -96,11 +96,21 @@ export class RoleService {
             throw error
         }
     }
-    async _import({ file }: { file: Blob }) {
+    async _validate({ file }: { file: Blob }) {
         try {
             const formData = new FormData()
             formData.append('excel', file)
-            const response = await axios.post('/admin/role/import', formData)
+            const response = await axios.post('/admin/role/validate', formData)
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async _import({ data }: { data: any }) {
+        try {
+            const response = await axios.post('/admin/role/import', data)
             return response
         } catch (error: any) {
             console.error(error)

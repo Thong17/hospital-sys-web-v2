@@ -1,10 +1,10 @@
 export const themeMode = {
   Blue: {
     layout: {
-      container: '#ffffff',
-      sidebar: '#bbbbbb',
-      navbar: '#ffffff',
-      footer: '#bbbbbb',
+      container: '#0e1928',
+      sidebar: '#132f4c',
+      navbar: '#132f4c',
+      footer: '#132f4c',
     },
     background: {
       primary: '#0e1928',

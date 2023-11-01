@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRoleCreate, getRoleDelete, getRoleDetail, getRoleExport, getRoleHistory, getRoleImport, getRoleList, getRoleUpdate } from "./action";
+import { getRoleCreate, getRoleDelete, getRoleDetail, getRoleExport, getRoleHistory, getRoleImport, getRoleList, getRoleUpdate, getRoleValidate } from "./action";
 import { TypeStatus } from "stores/constant";
 
 interface IRole {
@@ -36,6 +36,11 @@ interface IRole {
         data: any,
         error: any
     }
+    validate: {
+        isLoading: boolean,
+        data: any,
+        error: any
+    }
     import: {
         isLoading: boolean,
         data: any,
@@ -64,6 +69,7 @@ const initialState: IRole = {
     update: { isLoading: false, data: null, error: null },
     delete: { isLoading: false, data: null, error: null },
     export: { isLoading: false, data: null, error: null },
+    validate: { isLoading: false, data: null, error: null },
     import: { isLoading: false, data: null, error: null },
     detail: { status: 'INIT', data: null, error: null },
     history: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
@@ -177,6 +183,20 @@ const roleSlice = createSlice({
             state.export.error = null
             state.export.isLoading = false
             state.export.data = action.payload?.data
+        })
+
+        // Validate
+        builder.addCase(getRoleValidate.pending, (state) => {
+            state.validate.isLoading = true
+        })
+        builder.addCase(getRoleValidate.rejected, (state, action) => {
+            state.validate.isLoading = false
+            state.validate.error = action.payload?.response?.data
+        })
+        builder.addCase(getRoleValidate.fulfilled, (state, action) => {
+            state.validate.error = null
+            state.validate.isLoading = false
+            state.validate.data = action.payload?.data
         })
 
         // Import

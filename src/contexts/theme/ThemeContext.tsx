@@ -10,7 +10,7 @@ import { createTheme } from '@mui/material'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 
-const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
+const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Blue'
 
 export const getTheme = () => {
   const { session } = store.getState()
@@ -30,6 +30,15 @@ export const muiTheme = createTheme({
     MuiTypography: {
       defaultProps: {
         color: theme.text.secondary
+      }
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: '11px',
+          letterSpacing: '1px',
+          textAlign: 'justify'
+        }
       }
     }
   },

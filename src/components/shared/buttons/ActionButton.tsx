@@ -17,7 +17,7 @@ export const CustomizedIconButton = ({
 }: {
   isLoading?: boolean
   icon: any
-  color: string
+  color?: string
   tooltip?: any
 } & Omit<ButtonProps, 'color'>) => {
   const { theme } = useTheme()
