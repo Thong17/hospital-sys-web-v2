@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 import {
   getRoleDelete,
   getRoleExport,
+  getRoleImport,
   getRoleList,
   getRoleValidate,
 } from 'stores/role/action'
@@ -28,7 +29,6 @@ import { useSearchParams } from 'react-router-dom'
 import useAlert from 'hooks/useAlert'
 import { translate } from 'contexts/language/LanguageContext'
 import { convertBufferToArrayBuffer, downloadBuffer } from 'utils/index'
-import useNotify from 'hooks/useNotify'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import RoleImportTable from './components/RoleImportTable'
 
@@ -45,12 +45,11 @@ const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
-  const { notify } = useNotify()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
   const [queryParams, setQueryParams] = useSearchParams()
-  const [importDialog, setImportDialog] = useState({ open: true, data: [] })
+  const [importDialog, setImportDialog] = useState({ open: false, data: [] })
 
   const fetchListRole = (queryParams: any) => {
     dispatch(getRoleList({ params: queryParams }))
@@ -91,7 +90,7 @@ const Role = () => {
         dispatch(getRoleDelete({ id: data._id, reason: confirmData?.reason }))
           .unwrap()
           .then(() => fetchListRole(queryParams))
-          .catch(console.error)
+          .catch(() => {})
       })
       .catch(() => {})
   }
@@ -103,10 +102,10 @@ const Role = () => {
         if (data?.code !== 'SUCCESS') return
         downloadBuffer(convertBufferToArrayBuffer(data?.file?.data), data?.name)
       })
-      .catch((error: any) => notify(error?.response?.data?.message, 'error'))
+      .catch(() => {})
   }
 
-  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleValidationImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     dispatch(getRoleValidate({ file }))
       .unwrap()
@@ -114,7 +113,7 @@ const Role = () => {
         if (response?.code !== 'SUCCESS') return
         setImportDialog({ open: true, data: response?.data })
       })
-      .catch(console.error)
+      .catch(() => {})
   }
 
   const handleSort = (column: any) => {
@@ -159,6 +158,18 @@ const Role = () => {
       .catch(() => {})
   }
 
+  const handleImport = () => {
+    const data = importDialog.data?.map((item: any) => {
+      const obj = { ...item.data, _id: item.data.id }
+      delete obj.id
+      return obj
+    })
+    dispatch(getRoleImport({ data }))
+      .unwrap()
+      .then(() => fetchListRole(queryParams))
+      .catch(() => {})
+  }
+
   return (
     <Layout
       navbar={
@@ -186,7 +197,7 @@ const Role = () => {
           <CancelButton
             onClick={() => setImportDialog({ open: false, data: [] })}
           />
-          <CustomizedButton label={translate('CONFIRM')} />
+          <CustomizedButton onClick={handleImport} label={translate('CONFIRM')} />
         </DialogActions>
       </ContainerDialog>
       <Container>
@@ -199,7 +210,7 @@ const Role = () => {
           <Typography>Role</Typography>
           <Stack direction={'row'} gap={1}>
             <SearchButton onChange={handleChangeSearch} />
-            <OptionButton onImport={handleImport} onExport={handleExport} />
+            <OptionButton onImport={handleValidationImport} onExport={handleExport} />
             <CreateButton onClick={handleCreate} />
           </Stack>
         </Stack>

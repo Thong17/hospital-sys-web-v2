@@ -22,6 +22,7 @@ Axios.interceptors.response.use(
   },
   (error: AxiosError<any>) => {
     const originalRequest: any = error.config
+    if (error?.code === 'ECONNABORTED' && error?.message?.includes('timeout')) return Promise.reject(error)
     if (!error?.response) return notify(error?.message, 'error')
     if (error.response.data?.message !== 'TOKEN_EXPIRED' || originalRequest?.url === '/auth/refresh-token') return Promise.reject(error)
     if (!originalRequest?._retry) {

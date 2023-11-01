@@ -46,9 +46,9 @@ const RoleImportTable = ({ data, onRemove }: any) => {
 }
 
 const mapData = ({ data, result }: any, onRemove: (_data: any) => void) => {
-  const validation = (
+  const validation = result?.error ? (
     <Stack direction={'column'}>
-      {Object.keys(result?.error)?.map((key, index) => (
+      {Object.keys(result?.error || {})?.map((key, index) => (
         <Tooltip
           key={index}
           title={`${key}: ${translate(result?.error?.[key]?.message)}`}
@@ -66,6 +66,17 @@ const mapData = ({ data, result }: any, onRemove: (_data: any) => void) => {
         </Tooltip>
       ))}
     </Stack>
+  ) : (
+    <Typography
+      maxWidth={250}
+      noWrap
+      textOverflow={'ellipsis'}
+      overflow={'hidden'}
+      variant={'p' as any}
+      sx={{ color: theme.color.success }}
+    >
+      {translate('VALIDATED')}
+    </Typography>
   )
   const obj: any = {
     status: data?.status,
@@ -91,7 +102,7 @@ const mapData = ({ data, result }: any, onRemove: (_data: any) => void) => {
       </Stack>
     ),
   }
-  Object.keys(data?.name).forEach((key) => {
+  Object.keys(data?.name || {}).forEach((key) => {
     obj[`name${key}`] = data?.name?.[key]
   })
   return obj

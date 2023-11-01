@@ -111,6 +111,7 @@ export class RoleService {
     async _import({ data }: { data: any }) {
         try {
             const response = await axios.post('/admin/role/import', data)
+            notify(response?.data?.message, 'success')
             return response
         } catch (error: any) {
             console.error(error)
