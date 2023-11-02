@@ -139,6 +139,10 @@ const Role = () => {
     handleChangeQuery({ page, limit: metaData?.limit })
   }
 
+  const handleChangeLimit = (limit: number) => {
+    handleChangeQuery({ limit })
+  }
+
   const handleChangeSearch = debounce((value: string) => {
     handleChangeQuery({ search: value, page: 0 })
   }, 500)
@@ -223,6 +227,7 @@ const Role = () => {
           count={metaData?.total}
           limit={metaData?.limit}
           skip={metaData?.skip}
+          onChangeLimit={handleChangeLimit}
           onChangePage={handleChangePage}
           onClick={handleClick}
         />

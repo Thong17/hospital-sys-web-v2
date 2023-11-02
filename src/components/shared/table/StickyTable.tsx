@@ -16,6 +16,7 @@ import useDevice from 'hooks/useDevice'
 import { languages } from 'contexts/language/constant'
 import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded'
 import { translate } from 'contexts/language/LanguageContext'
+import SelectInput from '../forms/SelectInput'
 
 export interface ITableColumn<Column> {
   id: Column
@@ -39,6 +40,7 @@ interface ITable {
   loading?: boolean
   onClick?: (_id: any) => void
   onToggleStatus?: (_id: any) => void
+  onChangeLimit?: (_limit: any) => void
   onChangePage?: (_page: any) => void
   onSort?: (_column: any) => void
   style?: React.CSSProperties
@@ -52,10 +54,11 @@ export const StickyTable = ({
   hasNumOrder = true,
   count = 0,
   skip = 0,
-  limit = 10,
+  limit = 5,
   loading,
   onClick,
   onToggleStatus,
+  onChangeLimit,
   onChangePage,
   onSort,
   style,
@@ -119,7 +122,9 @@ export const StickyTable = ({
                           cursor: onClick ? 'pointer' : 'default',
                         }}
                       >
-                        {hasNumOrder && <TableCell>{(skip * limit) + index + 1}</TableCell>}
+                        {hasNumOrder && (
+                          <TableCell>{skip * limit + index + 1}</TableCell>
+                        )}
                         {columns.map((column) => {
                           let value = row[column.id]
                           if (typeof value === 'boolean') {
@@ -241,6 +246,19 @@ export const StickyTable = ({
       </div>
       {!loading && pagination && (
         <CustomPagination>
+          <SelectInput
+            value={limit}
+            onChange={(event) =>
+              onChangeLimit && onChangeLimit(event.target.value)
+            }
+            sx={{ marginRight: '10px' }}
+            options={[
+              { value: 5, label: '5' },
+              { value: 10, label: '10' },
+              { value: 20, label: '20' },
+              { value: 50, label: '50' },
+            ]}
+          />
           <Pagination
             count={Math.ceil(count / limit)}
             page={skip + 1}

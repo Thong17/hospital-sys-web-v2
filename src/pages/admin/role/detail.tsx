@@ -18,6 +18,7 @@ import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 import useAlert from 'hooks/useAlert'
+import ActivityContainer from 'components/shared/containers/ActivityContainer'
 
 const RoleDetail = () => {
   const dispatch = useAppDispatch()
@@ -106,6 +107,7 @@ const RoleDetail = () => {
           navigation={data?.navigation}
           privilege={data?.privilege}
         />
+        <ActivityContainer data={data} />
       </Container>
     </Layout>
   )

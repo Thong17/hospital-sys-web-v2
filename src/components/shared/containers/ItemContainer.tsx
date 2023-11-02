@@ -11,6 +11,7 @@ export const CustomBox = styled(Box)(
     borderRadius: styled.radius.primary,
     width: 'fit-content',
     cursor: 'default',
+    lineHeight: '1.3',
   })
 )
 

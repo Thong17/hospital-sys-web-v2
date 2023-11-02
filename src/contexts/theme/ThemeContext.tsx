@@ -10,7 +10,7 @@ import { createTheme } from '@mui/material'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
 
-const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Blue'
+const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
 
 export const getTheme = () => {
   const { session } = store.getState()

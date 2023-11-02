@@ -1,23 +1,52 @@
-import { MenuItem, Select, SelectProps } from '@mui/material'
+import { FormControl, InputLabel, MenuItem, Select, SelectProps, styled } from '@mui/material'
+import { getTheme } from 'contexts/theme/ThemeContext'
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
+import { translate } from 'contexts/language/LanguageContext'
 
+const theme = getTheme()
 interface IOption {
-    label: string
-    value: any
+  label: string
+  value: any
 }
 
 interface ISelectProps extends SelectProps {
-    options: IOption[]
+  options?: IOption[]
+  label?: any
 }
 
-const SelectInput = ({ options, ...props }: ISelectProps) => {
+export const StyledSelect = styled(Select)(
+  ({ height = '45px' }: { height: string }) => ({
+    borderRadius: theme.radius.primary,
+    height,
+    '& fieldset': {
+      borderRadius: theme.radius.primary,
+      border: `${theme.border.tertiary} !important`,
+    },
+    '& fieldset:hover': {
+      borderColor: `${theme.color.info} !important`,
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: `${theme.color.info} !important`,
+    },
+  })
+)
+
+const SelectInput = ({ label, options = [], ...props }: ISelectProps) => {
   return (
-    <Select {...props}>
-      {options.map((option: any, key: number) => (
-        <MenuItem key={key} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
+    <FormControl>
+      {label && <InputLabel>{translate(label)}</InputLabel>}
+      <StyledSelect
+        height='33px'
+        {...props}
+        IconComponent={ArrowDropDownRoundedIcon}
+      >
+        {options.map((option: any, key: number) => (
+          <MenuItem key={key} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </StyledSelect>
+    </FormControl>
   )
 }
 
