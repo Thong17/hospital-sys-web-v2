@@ -105,6 +105,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             label={translate('USERNAME')}
             error={!!errors.username?.message}
             helperText={errors.username?.message}
+            required
             sx={{ gridArea: 'username' }}
           />
           <SelectInput
@@ -115,6 +116,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             helperText={errors.role?.message}
             label={translate('ROLE')}
             sx={{ gridArea: 'role' }}
+            required
           />
           <SelectInput
             {...register('segment')}
@@ -124,6 +126,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             helperText={errors.segment?.message}
             label={translate('SEGMENT')}
             sx={{ gridArea: 'segment' }}
+            required
           />
           <TextInput
             {...register('password')}
@@ -131,6 +134,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             error={!!errors.password?.message}
             helperText={errors.password?.message}
             type='password'
+            required
             sx={{ gridArea: 'password' }}
           />
           <TextInput
@@ -139,6 +143,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             error={!!errors.email?.message}
             helperText={errors.email?.message}
             type='email'
+            required
             sx={{ gridArea: 'email' }}
           />
           <TextInput

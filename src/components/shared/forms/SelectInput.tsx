@@ -22,6 +22,7 @@ interface ISelectProps extends SelectProps {
   label?: any
   height?: any
   helperText?: any
+  required?: any
 }
 
 export const StyledSelectInput = styled(Select)(
@@ -43,7 +44,7 @@ export const StyledSelectInput = styled(Select)(
 
 const SelectInput = forwardRef(
   (
-    { error, helperText, height, label, options = [], ...props }: ISelectProps,
+    { required, error, helperText, height, label, options = [], ...props }: ISelectProps,
     ref
   ) => {
     return (
@@ -83,7 +84,7 @@ const SelectInput = forwardRef(
           },
         }}
       >
-        {label && <InputLabel>{translate(label)}</InputLabel>}
+        {label && <InputLabel>{translate(label)} {required && '*'}</InputLabel>}
         <StyledSelectInput ref={ref} height={height} {...props}>
           {options.map((option: any, key: number) => (
             <MenuItem key={key} value={option.value}>
