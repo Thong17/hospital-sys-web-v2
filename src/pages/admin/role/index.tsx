@@ -225,7 +225,7 @@ const Role = () => {
             </Stack>
           </TitleContainer>
         </Box>
-        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px`, overflowX: 'auto' }}>
+        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
           <StickyTable
             rows={data?.map((item: any) =>
               mapData(item, lang, handleEdit, handleDelete)
