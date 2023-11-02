@@ -3,7 +3,7 @@ import Container from 'components/shared/Container'
 import { breadcrumbs } from '..'
 import { Layout } from 'components/layouts/Layout'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
-import { Box, DialogActions, Stack, Typography } from '@mui/material'
+import { Box, DialogActions, Stack } from '@mui/material'
 import {
   CancelButton,
   CreateButton,
@@ -31,6 +31,7 @@ import { translate } from 'contexts/language/LanguageContext'
 import { convertBufferToArrayBuffer, downloadBuffer } from 'utils/index'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import RoleImportTable from './components/RoleImportTable'
+import TitleContainer from 'components/shared/containers/TitleContainer'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: 'Name', id: 'name', sort: 'desc' },
@@ -105,7 +106,9 @@ const Role = () => {
       .catch(() => {})
   }
 
-  const handleValidationImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleValidationImport = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0]
     dispatch(getRoleValidate({ file }))
       .unwrap()
@@ -195,29 +198,27 @@ const Role = () => {
             onRemove={handleRemoveImport}
           />
         </Box>
-        <DialogActions
-          sx={{ display: 'flex', justifyContent: 'end' }}
-        >
+        <DialogActions sx={{ display: 'flex', justifyContent: 'end' }}>
           <CancelButton
             onClick={() => setImportDialog({ open: false, data: [] })}
           />
-          <CustomizedButton onClick={handleImport} label={translate('CONFIRM')} />
+          <CustomizedButton
+            onClick={handleImport}
+            label={translate('CONFIRM')}
+          />
         </DialogActions>
       </ContainerDialog>
       <Container>
-        <Stack
-          direction={'row'}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-          py={1}
-        >
-          <Typography>Role</Typography>
+        <TitleContainer text={translate('TITLE_ROLE_LIST') as String}>
           <Stack direction={'row'} gap={1}>
             <SearchButton onChange={handleChangeSearch} />
-            <OptionButton onImport={handleValidationImport} onExport={handleExport} />
+            <OptionButton
+              onImport={handleValidationImport}
+              onExport={handleExport}
+            />
             <CreateButton onClick={handleCreate} />
           </Stack>
-        </Stack>
+        </TitleContainer>
         <StickyTable
           rows={data?.map((item: any) =>
             mapData(item, lang, handleEdit, handleDelete)

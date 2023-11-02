@@ -71,7 +71,7 @@ const Breadcrumb = ({
   return (
     <Box
       sx={{
-        padding: '4px 5px 4px 4px',
+        padding: '4px 4px 4px 4px',
         width: 'fit-content',
         height: '42px',
         boxSizing: 'border-box',
