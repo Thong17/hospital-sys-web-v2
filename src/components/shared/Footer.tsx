@@ -11,7 +11,6 @@ const Footer = ({ ...props }) => {
       direction='row'
       justifyContent='center'
       alignItems='center'
-      styled={theme}
       {...props}
     >
       <p style={{ color: theme.text.tertiary }}>

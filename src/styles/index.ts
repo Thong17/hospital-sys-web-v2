@@ -24,7 +24,7 @@ export const CustomFooter = styled(Stack)(
     width: '100%',
     color: theme.text.primary,
     height: FOOTER_HEIGHT,
-    backgroundColor: theme.layout.container
+    backgroundColor: theme.layout.footer
   })
 )
 

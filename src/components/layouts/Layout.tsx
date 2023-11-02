@@ -38,7 +38,7 @@ export const Layout: FC<ILayout> = ({ navbar, children }) => {
 
   return (
     <Box component={'div'} sx={{ backgroundColor: theme.layout.container }}>
-      { width > TABLET_WIDTH ? <Sidebar /> : <Bottombar /> }
+      { width > TABLET_WIDTH && <Sidebar /> }
       <WrapContainer
         style={{
           marginLeft: width > TABLET_WIDTH ? `${
@@ -51,11 +51,12 @@ export const Layout: FC<ILayout> = ({ navbar, children }) => {
               ? EXPANDED_SIDEBAR_WIDTH
               : COLLAPSED_SIDEBAR_WIDTH
           }px)`: '100%',
+          paddingBottom: width > TABLET_WIDTH ? 0 : FOOTER_HEIGHT
         }}
       >
         <Navbar navbar={navbar} />
         <ContentContainer>{children}</ContentContainer>
-        {width > TABLET_WIDTH && <Footer />}
+        {width > TABLET_WIDTH ? <Footer /> : <Bottombar />}
       </WrapContainer>
     </Box>
   )

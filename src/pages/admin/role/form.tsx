@@ -17,6 +17,8 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { getRoleCreate, getRoleUpdate } from 'stores/role/action'
 import { selectRoleCreate } from 'stores/role/selector'
+import useDevice from 'hooks/useDevice'
+import { TABLET_WIDTH } from 'contexts/web/constant'
 
 export interface IRoleForm {
   name: any
@@ -28,6 +30,7 @@ export interface IRoleForm {
 
 const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
   const { id } = useParams()
+  const { width } = useDevice()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isLoading } = useAppSelector(selectRoleCreate)
@@ -60,12 +63,12 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction={'row'} gap={4}>
+      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4}>
         <Stack
           direction={'column'}
           alignItems={'start'}
           gap={1}
-          sx={{ width: ROLE_FORM_WIDTH }}
+          sx={{ width: width > TABLET_WIDTH ? ROLE_FORM_WIDTH : '100%' }}
         >
           <LocaleInput
             label={translate('NAME')}
@@ -105,7 +108,7 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
             )}
           </Stack>
         </Stack>
-        <Box sx={{ width: `calc(100% - ${ROLE_FORM_WIDTH}px)` }}>
+        <Box sx={{ width: width > TABLET_WIDTH ? `calc(100% - ${ROLE_FORM_WIDTH}px)` : '100%' }}>
           <PrivilegeBox
             defaultNavigation={watch('navigation')}
             defaultPrivilege={watch('privilege')}

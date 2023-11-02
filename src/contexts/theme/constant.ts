@@ -4,7 +4,7 @@ export const themeMode = {
       container: '#0e1928',
       sidebar: '#132f4c',
       navbar: '#132f4c',
-      footer: '#132f4c',
+      footer: '#0e1928',
     },
     background: {
       primary: '#0e1928',
@@ -53,7 +53,7 @@ export const themeMode = {
       container: '#ffffff',
       sidebar: '#bbbbbb',
       navbar: '#ffffff',
-      footer: '#bbbbbb',
+      footer: '#ffffff',
     },
     background: {
       primary: '#222831',
@@ -100,9 +100,9 @@ export const themeMode = {
   Light: {
     layout: {
       container: '#ffffff',
-      sidebar: '#bbbbbb',
+      sidebar: '#ffffff',
       navbar: '#ffffff',
-      footer: '#bbbbbb',
+      footer: '#ffffff',
     },
     background: {
       primary: '#f2f2f2',

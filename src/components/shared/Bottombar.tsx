@@ -31,6 +31,7 @@ const Bottombar = () => {
           width: '100%',
           height: '100%',
           borderRadius: theme.radius.ternary,
+          boxShadow: theme.shadow.quaternary,
           '& a.active': {
             textDecoration: 'none',
             backgroundColor: '#BB8FCE22',

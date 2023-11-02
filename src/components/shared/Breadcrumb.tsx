@@ -14,6 +14,9 @@ import useTheme from 'hooks/useTheme'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { translate } from 'contexts/language/LanguageContext'
+import { styled } from '@mui/material/styles'
+import useDevice from 'hooks/useDevice'
+import { TABLET_WIDTH } from 'contexts/web/constant'
 
 const BUTTON_SIZE = '27px'
 export interface IBreadcrumb {
@@ -26,6 +29,19 @@ export interface IBreadcrumb {
   isCurrent?: boolean
 }
 
+const StyledBreadcrumbs = styled(Breadcrumbs)({
+  maxWidth: '100%',
+  '.MuiBreadcrumbs-ol': {
+    flexWrap: 'nowrap',
+  },
+  '.MuiBreadcrumbs-separator': {
+    flexShrink: 0,
+  },
+  '.MuiBreadcrumbs-li:not(:last-of-type)': {
+    overflow: 'hidden',
+  },
+})
+
 const Breadcrumb = ({
   list,
   step,
@@ -37,6 +53,7 @@ const Breadcrumb = ({
 }) => {
   const { theme } = useTheme()
   const navigate = useNavigate()
+  const { width } = useDevice()
   const currentIndex = step
     ? step - 1
     : list.findIndex((item) => item.isCurrent)
@@ -74,11 +91,17 @@ const Breadcrumb = ({
           onClickPrevious={currentIndex > 0 ? handleClickPrevious : undefined}
         />
       )}
-      <Breadcrumbs
+      <StyledBreadcrumbs
         separator={<ShortcutRoundedIcon sx={{ fontSize: '23px' }} />}
+        maxItems={ width > TABLET_WIDTH ? 3 : 2 }
         sx={{
           width: 'fit-content',
           marginLeft: '5px',
+          '& ol.MuiBreadcrumbs-ol': {
+            '& li:last-child': {
+              display: 'block !important',
+            }
+          },
           '& a': { textDecoration: 'none' },
           '& li.MuiBreadcrumbs-separator': { margin: '0 3px' },
           '& li:has(a)': {
@@ -94,6 +117,9 @@ const Breadcrumb = ({
             backgroundColor: `${theme.color.info}22`,
             '& *': { color: `${theme.color.info}` },
           },
+          '& li': {
+            display: width > TABLET_WIDTH ? 'unset' : 'none',
+          }
         }}
       >
         {list.map((item, key) => {
@@ -120,7 +146,7 @@ const Breadcrumb = ({
             </Link>
           )
         })}
-      </Breadcrumbs>
+      </StyledBreadcrumbs>
     </Box>
   )
 }
