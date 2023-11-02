@@ -26,7 +26,7 @@ const TitleContainer = ({
       }}
     >
       <Stack direction={'row'} alignItems={'center'}>
-        <ArrowRightRoundedIcon fontSize='large' />
+        <ArrowRightRoundedIcon fontSize='large' sx={{ color: theme.text.tertiary }} />
         <Typography>{text}</Typography>
       </Stack>
       {children}

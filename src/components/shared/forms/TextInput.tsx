@@ -19,8 +19,8 @@ export const TextInput = styled(TextField)(({ error }) => ({
   '& .MuiOutlinedInput-root': {
     padding: 0,
     '& input:-webkit-autofill': {
-      '-webkit-box-shadow': `0 0 0px 1000px ${theme.layout.container}ff inset`,
-      '-webkit-text-fill-color': `${theme.text.secondary}`,
+      'WebkitBoxShadow': `0 0 0px 1000px ${theme.layout.container}ff inset`,
+      'WebkitTextFillColor': `${theme.text.secondary}`,
     },
     '& input.MuiInputBase-input, & textarea.MuiInputBase-input': {
       padding: '11px 15px !important',

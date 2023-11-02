@@ -30,7 +30,7 @@ const PrivilegeContainer = ({
                       <Box key={key}>
                         <Stack direction={'row'} gap={1}>
                           <ShortcutRoundedIcon
-                            sx={{ transform: 'scaleY(-1)' }}
+                            sx={{ transform: 'scaleY(-1)', color: theme.text.tertiary }}
                           />
                           <Typography sx={{ color: theme.text.tertiary }}>
                             {translate(sub?.toUpperCase())}
@@ -56,7 +56,7 @@ const PrivilegeContainer = ({
                                   />
                                 )
                               )
-                            : translate('NO_ACTION')}
+                            : <Typography>{translate('NO_ACTION')}</Typography>}
                         </Box>
                       </Box>
                     )
@@ -65,7 +65,7 @@ const PrivilegeContainer = ({
               </SectionContainer>
             )
           })
-        : translate('NO_PRIVILEGE')}
+        : <Typography>{translate('NO_PRIVILEGE')}</Typography>}
     </Box>
   )
 }

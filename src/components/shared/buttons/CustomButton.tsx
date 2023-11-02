@@ -248,6 +248,7 @@ export const SearchButton = ({
           border: 'none',
           paddingLeft: '10px',
           height: '100%',
+          color: theme.text.secondary,
           outline: 'none',
           '&:hover': { outline: 'none' },
         },
