@@ -1,6 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectProps, styled } from '@mui/material'
 import { getTheme } from 'contexts/theme/ThemeContext'
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
 import { translate } from 'contexts/language/LanguageContext'
 
 const theme = getTheme()
@@ -14,8 +13,8 @@ interface ISelectProps extends SelectProps {
   label?: any
 }
 
-export const StyledSelect = styled(Select)(
-  ({ height = '45px' }: { height: string }) => ({
+export const SelectInput = styled(Select)(
+  ({ height = '45px' }: { height?: string }) => ({
     borderRadius: theme.radius.primary,
     height,
     '& fieldset': {
@@ -31,23 +30,22 @@ export const StyledSelect = styled(Select)(
   })
 )
 
-const SelectInput = ({ label, options = [], ...props }: ISelectProps) => {
+const StyledSelectInput = ({ label, options = [], ...props }: ISelectProps) => {
   return (
     <FormControl>
       {label && <InputLabel>{translate(label)}</InputLabel>}
-      <StyledSelect
+      <SelectInput
         height='33px'
         {...props}
-        IconComponent={ArrowDropDownRoundedIcon}
       >
         {options.map((option: any, key: number) => (
           <MenuItem key={key} value={option.value}>
             {option.label}
           </MenuItem>
         ))}
-      </StyledSelect>
+      </SelectInput>
     </FormControl>
   )
 }
 
-export default SelectInput
+export default StyledSelectInput

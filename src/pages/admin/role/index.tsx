@@ -253,7 +253,7 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    name: item.name[lang] ?? item.name['English'],
+    name: item.name?.[lang] ?? item.name?.['English'],
     status: item.status,
     description: item.description,
     createdAt: dateFormat(item.createdAt),

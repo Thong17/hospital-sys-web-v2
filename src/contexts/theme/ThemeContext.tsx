@@ -9,6 +9,7 @@ import { selectSession } from 'stores/session/selector'
 import { createTheme } from '@mui/material'
 import CheckBoxOutlineBlankRoundedIcon from '@mui/icons-material/CheckBoxOutlineBlankRounded'
 import CheckBoxRoundedIcon from '@mui/icons-material/CheckBoxRounded'
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
 
 const initMode: ThemeOptions = localStorage.getItem('setting-theme') as ThemeOptions || 'Light'
 
@@ -39,6 +40,11 @@ export const muiTheme = createTheme({
           letterSpacing: '1px',
           textAlign: 'justify'
         }
+      }
+    },
+    MuiSelect: {
+      defaultProps: {
+        IconComponent: ArrowDropDownRoundedIcon
       }
     }
   },

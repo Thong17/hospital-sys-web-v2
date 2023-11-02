@@ -77,7 +77,7 @@ export declare type IColorOption = {
 export declare type IDeviceProps = {
   text: TextOptions
   padding: {
-    side: string
+    side: any
   }
 }
 

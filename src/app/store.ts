@@ -6,6 +6,7 @@ import { authReducer } from "stores/auth/slice";
 import { configReducer } from "stores/config/slice";
 import { homeReducer } from "stores/home/slice";
 import { roleReducer } from "stores/role/slice";
+import { userReducer } from "stores/user/slice";
 import { sessionReducer } from "stores/session/slice";
 
 const mainReducer = combineReducers({
@@ -14,6 +15,7 @@ const mainReducer = combineReducers({
     session: sessionReducer,
     config: configReducer,
     role: roleReducer,
+    user: userReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
