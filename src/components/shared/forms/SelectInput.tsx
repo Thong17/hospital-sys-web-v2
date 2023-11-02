@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectProps, styled } from '@mui/material'
 import { getTheme } from 'contexts/theme/ThemeContext'
 import { translate } from 'contexts/language/LanguageContext'
+import { forwardRef } from 'react'
 
 const theme = getTheme()
 interface IOption {
@@ -11,10 +12,11 @@ interface IOption {
 interface ISelectProps extends SelectProps {
   options?: IOption[]
   label?: any
+  height?: any
 }
 
-export const SelectInput = styled(Select)(
-  ({ height = '45px' }: { height?: string }) => ({
+export const StyledSelectInput = styled(Select)(
+  ({ height = '45px' }: { height: string }) => ({
     borderRadius: theme.radius.primary,
     height,
     '& fieldset': {
@@ -30,12 +32,26 @@ export const SelectInput = styled(Select)(
   })
 )
 
-const StyledSelectInput = ({ label, options = [], ...props }: ISelectProps) => {
+const SelectInput = forwardRef(({ height, label, options = [], ...props }: ISelectProps, ref) => {
   return (
-    <FormControl>
+    <FormControl fullWidth sx={{
+      '& .MuiFormLabel-root': {
+        top: '-5px',
+        '&:is(.Mui-focused, .MuiFormLabel-filled)': {
+          transform: 'translate(10px, -11px) scale(0.75)',
+        },
+      },
+      '& .MuiInputLabel-root': {
+        color: theme.text.secondary,
+        '&.Mui-error': {
+          color: theme.color.error
+        }
+      },
+    }}>
       {label && <InputLabel>{translate(label)}</InputLabel>}
-      <SelectInput
-        height='33px'
+      <StyledSelectInput
+        ref={ref}
+        height={height}
         {...props}
       >
         {options.map((option: any, key: number) => (
@@ -43,9 +59,9 @@ const StyledSelectInput = ({ label, options = [], ...props }: ISelectProps) => {
             {option.label}
           </MenuItem>
         ))}
-      </SelectInput>
+      </StyledSelectInput>
     </FormControl>
   )
-}
+})
 
-export default StyledSelectInput
+export default SelectInput

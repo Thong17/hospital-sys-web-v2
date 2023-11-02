@@ -8,7 +8,7 @@ export const initUser = {
   email: '',
   contact: '',
   status: false,
-  description: undefined,
+  description: '',
 }
 
 export const userSchema = yup.object().shape({
