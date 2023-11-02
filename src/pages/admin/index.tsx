@@ -3,6 +3,10 @@ import Role from './role'
 import RoleCreate from './role/create'
 import RoleUpdate from './role/update'
 import RoleDetail from './role/detail'
+import User from './user'
+import UserCreate from './user/create'
+import UserUpdate from './user/update'
+import UserDetail from './user/detail'
 import { useOutlet } from 'react-router'
 import Breadcrumb, { IBreadcrumb } from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
@@ -10,6 +14,7 @@ import { translate } from 'contexts/language/LanguageContext'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
 import RoleHistory from './role/history'
+import UserHistory from './user/history'
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
@@ -54,4 +59,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory }
