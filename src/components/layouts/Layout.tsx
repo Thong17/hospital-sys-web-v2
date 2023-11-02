@@ -4,7 +4,7 @@ import Navbar from 'components/shared/Navbar'
 import { useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
 import Footer from 'components/shared/Footer'
-import { COLLAPSED_SIDEBAR_WIDTH, EXPANDED_SIDEBAR_WIDTH, FOOTER_HEIGHT, NAVBAR_HEIGHT, SIDE_PADDING } from 'constants/layout'
+import { COLLAPSED_SIDEBAR_WIDTH, EXPANDED_SIDEBAR_WIDTH, FOOTER_HEIGHT, NAVBAR_HEIGHT } from 'constants/layout'
 import Sidebar from 'components/shared/Sidebar'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
@@ -24,9 +24,8 @@ const WrapContainer = styled('div')({
   transition: LAYOUT_TRANSITION
 })
 
-const ContentContainer = styled('div')({
+const ContentContainer = styled(Box)({
   width: '100%',
-  padding: `${NAVBAR_HEIGHT}px ${SIDE_PADDING}px 0 ${SIDE_PADDING}px`,
   minHeight: `calc(100vh - ${FOOTER_HEIGHT}px)`,
   boxSizing: 'border-box',
 })
@@ -55,7 +54,7 @@ export const Layout: FC<ILayout> = ({ navbar, children }) => {
         }}
       >
         <Navbar navbar={navbar} />
-        <ContentContainer>{children}</ContentContainer>
+        <ContentContainer sx={{ padding: `${NAVBAR_HEIGHT}px 0px 0 0px` }}>{children}</ContentContainer>
         {width > TABLET_WIDTH ? <Footer /> : <Bottombar />}
       </WrapContainer>
     </Box>

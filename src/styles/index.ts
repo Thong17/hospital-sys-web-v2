@@ -51,6 +51,7 @@ export const CustomPagination = styled('div')(
 export const CustomTableContainer = styled('div')(
   ({ device }: { device: DeviceOptions }) => ({
     backgroundColor: theme.layout.container,
+    boxSizing: 'border-box',
     '& .table-container': {
       maxWidth: '100%',
       position: 'relative',

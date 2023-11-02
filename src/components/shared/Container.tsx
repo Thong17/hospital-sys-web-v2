@@ -1,7 +1,11 @@
 import { Box } from '@mui/material'
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
+import useDevice from 'hooks/useDevice'
+import useTheme from 'hooks/useTheme'
 
-const Container = ({ children }: { children: any }) => {
+const Container = ({ padding, children }: { padding?: string, children: any }) => {
+  const { theme } = useTheme()
+  const { device } = useDevice()
   return (
     <Box
       sx={{
@@ -11,6 +15,7 @@ const Container = ({ children }: { children: any }) => {
           FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP
         }px)`,
         boxSizing: 'border-box',
+        paddingX: padding ?? `${theme.responsive[device]?.padding.side}px`,
       }}
     >
       {children}

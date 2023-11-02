@@ -7,7 +7,6 @@ import {
   EXPANDED_SIDEBAR_WIDTH,
   NAVBAR_HEIGHT,
   OUTER_MENU_SPACING,
-  SIDE_PADDING,
 } from 'constants/layout'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
@@ -20,7 +19,7 @@ import { ReactElement } from 'react'
 
 const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
   const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
-  const { width } = useDevice()
+  const { width, device } = useDevice()
   const { theme } = useTheme()
   return (
     <Box
@@ -51,7 +50,7 @@ const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: `0 ${SIDE_PADDING}px`,
+          padding: `0 ${theme.responsive[device]?.padding.side}px`,
           boxSizing: 'border-box',
           backgroundColor: theme.layout.navbar,
           borderRadius: theme.radius.ternary,

@@ -240,6 +240,9 @@ export const themeStyle = {
         l2: 53,
         l1: 55,
       },
+      padding: {
+        side: 10
+      }
     },
     tablet: {
       text: {
@@ -263,6 +266,9 @@ export const themeStyle = {
         l2: 65,
         l1: 67,
       },
+      padding: {
+        side: 20
+      }
     },
     laptop: {
       text: {
@@ -286,6 +292,9 @@ export const themeStyle = {
         l2: 65,
         l1: 67,
       },
+      padding: {
+        side: 50
+      }
     },
     desktop: {
       text: {
@@ -309,6 +318,9 @@ export const themeStyle = {
         l2: 65,
         l1: 67,
       },
+      padding: {
+        side: 50
+      }
     },
   },
 }

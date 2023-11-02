@@ -74,6 +74,13 @@ export declare type IColorOption = {
   purple: string,
 }
 
+export declare type IDeviceProps = {
+  text: TextOptions
+  padding: {
+    side: string
+  }
+}
+
 export interface IThemeStyle extends IThemeMode {
   radius: {
     primary: string
@@ -89,18 +96,10 @@ export interface IThemeStyle extends IThemeMode {
   }
   color: IColorOption,
   responsive: {
-    mobile: {
-      text: TextOptions
-    }
-    tablet: {
-      text: TextOptions
-    }
-    laptop: {
-      text: TextOptions
-    }
-    desktop: {
-      text: TextOptions
-    }
+    mobile: IDeviceProps
+    tablet: IDeviceProps
+    laptop: IDeviceProps
+    desktop: IDeviceProps
   }
 }
 

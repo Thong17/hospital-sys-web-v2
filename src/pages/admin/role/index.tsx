@@ -32,6 +32,8 @@ import { convertBufferToArrayBuffer, downloadBuffer } from 'utils/index'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import RoleImportTable from './components/RoleImportTable'
 import TitleContainer from 'components/shared/containers/TitleContainer'
+import useTheme from 'hooks/useTheme'
+import useDevice from 'hooks/useDevice'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: 'Name', id: 'name', sort: 'desc' },
@@ -46,6 +48,8 @@ const Role = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
+  const { theme } = useTheme()
+  const { device } = useDevice()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
@@ -208,30 +212,34 @@ const Role = () => {
           />
         </DialogActions>
       </ContainerDialog>
-      <Container>
-        <TitleContainer text={translate('TITLE_ROLE_LIST') as String}>
-          <Stack direction={'row'} gap={1}>
-            <SearchButton onChange={handleChangeSearch} />
-            <OptionButton
-              onImport={handleValidationImport}
-              onExport={handleExport}
-            />
-            <CreateButton onClick={handleCreate} />
-          </Stack>
-        </TitleContainer>
-        <StickyTable
-          rows={data?.map((item: any) =>
-            mapData(item, lang, handleEdit, handleDelete)
-          )}
-          columns={columns}
-          onSort={handleSort}
-          count={metaData?.total}
-          limit={metaData?.limit}
-          skip={metaData?.skip}
-          onChangeLimit={handleChangeLimit}
-          onChangePage={handleChangePage}
-          onClick={handleClick}
-        />
+      <Container padding='0'>
+        <Box sx={{ paddingX: `${theme.responsive[device]?.padding.side}px` }}>
+          <TitleContainer text={translate('TITLE_ROLE_LIST') as String}>
+            <Stack direction={'row'} gap={1}>
+              <SearchButton onChange={handleChangeSearch} />
+              <OptionButton
+                onImport={handleValidationImport}
+                onExport={handleExport}
+              />
+              <CreateButton onClick={handleCreate} />
+            </Stack>
+          </TitleContainer>
+        </Box>
+        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px`, overflowX: 'auto' }}>
+          <StickyTable
+            rows={data?.map((item: any) =>
+              mapData(item, lang, handleEdit, handleDelete)
+            )}
+            columns={columns}
+            onSort={handleSort}
+            count={metaData?.total}
+            limit={metaData?.limit}
+            skip={metaData?.skip}
+            onChangeLimit={handleChangeLimit}
+            onChangePage={handleChangePage}
+            onClick={handleClick}
+          />
+        </Box>
       </Container>
     </Layout>
   )
