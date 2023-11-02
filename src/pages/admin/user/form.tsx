@@ -111,14 +111,17 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             {...register('role')}
             options={data?.map((item: any) => mapRoleOption(item, lang))}
             defaultValue={''}
+            error={!!errors.role?.message}
+            helperText={errors.role?.message}
             label={translate('ROLE')}
             sx={{ gridArea: 'role' }}
           />
-          
           <SelectInput
             {...register('segment')}
             options={SEGMENTS}
             defaultValue={''}
+            error={!!errors.segment?.message}
+            helperText={errors.segment?.message}
             label={translate('SEGMENT')}
             sx={{ gridArea: 'segment' }}
           />
@@ -127,6 +130,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             label={translate('PASSWORD')}
             error={!!errors.password?.message}
             helperText={errors.password?.message}
+            type='password'
             sx={{ gridArea: 'password' }}
           />
           <TextInput
@@ -134,6 +138,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             label={translate('EMAIL')}
             error={!!errors.email?.message}
             helperText={errors.email?.message}
+            type='email'
             sx={{ gridArea: 'email' }}
           />
           <TextInput

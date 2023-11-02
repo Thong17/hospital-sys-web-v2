@@ -1,4 +1,12 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectProps, styled } from '@mui/material'
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectProps,
+  styled,
+} from '@mui/material'
 import { getTheme } from 'contexts/theme/ThemeContext'
 import { translate } from 'contexts/language/LanguageContext'
 import { forwardRef } from 'react'
@@ -13,6 +21,7 @@ interface ISelectProps extends SelectProps {
   options?: IOption[]
   label?: any
   height?: any
+  helperText?: any
 }
 
 export const StyledSelectInput = styled(Select)(
@@ -32,36 +41,70 @@ export const StyledSelectInput = styled(Select)(
   })
 )
 
-const SelectInput = forwardRef(({ height, label, options = [], ...props }: ISelectProps, ref) => {
-  return (
-    <FormControl fullWidth sx={{
-      '& .MuiFormLabel-root': {
-        top: '-5px',
-        '&:is(.Mui-focused, .MuiFormLabel-filled)': {
-          transform: 'translate(10px, -11px) scale(0.75)',
-        },
-      },
-      '& .MuiInputLabel-root': {
-        color: theme.text.secondary,
-        '&.Mui-error': {
-          color: theme.color.error
-        }
-      },
-    }}>
-      {label && <InputLabel>{translate(label)}</InputLabel>}
-      <StyledSelectInput
-        ref={ref}
-        height={height}
-        {...props}
+const SelectInput = forwardRef(
+  (
+    { error, helperText, height, label, options = [], ...props }: ISelectProps,
+    ref
+  ) => {
+    return (
+      <FormControl
+        error={error}
+        fullWidth
+        sx={{
+          '& .MuiFormLabel-root': {
+            top: '-5px',
+            '&:is(.Mui-focused, .MuiFormLabel-filled)': {
+              transform: 'translate(10px, -11px) scale(0.75)',
+            },
+          },
+          '& .MuiInputLabel-root': {
+            color: theme.text.secondary,
+            '&.Mui-error': {
+              color: theme.color.error,
+            },
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderRadius: theme.radius.primary,
+              border: theme.border.tertiary,
+              borderColor: error
+                ? `${theme.color.error}ff !important`
+                : `${theme.color.info}bb`,
+            },
+            '&:hover fieldset': {
+              borderColor: error
+                ? `${theme.color.error}ff`
+                : `${theme.color.info}bb`,
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: 1,
+              boxShadow: theme.shadow.tertiary,
+            },
+          },
+        }}
       >
-        {options.map((option: any, key: number) => (
-          <MenuItem key={key} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </StyledSelectInput>
-    </FormControl>
-  )
-})
+        {label && <InputLabel>{translate(label)}</InputLabel>}
+        <StyledSelectInput ref={ref} height={height} {...props}>
+          {options.map((option: any, key: number) => (
+            <MenuItem key={key} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </StyledSelectInput>
+        {helperText && (
+          <FormHelperText
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {helperText}
+          </FormHelperText>
+        )}
+      </FormControl>
+    )
+  }
+)
 
 export default SelectInput

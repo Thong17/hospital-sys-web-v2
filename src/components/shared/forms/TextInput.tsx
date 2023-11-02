@@ -4,6 +4,11 @@ const theme = getTheme()
 
 export const TextInput = styled(TextField)(({ error }) => ({
   width: '100%',
+  '& .MuiFormHelperText-root': {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
   '& .MuiFormLabel-root': {
     top: '-5px',
     '&:is(.Mui-focused, .MuiFormLabel-filled)': {
@@ -13,18 +18,18 @@ export const TextInput = styled(TextField)(({ error }) => ({
   '& .MuiInputLabel-root': {
     color: theme.text.secondary,
     '&.Mui-error': {
-      color: theme.color.error
-    }
+      color: theme.color.error,
+    },
   },
   '& .MuiOutlinedInput-root': {
     padding: 0,
     '& input:-webkit-autofill': {
-      'WebkitBoxShadow': `0 0 0px 1000px ${theme.layout.container}ff inset`,
-      'WebkitTextFillColor': `${theme.text.secondary}`,
+      WebkitBoxShadow: `0 0 0px 1000px ${theme.layout.container}ff inset`,
+      WebkitTextFillColor: `${theme.text.secondary}`,
     },
     '& input.MuiInputBase-input, & textarea.MuiInputBase-input': {
       padding: '11px 15px !important',
-      color: theme.text.secondary
+      color: theme.text.secondary,
     },
     '& fieldset': {
       borderRadius: theme.radius.primary,
