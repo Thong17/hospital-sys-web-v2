@@ -10,10 +10,9 @@ import { CancelButton, CreateButton, CustomizedButton, OptionButton, SearchButto
 import useDevice from 'hooks/useDevice'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import useLanguage from 'hooks/useLanguage'
 import { useEffect, useState } from 'react'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { convertBufferToArrayBuffer, dateFormat, debounce, downloadBuffer } from 'utils/index'
+import { convertBufferToArrayBuffer, debounce, downloadBuffer } from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
@@ -21,23 +20,42 @@ import ContainerDialog from 'components/shared/dialogs/Dialog'
 import UserImportTable from './components/UserImportTable'
 import { selectUserList } from 'stores/user/selector'
 import { getUserDelete, getUserExport, getUserImport, getUserList, getUserValidate } from 'stores/user/action'
+import useLanguage from 'hooks/useLanguage'
+import { LanguageOptions } from 'contexts/language/interface'
 
 const userColumns: ITableColumn<any>[] = [
-  { label: 'Name', id: 'name', sort: 'desc' },
-  { label: 'Status', id: 'status' },
-  { label: 'Description', id: 'description' },
-  { label: 'Created\u00a0By', id: 'createdBy' },
-  { label: 'Created\u00a0At', id: 'createdAt', sort: 'desc' },
-  { label: 'Action', id: 'action', align: 'right' },
+  { label: translate('USERNAME'), id: 'username', sort: 'desc' },
+  { label: translate('SEGMENT'), id: 'segment' },
+  { label: translate('CONTACT'), id: 'contact' },
+  { label: translate('ROLE'), id: 'role' },
+  { label: translate('STATUS'), id: 'status' },
+  { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
+
+const mapData = (
+  item: any,
+  lang: LanguageOptions,
+  onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+) => {
+  return {
+    _id: item._id,
+    username: item.username,
+    segment: item.segment,
+    contact: item.contact,
+    role: item.role?.name?.[lang] ?? item.role?.name?.['English'],
+    status: item.status,
+    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+  }
+}
 
 const User = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
   const { theme } = useTheme()
-  const { device } = useDevice()
   const { lang } = useLanguage()
+  const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectUserList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(userColumns)
   const [queryParams, setQueryParams] = useSearchParams()
@@ -222,23 +240,6 @@ const User = () => {
       </Container>
     </Layout>
   )
-}
-
-const mapData = (
-  item: any,
-  lang: string,
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
-  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
-) => {
-  return {
-    _id: item._id,
-    name: item.name?.[lang] ?? item.name?.['English'],
-    status: item.status,
-    description: item.description,
-    createdAt: dateFormat(item.createdAt),
-    createdBy: item.createdBy,
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
-  }
 }
 
 export default User

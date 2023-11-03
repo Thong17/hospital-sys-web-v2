@@ -14,19 +14,22 @@ const ActivityContainer = ({ data }: any) => {
         borderTop: theme.border.quaternary,
         marginTop: '30px',
         padding: '30px 0',
+        '& .section-container': { marginTop: '20px' }
       }}
     >
       <Stack direction={'row'}>
         <LabelDetail label={translate('CREATED_BY') as String}>
-          <Typography>{data?.createdBy || '...'}</Typography>
+          <Typography>{data?.createdBy?.username || '...'}</Typography>
         </LabelDetail>
         <LabelDetail label={translate('CREATED_AT') as String}>
-          <Typography>{data?.createdAt || '...'}</Typography>
+          <Typography>
+            {timeFormat(data?.createdAt, 'DD MMM, YYYY h:mm:ss A') || '...'}
+          </Typography>
         </LabelDetail>
       </Stack>
       <Stack direction={'row'}>
         <LabelDetail label={translate('UPDATED_BY') as String}>
-          <Typography>{data?.updatedBy || '...'}</Typography>
+          <Typography>{data?.updatedBy?.username || '...'}</Typography>
         </LabelDetail>
         <LabelDetail label={translate('UPDATED_AT') as String}>
           <Typography>
@@ -37,8 +40,8 @@ const ActivityContainer = ({ data }: any) => {
       <Stack direction={'row'}>
         <LabelDetail label={translate('IS_DELETED') as String}>
           <ItemContainer
-            text={data?.status ? translate('TRUE') : translate('FALSE')}
-            color={data?.status ? theme.color.success : theme.color.error}
+            text={data?.isDeleted ? translate('TRUE') : translate('FALSE')}
+            color={data?.isDeleted ? theme.color.success : theme.color.error}
           />
         </LabelDetail>
         <LabelDetail label={translate('TAGS') as String}>

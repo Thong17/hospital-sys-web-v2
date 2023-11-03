@@ -1,22 +1,22 @@
-import { Box, CircularProgress } from '@mui/material'
+import { Box, CircularProgress, styled } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 
-const Loading = () => {
+export const StyledBox = styled(Box)(({ styled }: any) => ({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  display: 'grid',
+  placeItems: 'center',
+  backgroundColor: styled.layout.container,
+  opacity: 1000,
+}))
+
+const Loading = ({ ...props }: any) => {
   const { theme } = useTheme()
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        display: 'grid',
-        placeItems: 'center',
-        backgroundColor: theme.layout.container,
-        opacity: 1000
-      }}
-    >
+    <StyledBox styled={theme} {...props}>
       <CircularProgress size={30} />
-    </Box>
+    </StyledBox>
   )
 }
 

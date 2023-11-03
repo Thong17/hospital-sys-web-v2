@@ -20,7 +20,7 @@ import SelectInput from '../forms/SelectInput'
 
 export interface ITableColumn<Column> {
   id: Column
-  label: string
+  label: any
   minWidth?: number
   maxWidth?: number
   align?: 'left' | 'right' | 'center'

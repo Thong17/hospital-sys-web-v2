@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectUserDetail } from 'stores/user/selector'
 import { getUserDelete, getUserDetail } from 'stores/user/action'
 import Container from 'components/shared/Container'
-import { LocaleDetail } from 'components/shared/containers/LocaleContainer'
 import { Stack, Typography } from '@mui/material'
 import PrivilegeContainer from 'components/shared/containers/PrivilegeContainer'
 import { LabelDetail } from 'components/shared/containers/LabelContainer'
@@ -19,6 +18,7 @@ import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 import useAlert from 'hooks/useAlert'
 import ActivityContainer from 'components/shared/containers/ActivityContainer'
+import useLanguage from 'hooks/useLanguage'
 
 const UserDetail = () => {
   const dispatch = useAppDispatch()
@@ -26,6 +26,7 @@ const UserDetail = () => {
   const confirm = useAlert()
   const { id } = useParams()
   const { theme } = useTheme()
+  const { lang } = useLanguage()
   const { data } = useAppSelector(selectUserDetail)
 
   useEffect(() => {
@@ -87,13 +88,28 @@ const UserDetail = () => {
             <CustomizedIconButton onClick={handleClickHistory} color={theme.color.info} tooltip={translate('HISTORY_BUTTON')} icon={<RestoreRoundedIcon fontSize='small' />} />
           </Stack>
         </TitleContainer>
-        <Stack direction={'row'} mb={2}>
-          <LocaleDetail label={translate('NAME') as String} data={data?.name} />
-          <Stack sx={{ width: '100%' }}>
-            <LabelDetail label={translate('DESCRIPTION') as String}>
-              <Typography>{data?.description || '...'}</Typography>
+        <Stack direction={'column'} mb={2} sx={{ paddingTop: '20px', '& .section-container': { marginTop: '20px' } }}>
+          <Stack sx={{ width: '100%' }} direction={'row'}>
+            <LabelDetail label={translate('USERNAME') as String}>
+              <Typography>{data?.username || '...'}</Typography>
             </LabelDetail>
-            <LabelDetail marginTop='10px' label={translate('STATUS') as String}>
+            <LabelDetail label={translate('SEGMENT') as String}>
+              <Typography>{data?.segment || '...'}</Typography>
+            </LabelDetail>
+          </Stack>
+          <Stack sx={{ width: '100%' }} direction={'row'}>
+            <LabelDetail label={translate('EMAIL') as String}>
+              <Typography>{data?.email || '...'}</Typography>
+            </LabelDetail>
+            <LabelDetail label={translate('CONTACT') as String}>
+              <Typography>{data?.contact || '...'}</Typography>
+            </LabelDetail>
+          </Stack>
+          <Stack sx={{ width: '100%' }} direction={'row'}>
+            <LabelDetail label={translate('ROLE') as String}>
+              <Typography>{data?.role?.name?.[lang] || data?.role?.name?.['English'] || '...'}</Typography>
+            </LabelDetail>
+            <LabelDetail label={translate('STATUS') as String}>
               <ItemContainer
                 text={
                   data?.status ? translate('ENABLED') : translate('DISABLED')
@@ -102,10 +118,15 @@ const UserDetail = () => {
               />
             </LabelDetail>
           </Stack>
+          <Stack sx={{ width: '100%' }} direction={'row'}>
+            <LabelDetail label={translate('DESCRIPTION') as String}>
+              <Typography>{data?.description || '...'}</Typography>
+            </LabelDetail>
+          </Stack>
         </Stack>
         <PrivilegeContainer
-          navigation={data?.navigation}
-          privilege={data?.privilege}
+          navigation={data?.role?.navigation}
+          privilege={data?.role?.privilege}
         />
         <ActivityContainer data={data} />
       </Container>

@@ -11,9 +11,20 @@ export const initUser = {
   description: '',
 }
 
-export const userSchema = yup.object().shape({
+export const createUserSchema = yup.object().shape({
   username: yup.string().min(3).required('Please fill the username'),
   password: yup.string().min(7).required('Please fill the password'),
+  segment: yup.string().required('Please fill the segment'),
+  role: yup.string().required(),
+  email: yup.string().required(),
+  contact: yup.string().optional(),
+  status: yup.boolean(),
+  description: yup.string().optional(),
+})
+
+export const updateUserSchema = yup.object().shape({
+  username: yup.string().min(3).required('Please fill the username'),
+  password: yup.string().optional(),
   segment: yup.string().required('Please fill the segment'),
   role: yup.string().required(),
   email: yup.string().required(),

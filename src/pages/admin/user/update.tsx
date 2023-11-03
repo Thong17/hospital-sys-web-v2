@@ -50,11 +50,14 @@ const UserUpdate = () => {
 const mapUserBody = (data: any): IUserForm => {
   if (!data) return initUser
   return {
-    name: data.name,
+    username: data.username,
+    role: data.role?._id,
+    segment: data.segment,
+    email: data.email,
+    contact: data.contact,
     description: data.description,
     status: data.status,
-    navigation: data.navigation ?? {},
-    privilege: data.privilege ?? {},
+    password: ''
   }
 }
 

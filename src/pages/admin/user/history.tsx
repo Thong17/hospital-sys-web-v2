@@ -52,7 +52,7 @@ const mapData = (data: any): ITimelineItem[] =>
     return {
       timeline: `${timeFormat(item?.updatedAt, 'YYYY MMM DD')}\n${timeFormat(item?.updatedAt)}`,
       actionType: item?.type,
-      title: `${translate(`${item?.type}_BY`)}  ${item?.createdBy?.username}`,
+      title: `${translate(`${item?.type}D_BY`)} ${(item?.type === 'CREATE' ? item?.createdBy?.username : item?.updatedBy?.username) ?? 'Unknown'}`,
       content: description,
     }
   })

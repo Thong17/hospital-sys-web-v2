@@ -36,12 +36,12 @@ import useTheme from 'hooks/useTheme'
 import useDevice from 'hooks/useDevice'
 
 const roleColumns: ITableColumn<any>[] = [
-  { label: 'Name', id: 'name', sort: 'desc' },
-  { label: 'Status', id: 'status' },
-  { label: 'Description', id: 'description' },
-  { label: 'Created\u00a0By', id: 'createdBy' },
-  { label: 'Created\u00a0At', id: 'createdAt', sort: 'desc' },
-  { label: 'Action', id: 'action', align: 'right' },
+  { label: translate('NAME'), id: 'name', sort: 'desc' },
+  { label: translate('STATUS'), id: 'status' },
+  { label: translate('DESCRIPTION'), id: 'description' },
+  { label: translate('CREATED_BY'), id: 'createdBy' },
+  { label: translate('CREATED_AT'), id: 'createdAt', sort: 'desc' },
+  { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
 
 const Role = () => {

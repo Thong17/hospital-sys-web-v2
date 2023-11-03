@@ -9,9 +9,9 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
-import { USER_FORM_WIDTH, userSchema } from './constant'
+import { USER_FORM_WIDTH, createUserSchema, updateUserSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { getUserCreate, getUserUpdate } from 'stores/user/action'
 import { selectUserCreate } from 'stores/user/selector'
@@ -23,6 +23,7 @@ import { getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import SelectInput from 'components/shared/forms/SelectInput'
 import { SEGMENTS } from 'pages/auth/constant'
+import Loading from 'components/shared/Loading'
 
 export interface IUserForm {
   username: string
@@ -48,22 +49,28 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(userSchema),
+  } = useForm<any>({
+    resolver: id ? yupResolver(updateUserSchema) : yupResolver(createUserSchema),
     defaultValues,
   })
-  const { data } = useAppSelector(selectRoleList)
-  const [selectedRole, setSelectedRole] = useState({ privilege: {}, navigation: {} })
+  const { data, status } = useAppSelector(selectRoleList)
+  const [selectedRole, setSelectedRole] = useState({
+    privilege: {},
+    navigation: {},
+  })
 
   useEffect(() => {
     const value = watch('role')
     if (!value) return
     const role = data?.find((item: any) => item?._id === value)
-    setSelectedRole({ privilege: role?.privilege, navigation: role?.navigation })
+    setSelectedRole({
+      privilege: role?.privilege ?? {},
+      navigation: role?.navigation ?? {},
+    })
     return () => {
       setSelectedRole({ privilege: {}, navigation: {} })
     }
-  }, [watch('role')])
+  }, [watch('role'), data])
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -84,13 +91,13 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={3}>
         <Box sx={{ position: 'sticky', top: 20, height: '500px' }}>
-        <Box
-          sx={{
-            width: width > TABLET_WIDTH ? USER_FORM_WIDTH : '100%',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gridGap: 23,
-            gridTemplateAreas: `
+          <Box
+            sx={{
+              width: width > TABLET_WIDTH ? USER_FORM_WIDTH : '100%',
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr 1fr',
+              gridGap: 23,
+              gridTemplateAreas: `
                               'username username role'
                               'segment password password'
                               'email email contact'
@@ -98,97 +105,103 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
                               'status status status'
                               'action action action'
                               `,
-          }}
-        >
-          <TextInput
-            {...register('username')}
-            label={translate('USERNAME')}
-            error={!!errors.username?.message}
-            helperText={errors.username?.message}
-            required
-            sx={{ gridArea: 'username' }}
-          />
-          <SelectInput
-            {...register('role')}
-            options={data?.map((item: any) => mapRoleOption(item, lang))}
-            defaultValue={''}
-            error={!!errors.role?.message}
-            helperText={errors.role?.message}
-            label={translate('ROLE')}
-            sx={{ gridArea: 'role' }}
-            required
-          />
-          <SelectInput
-            {...register('segment')}
-            options={SEGMENTS}
-            defaultValue={''}
-            error={!!errors.segment?.message}
-            helperText={errors.segment?.message}
-            label={translate('SEGMENT')}
-            sx={{ gridArea: 'segment' }}
-            required
-          />
-          <TextInput
-            {...register('password')}
-            label={translate('PASSWORD')}
-            error={!!errors.password?.message}
-            helperText={errors.password?.message}
-            type='password'
-            required
-            sx={{ gridArea: 'password' }}
-          />
-          <TextInput
-            {...register('email')}
-            label={translate('EMAIL')}
-            error={!!errors.email?.message}
-            helperText={errors.email?.message}
-            type='email'
-            required
-            sx={{ gridArea: 'email' }}
-          />
-          <TextInput
-            {...register('contact')}
-            label={translate('CONTACT')}
-            error={!!errors.contact?.message}
-            helperText={errors.contact?.message}
-            sx={{ gridArea: 'contact' }}
-          />
-          <TextInput
-            {...register('description')}
-            label={translate('DESCRIPTION')}
-            multiline
-            sx={{ gridArea: 'description' }}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox {...register('status')} checked={watch('status')} />
-            }
-            label={translate('STATUS')}
-            sx={{ gridArea: 'status' }}
-          />
-          <Stack
-            direction={'row'}
-            justifyContent={'end'}
-            gap={2}
-            width={'100%'}
-            sx={{ gridArea: 'action' }}
+            }}
           >
-            <CancelButton onClick={() => navigate(-1)} />
-            {id ? (
-              <UpdateButton
-                type='submit'
-                isLoading={isLoading}
-                onClick={handleSubmit(onSubmit)}
-              />
+            <TextInput
+              {...register('username')}
+              label={translate('USERNAME')}
+              error={!!errors.username?.message}
+              helperText={errors.username?.message as ReactNode}
+              required
+              sx={{ gridArea: 'username' }}
+            />
+            {status !== 'COMPLETED' ? (
+              <Loading sx={{ gridArea: 'role' }} />
             ) : (
-              <CreateButton
-                type='submit'
-                isLoading={isLoading}
-                onClick={handleSubmit(onSubmit)}
+              <SelectInput
+                {...register('role')}
+                options={data?.map((item: any) => mapRoleOption(item, lang))}
+                defaultValue={''}
+                value={watch('role')}
+                error={!!errors.role?.message}
+                helperText={errors.role?.message}
+                label={translate('ROLE')}
+                sx={{ gridArea: 'role' }}
+                required
               />
             )}
-          </Stack>
-        </Box>
+            <SelectInput
+              {...register('segment')}
+              options={SEGMENTS}
+              defaultValue={''}
+              value={watch('segment')}
+              error={!!errors.segment?.message}
+              helperText={errors.segment?.message}
+              label={translate('SEGMENT')}
+              sx={{ gridArea: 'segment' }}
+              required
+            />
+            <TextInput
+              {...register('password')}
+              label={translate('PASSWORD')}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message as ReactNode}
+              type='password'
+              required={!id}
+              sx={{ gridArea: 'password' }}
+            />
+            <TextInput
+              {...register('email')}
+              label={translate('EMAIL')}
+              error={!!errors.email?.message}
+              helperText={errors.email?.message as ReactNode}
+              type='email'
+              required
+              sx={{ gridArea: 'email' }}
+            />
+            <TextInput
+              {...register('contact')}
+              label={translate('CONTACT')}
+              error={!!errors.contact?.message}
+              helperText={errors.contact?.message as ReactNode}
+              sx={{ gridArea: 'contact' }}
+            />
+            <TextInput
+              {...register('description')}
+              label={translate('DESCRIPTION')}
+              multiline
+              sx={{ gridArea: 'description' }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox {...register('status')} checked={watch('status')} />
+              }
+              label={translate('STATUS')}
+              sx={{ gridArea: 'status' }}
+            />
+            <Stack
+              direction={'row'}
+              justifyContent={'end'}
+              gap={2}
+              width={'100%'}
+              sx={{ gridArea: 'action' }}
+            >
+              <CancelButton onClick={() => navigate(-1)} />
+              {id ? (
+                <UpdateButton
+                  type='submit'
+                  isLoading={isLoading}
+                  onClick={handleSubmit(onSubmit)}
+                />
+              ) : (
+                <CreateButton
+                  type='submit'
+                  isLoading={isLoading}
+                  onClick={handleSubmit(onSubmit)}
+                />
+              )}
+            </Stack>
+          </Box>
         </Box>
         <Box
           sx={{

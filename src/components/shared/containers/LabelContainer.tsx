@@ -9,6 +9,7 @@ interface ILocaleDetail {
 export const LabelDetail = ({ label, children, marginTop = '40px' }: ILocaleDetail) => {
   return (
     <SectionContainer
+      className='section-container'
       label={label}
       sx={{
         marginBottom: '20px',

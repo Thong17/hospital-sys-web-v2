@@ -206,7 +206,7 @@ export const OptionButton = ({
         sx={{ marginTop: '5px' }}
       >
         <MenuItem>
-          <label htmlFor='export-file'>
+          <label htmlFor='export-file' style={{ display: 'flex', alignItems: 'center' }}>
             <FileUploadRoundedIcon sx={{ marginRight: '5px' }} />
             {translate('IMPORT')}
             <input type='file' onChange={onImport} name='export-file' id='export-file' style={{ display: 'none' }} />
