@@ -29,15 +29,18 @@ export const CustomFooter = styled(Stack)(
 )
 
 export const CustomPagination = styled('div')(
-  () => ({
+  ({ device }: { device: DeviceOptions }) => ({
     position: 'absolute',
+    width: '100%',
     bottom: 0,
-    right: 37,
+    right: 0,
     height: 40,
     display: 'flex',
     justifyContent: 'end',
     alignItems: 'center',
     overflow: 'hidden',
+    gap: '10px',
+    paddingInline: theme.responsive[device]?.padding.side,
     '& .MuiPagination-root ul li button': {
       color: theme.text.secondary,
       backgroundColor: `${theme.text.secondary}11`,

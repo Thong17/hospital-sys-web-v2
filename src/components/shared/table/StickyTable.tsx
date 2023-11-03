@@ -245,13 +245,15 @@ export const StickyTable = ({
         </TableContainer>
       </div>
       {!loading && pagination && (
-        <CustomPagination>
+        <CustomPagination device={device}>
           <SelectInput
+            height={'33px'}
+            width={'70px'}
             value={limit}
             onChange={(event) =>
               onChangeLimit && onChangeLimit(event.target.value)
             }
-            sx={{ marginRight: '10px' }}
+            sx={{ marginRight: '10px', width: '70px' }}
             options={[
               { value: 5, label: '5' },
               { value: 10, label: '10' },

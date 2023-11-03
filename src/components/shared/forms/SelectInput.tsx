@@ -21,6 +21,7 @@ interface ISelectProps extends SelectProps {
   options?: IOption[]
   label?: any
   height?: any
+  width?: any
   helperText?: any
   required?: any
 }
@@ -44,14 +45,14 @@ export const StyledSelectInput = styled(Select)(
 
 const SelectInput = forwardRef(
   (
-    { required, error, helperText, height, label, options = [], ...props }: ISelectProps,
+    { required, error, helperText, height, width = '100%', label, options = [], ...props }: ISelectProps,
     ref
   ) => {
     return (
       <FormControl
         error={error}
-        fullWidth
         sx={{
+          width,
           '& .MuiFormLabel-root': {
             top: '-5px',
             '&:is(.Mui-focused, .MuiFormLabel-filled)': {
