@@ -25,6 +25,7 @@ import { userReducer } from 'stores/user/slice'
 import { doctorReducer } from 'stores/doctor/slice'
 import { specialtyReducer } from 'stores/specialty/slice'
 import { exchangeRateReducer } from 'stores/exchangeRate/slice'
+import { patientReducer } from 'stores/patient/slice'
 import { sessionReducer } from 'stores/session/slice'
 
 const mainReducer = combineReducers({
@@ -35,6 +36,7 @@ const mainReducer = combineReducers({
   role: roleReducer,
   user: userReducer,
   doctor: doctorReducer,
+  patient: patientReducer,
   specialty: specialtyReducer,
   exchangeRate: exchangeRateReducer,
 })

@@ -14,7 +14,7 @@ export class UserService {
             throw error
         }
     }
-    async update({ id, data }: { id: String, data: { name: Object, status: boolean, description: String, navigation: Object, privilege: Object } }) {
+    async update({ id, data }: { id: String, data: any }) {
         try {
             const response = await axios.put(`/admin/user/update/${id}`, data)
             notify(response?.data?.message, 'success')

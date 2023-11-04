@@ -1,6 +1,6 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate, UserCreate, UserDetail, UserHistory, UserUpdate } from 'pages/admin'
+import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate, Patient, PatientCreate, PatientDetail, PatientHistory, PatientUpdate, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate, UserCreate, UserDetail, UserHistory, UserUpdate } from 'pages/admin'
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
@@ -104,6 +104,7 @@ const routes: RouteObject[] = [
                     </AuthGuard>
                 ),
             },
+            
             // Doctor
             {
                 path: 'doctor',
@@ -142,6 +143,48 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard>
                         <DoctorHistory />
+                    </AuthGuard>
+                ),
+            },
+
+            // Patient
+            {
+                path: 'patient',
+                element: (
+                    <AuthGuard>
+                        <Patient />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'patient/create',
+                element: (
+                    <AuthGuard>
+                        <PatientCreate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'patient/update/:id',
+                element: (
+                    <AuthGuard>
+                        <PatientUpdate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'patient/detail/:id',
+                element: (
+                    <AuthGuard>
+                        <PatientDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'patient/detail/:id/history',
+                element: (
+                    <AuthGuard>
+                        <PatientHistory />
                     </AuthGuard>
                 ),
             },

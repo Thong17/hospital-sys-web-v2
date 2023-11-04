@@ -14,6 +14,11 @@ import DoctorCreate from './doctor/create'
 import DoctorUpdate from './doctor/update'
 import DoctorDetail from './doctor/detail'
 import DoctorHistory from './doctor/history'
+import Patient from './patient'
+import PatientCreate from './patient/create'
+import PatientUpdate from './patient/update'
+import PatientDetail from './patient/detail'
+import PatientHistory from './patient/history'
 import { useOutlet } from 'react-router'
 import Breadcrumb, { IBreadcrumb } from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
@@ -53,6 +58,12 @@ export const breadcrumbs: IBreadcrumb[] = [
         label: translate('DOCTOR'),
         prefix: <PersonRoundedIcon />,
         suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
+      },
+      {
+        href: '/admin/patient',
+        label: translate('PATIENT'),
+        prefix: <PersonRoundedIcon />,
+        suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
       }
     ]
   }
@@ -72,4 +83,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory, Doctor, DoctorCreate, DoctorUpdate, DoctorDetail, DoctorHistory }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory, Doctor, DoctorCreate, DoctorUpdate, DoctorDetail, DoctorHistory, Patient, PatientCreate, PatientUpdate, PatientDetail, PatientHistory }

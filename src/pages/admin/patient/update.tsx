@@ -2,24 +2,23 @@ import { Layout } from 'components/layouts/Layout'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '..'
 import { translate } from 'contexts/language/LanguageContext'
-import DoctorForm, { IDoctorForm } from './form'
+import PatientForm, { IPatientForm } from './form'
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { selectDoctorDetail } from 'stores/doctor/selector'
-import { getDoctorDetail } from 'stores/doctor/action'
-import { initDoctor } from './constant'
+import { selectPatientDetail } from 'stores/patient/selector'
+import { getPatientDetail } from 'stores/patient/action'
+import { initPatient } from './constant'
 import Container from 'components/shared/Container'
-import { inputDateFormat } from 'utils/index'
 
-const DoctorUpdate = () => {
+const PatientUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
-  const { data } = useAppSelector(selectDoctorDetail)
+  const { data } = useAppSelector(selectPatientDetail)
 
   useEffect(() => {
-    dispatch(getDoctorDetail({ id }))
+    dispatch(getPatientDetail({ id }))
       .unwrap()
       .then(() => setIsLoading(false))
   }, [id])
@@ -32,37 +31,34 @@ const DoctorUpdate = () => {
             ...breadcrumbs,
             {
               id: 'action',
-              href: `/admin/doctor/update/${id}`,
+              href: `/admin/patient/update/${id}`,
               label: translate('UPDATE'),
             },
           ]}
           step={3}
-          selectedOption={{ navbar: '/admin/doctor' }}
+          selectedOption={{ navbar: '/admin/patient' }}
         />
       }
     >
       <Container>
-        {!isLoading && <DoctorForm defaultValues={mapDoctorBody(data)} />}
+        {!isLoading && <PatientForm defaultValues={mapPatientBody(data)} />}
       </Container>
     </Layout>
   )
 }
 
-const mapDoctorBody = (data: any): IDoctorForm => {
-  if (!data) return initDoctor
+const mapPatientBody = (data: any): IPatientForm => {
+  if (!data) return initPatient
   return {
-    firstName: data.firstName,
-    lastName: data.lastName,
-    gender: data.gender,
+    patientname: data.patientname,
+    role: data.role?._id,
+    segment: data.segment,
     email: data.email,
     contact: data.contact,
-    specialty: data.specialty as string[],
-    dateOfBirth: inputDateFormat(data.dateOfBirth),
-    startTime: inputDateFormat(data.startTime),
-    endTime: inputDateFormat(data.endTime),
-    status: data.status,
     description: data.description,
+    status: data.status,
+    password: ''
   }
 }
 
-export default DoctorUpdate
+export default PatientUpdate

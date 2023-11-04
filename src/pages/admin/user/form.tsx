@@ -157,7 +157,6 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
               error={!!errors.email?.message}
               helperText={errors.email?.message as ReactNode}
               type='email'
-              required
               sx={{ gridArea: 'email' }}
             />
             <TextInput

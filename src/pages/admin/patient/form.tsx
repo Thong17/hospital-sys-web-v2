@@ -9,59 +9,35 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
-import {
-  createDoctorSchema,
-  updateDoctorSchema,
-} from './constant'
+import { createPatientSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { getDoctorCreate, getDoctorUpdate } from 'stores/doctor/action'
-import { selectDoctorCreate } from 'stores/doctor/selector'
+import { getPatientCreate, getPatientUpdate } from 'stores/patient/action'
+import { selectPatientCreate } from 'stores/patient/selector'
+import useDevice from 'hooks/useDevice'
+import { TABLET_WIDTH } from 'contexts/web/constant'
 import SelectInput from 'components/shared/forms/SelectInput'
 import { GENDERS } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
-import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
-import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
-import FormDialog from 'components/shared/dialogs/FormDialog'
-import { initSpecialty } from 'components/module/specialty/constant'
-import ListTable from 'components/shared/table/ListTable'
-import { selectSpecialtyList } from 'stores/specialty/selector'
-import { getSpecialtyList } from 'stores/specialty/action'
-import useLanguage from 'hooks/useLanguage'
-import { LanguageOptions } from 'contexts/language/interface'
 
-export interface IDoctorForm {
+export interface IPatientForm {
   firstName: string
   lastName: string
   gender: string
   email: string
   contact: string
-  specialty: string[]
   dateOfBirth: string
-  startTime: string
-  endTime: string
   status: boolean
   description: string
 }
 
-const mapSpecialtyDetail = (data: any, lang: LanguageOptions) => {
-  return {
-    name: data?.name?.[lang] || data?.name?.['English'],
-    cost: data?.cost,
-    currency: data?.currency?.currency,
-    description: data?.description,
-  }
-}
-
-const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
+const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
   const { id } = useParams()
-  const { lang } = useLanguage()
+  const { width } = useDevice()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { isLoading } = useAppSelector(selectDoctorCreate)
-  const [specialtyDialog, setSpecialtyDialog] = useState({ open: false })
-  const { data, status } = useAppSelector(selectSpecialtyList)
+  const { isLoading } = useAppSelector(selectPatientCreate)
   const {
     reset,
     watch,
@@ -69,61 +45,35 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<any>({
-    resolver: id
-      ? yupResolver(updateDoctorSchema)
-      : yupResolver(createDoctorSchema),
+    resolver: yupResolver(createPatientSchema),
     defaultValues,
   })
-
-  useEffect(() => {
-    if (status !== 'INIT') return
-    dispatch(getSpecialtyList({}))
-  }, [status])
 
   useEffect(() => {
     reset(defaultValues)
   }, [defaultValues])
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    if (id) return dispatch(getDoctorUpdate({ id, data }))
-    dispatch(getDoctorCreate(data))
-  }
-
-  const handleRemoveSpecialty = (data: any) => {
-    console.log(data)
+    if (id) return dispatch(getPatientUpdate({ id, data }))
+    dispatch(getPatientCreate(data))
   }
 
   return (
-    <>
-      <FormDialog
-        justify='end'
-        isOpen={specialtyDialog.open}
-        onClose={() => setSpecialtyDialog({ open: false })}
-        form={
-          <SpecialtyForm
-            defaultValues={initSpecialty}
-            onCancel={() => setSpecialtyDialog({ open: false })}
-          />
-        }
-        list={<ListTable list={data?.map((item: any) => mapSpecialtyDetail(item, lang))} />}
-      />
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={5}>
         <Box
-          pt={5}
           sx={{
             width: '100%',
             display: 'grid',
-            gridTemplateColumns: '1fr 2fr 1fr 2fr',
+            gridTemplateColumns: '1fr 1fr 1fr',
             gridGap: FORM_GAP,
             gridTemplateAreas: `
-                              'lastName lastName firstName firstName'
-                              'dateOfBirth dateOfBirth dateOfBirth gender'
-                              'contact contact email email'
-                              'specialty specialty specialty specialty'
-                              'startTime startTime endTime endTime'
-                              'description description description description'
-                              'status status status status'
-                              'action action action action'
+                              'lastName firstName firstName'
+                              'dateOfBirth dateOfBirth gender'
+                              'contact email email'
+                              'description description description'
+                              'status status status'
+                              'action action action'
                               `,
           }}
         >
@@ -177,41 +127,6 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             helperText={errors.email?.message as ReactNode}
             sx={{ gridArea: 'email' }}
           />
-          <SelectInput
-            {...register('specialty')}
-            options={data?.map((item: any) => ({ label: item?.name?.[lang] || item?.name?.['English'], value: item?._id }))}
-            defaultValue={''}
-            value={watch('specialty')}
-            error={!!errors.specialty?.message}
-            helperText={errors.specialty?.message}
-            label={translate('SPECIALTY')}
-            gridArea='specialty'
-            multiple
-            onRemoveOption={handleRemoveSpecialty}
-            endAdornment={
-              <AddAdornmentButton
-                onClick={() => setSpecialtyDialog({ open: true })}
-              />
-            }
-          />
-          <TextInput
-            {...register('startTime')}
-            label={translate('START_TIME')}
-            error={!!errors.startTime?.message}
-            helperText={errors.startTime?.message as ReactNode}
-            type='date'
-            InputLabelProps={{ shrink: true }}
-            sx={{ gridArea: 'startTime' }}
-          />
-          <TextInput
-            {...register('endTime')}
-            label={translate('END_TIME')}
-            error={!!errors.endTime?.message}
-            helperText={errors.endTime?.message as ReactNode}
-            type='date'
-            InputLabelProps={{ shrink: true }}
-            sx={{ gridArea: 'endTime' }}
-          />
           <TextInput
             {...register('description')}
             label={translate('DESCRIPTION')}
@@ -248,8 +163,8 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             )}
           </Stack>
         </Box>
-      </form>
-    </>
+      </Stack>
+    </form>
   )
 }
 
