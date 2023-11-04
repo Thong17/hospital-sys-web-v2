@@ -3,18 +3,25 @@ import Role from './role'
 import RoleCreate from './role/create'
 import RoleUpdate from './role/update'
 import RoleDetail from './role/detail'
+import RoleHistory from './role/history'
 import User from './user'
 import UserCreate from './user/create'
 import UserUpdate from './user/update'
 import UserDetail from './user/detail'
+import UserHistory from './user/history'
+import Doctor from './doctor'
+import DoctorCreate from './doctor/create'
+import DoctorUpdate from './doctor/update'
+import DoctorDetail from './doctor/detail'
+import DoctorHistory from './doctor/history'
 import { useOutlet } from 'react-router'
 import Breadcrumb, { IBreadcrumb } from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
 import { translate } from 'contexts/language/LanguageContext'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
-import RoleHistory from './role/history'
-import UserHistory from './user/history'
+
+
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
@@ -40,6 +47,12 @@ export const breadcrumbs: IBreadcrumb[] = [
         label: translate('ROLE'),
         prefix: <PersonRoundedIcon />,
         suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
+      },
+      {
+        href: '/admin/doctor',
+        label: translate('DOCTOR'),
+        prefix: <PersonRoundedIcon />,
+        suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
       }
     ]
   }
@@ -59,4 +72,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory, Doctor, DoctorCreate, DoctorUpdate, DoctorDetail, DoctorHistory }

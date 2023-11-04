@@ -1,6 +1,6 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
-import { Admin, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate, UserCreate, UserDetail, UserHistory, UserUpdate } from 'pages/admin'
+import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate, UserCreate, UserDetail, UserHistory, UserUpdate } from 'pages/admin'
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
@@ -63,6 +63,7 @@ const routes: RouteObject[] = [
                     </AuthGuard>
                 ),
             },
+            // User
             {
                 path: 'user',
                 element: (
@@ -100,6 +101,47 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard>
                         <UserHistory />
+                    </AuthGuard>
+                ),
+            },
+            // Doctor
+            {
+                path: 'doctor',
+                element: (
+                    <AuthGuard>
+                        <Doctor />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'doctor/create',
+                element: (
+                    <AuthGuard>
+                        <DoctorCreate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'doctor/update/:id',
+                element: (
+                    <AuthGuard>
+                        <DoctorUpdate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'doctor/detail/:id',
+                element: (
+                    <AuthGuard>
+                        <DoctorDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'doctor/detail/:id/history',
+                element: (
+                    <AuthGuard>
+                        <DoctorHistory />
                     </AuthGuard>
                 ),
             },

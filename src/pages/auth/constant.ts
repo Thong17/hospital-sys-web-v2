@@ -17,3 +17,8 @@ export const SEGMENTS = [
     { value: 'DOCTOR', label: 'DOCTOR' },
     { value: 'PATIENT', label: 'PATIENT' },
 ]
+
+export const GENDERS = [
+    { value: 'MALE', label: 'MALE' },
+    { value: 'FEMALE', label: 'FEMALE' },
+]
