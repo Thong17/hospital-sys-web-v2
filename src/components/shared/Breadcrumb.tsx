@@ -289,7 +289,7 @@ const ActionButton = ({
   return (
     <Box
       sx={{
-        backgroundColor: theme.background.tertiary,
+        backgroundColor: `${theme.color.info}22`,
         borderRadius: theme.radius.rounded,
         padding: '3px',
       }}
