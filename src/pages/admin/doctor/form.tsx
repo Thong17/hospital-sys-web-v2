@@ -9,7 +9,10 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
-import { createDoctorSchema, initSpecialty, updateDoctorSchema } from './constant'
+import {
+  createDoctorSchema,
+  updateDoctorSchema,
+} from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
 import { ReactNode, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -19,9 +22,10 @@ import SelectInput from 'components/shared/forms/SelectInput'
 import { GENDERS } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
 import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
-import ContainerDialog from 'components/shared/dialogs/Dialog'
-import SpecialtyCreateForm from './components/SpecialtyCreateForm'
-import { getSpecialtyCreate } from 'stores/specialty/action'
+import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
+import FormDialog from 'components/shared/dialogs/FormDialog'
+import { initSpecialty } from 'components/module/specialty/constant'
+import ListTable from 'components/shared/table/ListTable'
 
 export interface IDoctorForm {
   firstName: string
@@ -63,29 +67,24 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
     dispatch(getDoctorCreate(data))
   }
 
-  const handleAddSpecialty = (data: any) => {
-    dispatch(getSpecialtyCreate(data))
-  }
-
   const handleRemoveSpecialty = (data: any) => {
     console.log(data)
   }
 
   return (
     <>
-      <ContainerDialog
-        justify='center'
+      <FormDialog
+        justify='end'
         isOpen={specialtyDialog.open}
         onClose={() => setSpecialtyDialog({ open: false })}
-      >
-        <Box sx={{ position: 'relative' }}>
-          <SpecialtyCreateForm
+        form={
+          <SpecialtyForm
             defaultValues={initSpecialty}
-            onSubmit={handleAddSpecialty}
             onCancel={() => setSpecialtyDialog({ open: false })}
           />
-        </Box>
-      </ContainerDialog>
+        }
+        list={<ListTable list={[]} />}
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
           pt={3}

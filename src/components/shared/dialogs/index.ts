@@ -1,0 +1,1 @@
+export const ALERT_SIDE_PADDING = 32

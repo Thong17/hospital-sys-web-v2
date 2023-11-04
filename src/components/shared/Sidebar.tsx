@@ -50,7 +50,6 @@ const Sidebar = () => {
           boxShadow: theme.shadow.quaternary,
           backgroundColor: theme.layout.sidebar,
           gap: 1,
-          overflow: 'auto',
           '& .sidebar-menu': {
             borderRadius: theme.radius.ternary,
             width: '100%',
