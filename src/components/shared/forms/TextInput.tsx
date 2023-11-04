@@ -33,7 +33,7 @@ export const TextInput = styled(TextField)(({ error }) => ({
     '& input[type=number]::-webkit-inner-spin-button, & input[type=number]::-webkit-outer-spin-button': {
       appearance: 'none',
     },
-    '& input:is([type="date"], [type="datetime-local"])::-webkit-calendar-picker-indicator': {
+    '& input:is([type="date"], [type="datetime-local"], [type="time"])::-webkit-calendar-picker-indicator': {
       filter: 'invert(0.5)'
     },
     '& input.MuiInputBase-input, & textarea.MuiInputBase-input': {

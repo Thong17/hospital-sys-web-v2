@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { getDoctorCreate, getDoctorUpdate } from 'stores/doctor/action'
 import { selectDoctorCreate } from 'stores/doctor/selector'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { GENDERS } from 'pages/auth/constant'
+import { GENDERS, SHIFT_DAY } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
 import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
 import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
@@ -38,6 +38,7 @@ export interface IDoctorForm {
   email: string
   contact: string
   specialty: string[]
+  shift: string[]
   dateOfBirth: string
   startTime: string
   endTime: string
@@ -121,6 +122,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
                               'contact contact email email'
                               'specialty specialty specialty specialty'
                               'startTime startTime endTime endTime'
+                              'shift shift shift shift'
                               'description description description description'
                               'status status status status'
                               'action action action action'
@@ -199,7 +201,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             label={translate('START_TIME')}
             error={!!errors.startTime?.message}
             helperText={errors.startTime?.message as ReactNode}
-            type='date'
+            type='time'
             InputLabelProps={{ shrink: true }}
             sx={{ gridArea: 'startTime' }}
           />
@@ -208,9 +210,20 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             label={translate('END_TIME')}
             error={!!errors.endTime?.message}
             helperText={errors.endTime?.message as ReactNode}
-            type='date'
+            type='time'
             InputLabelProps={{ shrink: true }}
             sx={{ gridArea: 'endTime' }}
+          />
+          <SelectInput
+            {...register('shift')}
+            options={SHIFT_DAY}
+            defaultValue={''}
+            value={watch('shift')}
+            error={!!errors.shift?.message}
+            helperText={errors.shift?.message}
+            label={translate('SHIFT')}
+            gridArea='shift'
+            multiple
           />
           <TextInput
             {...register('description')}
