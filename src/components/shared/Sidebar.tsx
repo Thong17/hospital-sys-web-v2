@@ -119,6 +119,16 @@ const SidebarItem = ({ nav }: any) => {
             opacity: '1 !important',
             transition: 0,
           },
+          '& .expand-button': {
+            '& *': {
+              color: theme.text.secondary
+            }
+          },
+          '&:has(a.active) .expand-button': {
+            '& *': {
+              color: theme.color.info
+            }
+          }
         }}
       >
         <NavLink
@@ -165,8 +175,8 @@ const SidebarItem = ({ nav }: any) => {
                 sx={{
                   padding: '0 14px 13px 14px',
                   boxSizing: 'border-box',
-                  '& .sidebar-menu-item': { color: 'black' },
-                  '& .sidebar-menu-item.active': { color: theme.color.info },
+                  '& .sidebar-menu-item': { color: theme.text.secondary },
+                  '& .sidebar-menu-item.active': { color: `${theme.color.info} !important` },
                 }}
               >
                 {nav.children.map((item: any, key: number) => (
