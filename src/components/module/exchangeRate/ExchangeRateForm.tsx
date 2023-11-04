@@ -13,7 +13,10 @@ import { FORM_GAP } from 'constants/layout'
 import { ALERT_SIDE_PADDING } from 'components/shared/dialogs'
 import { useAppDispatch } from 'app/store'
 import { exchangeRateSchema } from './constant'
-import { getExchangeRateCreate } from 'stores/exchangeRate/action'
+import {
+  getExchangeRateCreate,
+  getExchangeRateList,
+} from 'stores/exchangeRate/action'
 
 const ExchangeRateForm = ({
   defaultValues,
@@ -35,6 +38,11 @@ const ExchangeRateForm = ({
 
   const onSubmit = (data: any) => {
     dispatch(getExchangeRateCreate(data))
+      .unwrap()
+      .then(() => {
+        dispatch(getExchangeRateList({}))
+      })
+      .catch(() => {})
   }
 
   return (
@@ -43,9 +51,7 @@ const ExchangeRateForm = ({
         sx={{
           width:
             width > 1024
-              ? `calc(50vw - ${
-                  ALERT_SIDE_PADDING * 2 + ALERT_SIDE_PADDING
-                }px)`
+              ? `calc(50vw - ${ALERT_SIDE_PADDING * 2 + ALERT_SIDE_PADDING}px)`
               : `calc(100vw - ${ALERT_SIDE_PADDING * 2}px)`,
           boxSizing: 'border-box',
           display: 'grid',
@@ -91,8 +97,9 @@ const ExchangeRateForm = ({
             gridArea: 'action',
           }}
         >
-          <CancelButton onClick={onCancel} />
+          <CancelButton fullWidth onClick={onCancel} />
           <CustomizedButton
+            fullWidth
             type='submit'
             onClick={handleSubmit(onSubmit)}
             label={translate('ADD')}

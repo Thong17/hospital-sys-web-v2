@@ -26,6 +26,10 @@ import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
 import FormDialog from 'components/shared/dialogs/FormDialog'
 import { initSpecialty } from 'components/module/specialty/constant'
 import ListTable from 'components/shared/table/ListTable'
+import { selectSpecialtyList } from 'stores/specialty/selector'
+import { getSpecialtyList } from 'stores/specialty/action'
+import useLanguage from 'hooks/useLanguage'
+import { LanguageOptions } from 'contexts/language/interface'
 
 export interface IDoctorForm {
   firstName: string
@@ -39,12 +43,23 @@ export interface IDoctorForm {
   description: string
 }
 
+const mapSpecialtyDetail = (data: any, lang: LanguageOptions) => {
+  return {
+    name: data?.name?.[lang] || data?.name?.['English'],
+    cost: data?.cost,
+    currency: data?.currency?.currency,
+    description: data?.description,
+  }
+}
+
 const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
   const { id } = useParams()
+  const { lang } = useLanguage()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isLoading } = useAppSelector(selectDoctorCreate)
   const [specialtyDialog, setSpecialtyDialog] = useState({ open: false })
+  const { data, status } = useAppSelector(selectSpecialtyList)
   const {
     reset,
     watch,
@@ -57,6 +72,11 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
       : yupResolver(createDoctorSchema),
     defaultValues,
   })
+
+  useEffect(() => {
+    if (status !== 'INIT') return
+    dispatch(getSpecialtyList({}))
+  }, [status])
 
   useEffect(() => {
     reset(defaultValues)
@@ -83,7 +103,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             onCancel={() => setSpecialtyDialog({ open: false })}
           />
         }
-        list={<ListTable list={[]} />}
+        list={<ListTable list={data?.map((item: any) => mapSpecialtyDetail(item, lang))} />}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
@@ -142,7 +162,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
           />
           <SelectInput
             {...register('specialty')}
-            options={GENDERS}
+            options={data?.map((item: any) => ({ label: item?.name?.[lang] || item?.name?.['English'], value: item?._id }))}
             defaultValue={''}
             value={watch('specialty')}
             error={!!errors.specialty?.message}

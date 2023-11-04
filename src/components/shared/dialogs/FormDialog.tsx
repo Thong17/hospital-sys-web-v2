@@ -1,4 +1,4 @@
-import { Box, Dialog, Stack } from '@mui/material'
+import { Dialog, Stack } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import { ReactNode } from 'react'
 
@@ -41,14 +41,16 @@ const FormDialog = ({
       <Stack
         direction={'column'}
         gap={'20px'}
+        justifyContent={'space-between'}
         sx={{
           position: 'relative',
           height: list ? '91vh' : '100%',
           padding: '40px 20px 20px',
+          boxSizing: 'border-box',
         }}
       >
-        <Box>{form}</Box>
-        <Box>{list}</Box>
+        {form}
+        {list}
       </Stack>
     </Dialog>
   )

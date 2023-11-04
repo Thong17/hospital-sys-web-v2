@@ -6,22 +6,38 @@ import {
 } from 'components/shared/buttons/CustomButton'
 import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LocaleInput } from 'components/shared/forms/LocaleInput'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { GENDERS } from 'pages/auth/constant'
 import useDevice from 'hooks/useDevice'
 import { FORM_GAP } from 'constants/layout'
 import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
 import { ALERT_SIDE_PADDING } from 'components/shared/dialogs'
-import { useAppDispatch } from 'app/store'
-import { getSpecialtyCreate } from 'stores/specialty/action'
+import { useAppDispatch, useAppSelector } from 'app/store'
+import { getSpecialtyCreate, getSpecialtyList } from 'stores/specialty/action'
 import FormDialog from 'components/shared/dialogs/FormDialog'
 import ExchangeRateForm from '../exchangeRate/ExchangeRateForm'
 import { initExchangeRate } from '../exchangeRate/constant'
 import { specialtySchema } from './constant'
 import ListTable from 'components/shared/table/ListTable'
+import { selectExchangeRateList } from 'stores/exchangeRate/selector'
+import { getExchangeRateList } from 'stores/exchangeRate/action'
+
+const mapCurrencyOption = (data: any) => {
+  return {
+    value: data?._id,
+    label: data?.currency,
+  }
+}
+
+const mapCurrencyDetail = (data: any) => {
+  return {
+    currency: data?.currency,
+    value: data?.value,
+    status: <span>{data?.status ? 'True' : 'False'}</span>,
+  }
+}
 
 const SpecialtyCreateForm = ({
   defaultValues,
@@ -33,6 +49,7 @@ const SpecialtyCreateForm = ({
   const { width } = useDevice()
   const dispatch = useAppDispatch()
   const [exchangeRateDialog, setExchangeRateDialog] = useState({ open: false })
+  const { data } = useAppSelector(selectExchangeRateList)
   const {
     watch,
     register,
@@ -45,8 +62,17 @@ const SpecialtyCreateForm = ({
     defaultValues,
   })
 
+  useEffect(() => {
+    dispatch(getExchangeRateList({}))
+  }, [])
+
   const onSubmit = (data: any) => {
     dispatch(getSpecialtyCreate(data))
+      .unwrap()
+      .then(() => {
+        dispatch(getSpecialtyList({}))
+      })
+      .catch(() => {})
   }
 
   return (
@@ -61,7 +87,9 @@ const SpecialtyCreateForm = ({
             onCancel={() => setExchangeRateDialog({ open: false })}
           />
         }
-        list={<ListTable list={[]} />}
+        list={
+          <ListTable list={data?.map((item: any) => mapCurrencyDetail(item))} />
+        }
       />
       <Box
         sx={{
@@ -104,7 +132,7 @@ const SpecialtyCreateForm = ({
         />
         <SelectInput
           {...register('currency')}
-          options={GENDERS}
+          options={data?.map((item: any) => mapCurrencyOption(item))}
           defaultValue={''}
           value={watch('currency')}
           error={!!errors.currency?.message}
@@ -127,13 +155,14 @@ const SpecialtyCreateForm = ({
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'end',
+            justifyContent: 'space-between',
             gap: '10px',
             gridArea: 'action',
           }}
         >
-          <CancelButton onClick={onCancel} />
+          <CancelButton fullWidth onClick={onCancel} />
           <CustomizedButton
+            fullWidth
             type='submit'
             onClick={handleSubmit(onSubmit)}
             label={translate('ADD')}
