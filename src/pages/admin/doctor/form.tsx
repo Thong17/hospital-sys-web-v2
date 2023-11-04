@@ -19,6 +19,7 @@ import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
 import SelectInput from 'components/shared/forms/SelectInput'
 import { GENDERS } from 'pages/auth/constant'
+import { FORM_GAP } from 'constants/layout'
 
 export interface IDoctorForm {
   firstName: string,
@@ -65,10 +66,10 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
               width: width > TABLET_WIDTH ? DOCTOR_FORM_WIDTH : '100%',
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr',
-              gridGap: 23,
+              gridGap: FORM_GAP,
               gridTemplateAreas: `
                               'lastName firstName firstName'
-                              'gender dateOfBirth dateOfBirth'
+                              'dateOfBirth dateOfBirth gender'
                               'specialty specialty specialty'
                               'description description description'
                               'status status status'
@@ -92,6 +93,15 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
               required
               sx={{ gridArea: 'firstName' }}
             />
+            <TextInput
+              {...register('dateOfBirth')}
+              label={translate('DATE_OF_BIRTH')}
+              error={!!errors.dateOfBirth?.message}
+              helperText={errors.dateOfBirth?.message as ReactNode}
+              type='date'
+              InputLabelProps={{ shrink: true }}
+              sx={{ gridArea: 'dateOfBirth' }}
+            />
             <SelectInput
               {...register('gender')}
               options={GENDERS}
@@ -100,23 +110,19 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
               error={!!errors.gender?.message}
               helperText={errors.gender?.message}
               label={translate('GENDER')}
-              sx={{ gridArea: 'gender' }}
+              gridArea='gender'
               required
             />
-            <TextInput
-              {...register('dateOfBirth')}
-              label={translate('DATE_OF_BIRTH')}
-              error={!!errors.dateOfBirth?.message}
-              helperText={errors.dateOfBirth?.message as ReactNode}
-              type='date'
-              sx={{ gridArea: 'dateOfBirth' }}
-            />
-            <TextInput
+            <SelectInput
               {...register('specialty')}
-              label={translate('SPECIALTY')}
+              options={GENDERS}
+              defaultValue={''}
+              value={watch('specialty')}
               error={!!errors.specialty?.message}
-              helperText={errors.specialty?.message as ReactNode}
-              sx={{ gridArea: 'specialty' }}
+              helperText={errors.specialty?.message}
+              label={translate('SPECIALTY')}
+              gridArea='specialty'
+              multiple
             />
             <TextInput
               {...register('description')}

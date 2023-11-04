@@ -24,6 +24,7 @@ interface ISelectProps extends SelectProps {
   width?: any
   helperText?: any
   required?: any
+  gridArea?: string
 }
 
 export const StyledSelectInput = styled(Select)(
@@ -45,7 +46,7 @@ export const StyledSelectInput = styled(Select)(
 
 const SelectInput = forwardRef(
   (
-    { required, error, helperText, height, width = '100%', label, options = [], ...props }: ISelectProps,
+    { required, error, helperText, height, width = '100%', label, options = [], gridArea = '', ...props }: ISelectProps,
     ref
   ) => {
     return (
@@ -53,10 +54,14 @@ const SelectInput = forwardRef(
         error={error}
         sx={{
           width,
+          gridArea,
           '& .MuiFormLabel-root': {
             top: '-5px',
             '&:is(.Mui-focused, .MuiFormLabel-filled)': {
               transform: 'translate(10px, -11px) scale(0.75)',
+            },
+            '&:is(.Mui-focused)': {
+              color: theme.color.info
             },
           },
           '& .MuiInputLabel-root': {
@@ -66,6 +71,9 @@ const SelectInput = forwardRef(
             },
           },
           '& .MuiOutlinedInput-root': {
+            '& *': {
+              color: theme.text.secondary
+            },
             '& fieldset': {
               borderRadius: theme.radius.primary,
               border: theme.border.tertiary,

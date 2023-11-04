@@ -24,6 +24,7 @@ import useLanguage from 'hooks/useLanguage'
 import SelectInput from 'components/shared/forms/SelectInput'
 import { SEGMENTS } from 'pages/auth/constant'
 import Loading from 'components/shared/Loading'
+import { FORM_GAP } from 'constants/layout'
 
 export interface IUserForm {
   username: string
@@ -96,7 +97,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
               width: width > TABLET_WIDTH ? USER_FORM_WIDTH : '100%',
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr',
-              gridGap: 23,
+              gridGap: FORM_GAP,
               gridTemplateAreas: `
                               'username username role'
                               'segment password password'

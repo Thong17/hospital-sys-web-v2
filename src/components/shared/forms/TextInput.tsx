@@ -11,8 +11,11 @@ export const TextInput = styled(TextField)(({ error }) => ({
   },
   '& .MuiFormLabel-root': {
     top: '-5px',
-    '&:is(.Mui-focused, .MuiFormLabel-filled)': {
+    '&:is(.Mui-focused, .MuiFormLabel-filled, .MuiInputLabel-shrink)': {
       transform: 'translate(10px, -11px) scale(0.75)',
+    },
+    '&:is(.Mui-focused)': {
+      color: theme.color.info
     },
   },
   '& .MuiInputLabel-root': {
@@ -26,6 +29,12 @@ export const TextInput = styled(TextField)(({ error }) => ({
     '& input:-webkit-autofill': {
       WebkitBoxShadow: `0 0 0px 1000px ${theme.layout.container}ff inset`,
       WebkitTextFillColor: `${theme.text.secondary}`,
+    },
+    '& input[type=number]::-webkit-inner-spin-button, & input[type=number]::-webkit-outer-spin-button': {
+      appearance: 'none',
+    },
+    '& input:is([type="date"], [type="datetime-local"])::-webkit-calendar-picker-indicator': {
+      filter: 'invert(0.5)'
     },
     '& input.MuiInputBase-input, & textarea.MuiInputBase-input': {
       padding: '11px 15px !important',

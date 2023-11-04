@@ -10,6 +10,7 @@ import { selectDoctorDetail } from 'stores/doctor/selector'
 import { getDoctorDetail } from 'stores/doctor/action'
 import { initDoctor } from './constant'
 import Container from 'components/shared/Container'
+import { inputDateFormat } from 'utils/index'
 
 const DoctorUpdate = () => {
   const dispatch = useAppDispatch()
@@ -54,7 +55,7 @@ const mapDoctorBody = (data: any): IDoctorForm => {
     lastName: data.lastName,
     gender: data.gender,
     specialty: data.specialty as string[],
-    dateOfBirth: data.dateOfBirth,
+    dateOfBirth: inputDateFormat(data.dateOfBirth),
     status: data.status,
     description: data.description,
   }
