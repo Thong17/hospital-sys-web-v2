@@ -1,6 +1,7 @@
 import { ButtonProps, CircularProgress, Stack, Tooltip } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import { CustomIconButton } from 'styles/index'
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
@@ -44,6 +45,35 @@ export const CustomizedIconButton = ({
         {icon}
       </CustomIconButton>
     </Tooltip>
+  )
+}
+
+export const AddButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        backgroundColor: `${theme.color.info}22`,
+        boxShadow: theme.shadow.quaternary,
+        '&:hover': { backgroundColor: `${theme.color.info}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.info}22` },
+        '& *': {
+          color: `${theme.color.info} !important`,
+          margin: '0 !important',
+        }
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={16} sx={{ position: 'absolute' }} />
+      )}
+      <AddRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
   )
 }
 
@@ -117,5 +147,37 @@ export const ActionButton = ({
       <EditButton onClick={(event) => onEdit(event, data)} />
       <DeleteButton onClick={(event) => onDelete(event, data)} />
     </Stack>
+  )
+}
+
+export const AddAdornmentButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        right: '8px',
+        borderRadius: '6px',
+        position: 'absolute',
+        backgroundColor: `${theme.color.info}22`,
+        boxShadow: theme.shadow.quaternary,
+        '&:hover': { backgroundColor: `${theme.color.info}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.info}22` },
+        '& *': {
+          color: `${theme.color.info} !important`,
+          margin: '0 !important',
+        }
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={16} sx={{ position: 'absolute' }} />
+      )}
+      <AddRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
   )
 }

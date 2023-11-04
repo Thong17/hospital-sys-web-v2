@@ -56,6 +56,8 @@ const mapDoctorBody = (data: any): IDoctorForm => {
     gender: data.gender,
     specialty: data.specialty as string[],
     dateOfBirth: inputDateFormat(data.dateOfBirth),
+    startTime: inputDateFormat(data.startTime),
+    endTime: inputDateFormat(data.endTime),
     status: data.status,
     description: data.description,
   }

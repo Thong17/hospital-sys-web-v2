@@ -6,6 +6,8 @@ export const initDoctor = {
   gender: '',
   specialty: [],
   dateOfBirth: '',
+  startTime: '',
+  endTime: '',
   status: false,
   description: '',
 }
@@ -16,6 +18,8 @@ export const createDoctorSchema = yup.object().shape({
   gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
   specialty: yup.array().optional(),
   dateOfBirth: yup.string().optional(),
+  startTime: yup.string().optional(),
+  endTime: yup.string().optional(),
   status: yup.boolean(),
   description: yup.string().optional(),
 })
@@ -26,6 +30,8 @@ export const updateDoctorSchema = yup.object().shape({
   gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
   specialty: yup.array().optional(),
   dateOfBirth: yup.string().optional(),
+  startTime: yup.string().optional(),
+  endTime: yup.string().optional(),
   status: yup.boolean(),
   description: yup.string().optional(),
 })

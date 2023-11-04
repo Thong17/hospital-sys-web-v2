@@ -28,9 +28,12 @@ interface ISelectProps extends SelectProps {
 }
 
 export const StyledSelectInput = styled(Select)(
-  ({ height = '45px' }: { height: string }) => ({
+  ({ height = '45px', endAdornment }: { height: string, endAdornment?: any }) => ({
     borderRadius: theme.radius.primary,
     height,
+    '& svg.MuiSvgIcon-root': {
+      marginRight: endAdornment ? '37px' : '0',
+    },
     '& fieldset': {
       borderRadius: theme.radius.primary,
       border: `${theme.border.tertiary} !important`,
