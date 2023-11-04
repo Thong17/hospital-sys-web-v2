@@ -9,6 +9,7 @@ interface ILocaleInput {
     onChange: (_data: any) => void
     defaultValue?: any
     error?: any
+    gridArea?: string
 }
 
 export const LocaleInput = ({
@@ -17,6 +18,7 @@ export const LocaleInput = ({
   label,
   defaultValue,
   error,
+  gridArea
 }: ILocaleInput) => {
   const [localeField, setLocaleField] = useState(defaultValue || {})
   const langs = Object.keys(languages)
@@ -41,7 +43,7 @@ export const LocaleInput = ({
   return (
     <>
       {langs.length > 1 ? (
-        <SectionContainer label={label} style={{ marginBottom: 20, marginTop: 30, width: '100%' }} padding='30px 20px 20px' error={error}>
+        <SectionContainer label={label} style={{ width: '100%', gridArea }} padding='30px 20px 20px' error={error}>
           <div
             style={{
               display: 'grid',

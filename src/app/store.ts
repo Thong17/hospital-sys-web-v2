@@ -23,6 +23,7 @@ import { homeReducer } from 'stores/home/slice'
 import { roleReducer } from 'stores/role/slice'
 import { userReducer } from 'stores/user/slice'
 import { doctorReducer } from 'stores/doctor/slice'
+import { specialtyReducer } from 'stores/specialty/slice'
 import { sessionReducer } from 'stores/session/slice'
 
 const mainReducer = combineReducers({
@@ -33,6 +34,7 @@ const mainReducer = combineReducers({
   role: roleReducer,
   user: userReducer,
   doctor: doctorReducer,
+  specialty: specialtyReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
