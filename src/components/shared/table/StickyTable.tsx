@@ -10,7 +10,7 @@ import Loading from '../Loading'
 import { CustomPagination, CustomTableContainer } from 'styles'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import ToggleOffIcon from '@mui/icons-material/ToggleOff'
-import { IconButton, Pagination, TableSortLabel } from '@mui/material'
+import { IconButton, Pagination, Stack, TableSortLabel, Typography } from '@mui/material'
 import useLanguage from 'hooks/useLanguage'
 import useDevice from 'hooks/useDevice'
 import { languages } from 'contexts/language/constant'
@@ -246,27 +246,32 @@ export const StickyTable = ({
       </div>
       {!loading && pagination && (
         <CustomPagination device={device}>
-          <SelectInput
-            height={'33px'}
-            width={'70px'}
-            value={limit}
-            onChange={(event) =>
-              onChangeLimit && onChangeLimit(event.target.value)
-            }
-            sx={{ marginRight: '10px', width: '70px' }}
-            options={[
-              { value: 5, label: '5' },
-              { value: 10, label: '10' },
-              { value: 20, label: '20' },
-              { value: 50, label: '50' },
-            ]}
-          />
-          <Pagination
-            count={Math.ceil(count / limit)}
-            page={skip + 1}
-            size='medium'
-            onChange={(_event, page) => onChangePage && onChangePage(page)}
-          />
+          <Typography>
+            {`${translate('SHOWING')} ${limit} ${translate('OF')} ${count} ${translate('TOTAL')}`}
+          </Typography>
+          <Stack direction={'row'} gap={1}>
+            <SelectInput
+              height={'33px'}
+              width={'70px'}
+              value={limit}
+              onChange={(event) =>
+                onChangeLimit && onChangeLimit(event.target.value)
+              }
+              sx={{ marginRight: '10px', width: '70px' }}
+              options={[
+                { value: 5, label: '5' },
+                { value: 10, label: '10' },
+                { value: 20, label: '20' },
+                { value: 50, label: '50' },
+              ]}
+            />
+            <Pagination
+              count={Math.ceil(count / limit)}
+              page={skip + 1}
+              size='medium'
+              onChange={(_event, page) => onChangePage && onChangePage(page)}
+            />
+          </Stack>
         </CustomPagination>
       )}
     </CustomTableContainer>

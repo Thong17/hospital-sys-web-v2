@@ -36,6 +36,7 @@ const UserImportTable = ({ data, onRemove }: any) => {
         overflow: 'auto'
       }}
     >
+      {/* TODO: style */}
       <StickyTable
         rows={data?.map((item: any) => mapData(item, onRemove))}
         pagination={false}

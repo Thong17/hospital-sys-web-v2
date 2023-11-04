@@ -36,11 +36,12 @@ export const CustomPagination = styled('div')(
     right: 0,
     height: 40,
     display: 'flex',
-    justifyContent: 'end',
+    justifyContent: 'space-between',
     alignItems: 'center',
     overflow: 'hidden',
     gap: '10px',
     paddingInline: theme.responsive[device]?.padding.side,
+    boxSizing: 'border-box',
     '& .MuiPagination-root ul li button': {
       color: theme.text.secondary,
       backgroundColor: `${theme.text.secondary}11`,

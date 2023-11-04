@@ -50,6 +50,7 @@ const Sidebar = () => {
           boxShadow: theme.shadow.quaternary,
           backgroundColor: theme.layout.sidebar,
           gap: 1,
+          overflow: 'auto',
           '& .sidebar-menu': {
             borderRadius: theme.radius.ternary,
             width: '100%',
@@ -58,8 +59,8 @@ const Sidebar = () => {
             color: theme.text.primary,
             textDecoration: 'none'
           },
-          '& .sidebar-menu a.active': {
-            color: theme.color.info,
+          '& .sidebar-menu a.active, & .sidebar-menu a.active p': {
+            color: `${theme.color.info} !important`,
           },
           '& .sidebar-menu:hover': {
             backgroundColor: '#ffffff22',
