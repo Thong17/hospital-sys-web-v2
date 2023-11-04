@@ -90,7 +90,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={3}>
+      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={5}>
         <Box sx={{ position: 'sticky', top: 20, height: '500px' }}>
           <Box
             sx={{

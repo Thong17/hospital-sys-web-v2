@@ -107,7 +107,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
-          pt={3}
+          pt={5}
           sx={{
             width: '100%',
             display: 'grid',

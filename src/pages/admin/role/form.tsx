@@ -19,6 +19,7 @@ import { getRoleCreate, getRoleUpdate } from 'stores/role/action'
 import { selectRoleCreate } from 'stores/role/selector'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
+import { FORM_GAP } from 'constants/layout'
 
 export interface IRoleForm {
   name: any
@@ -63,12 +64,25 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4}>
+      <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={2}>
         <Stack
           direction={'column'}
           alignItems={'start'}
           gap={1}
-          sx={{ width: width > TABLET_WIDTH ? ROLE_FORM_WIDTH : '100%' }}
+          sx={{
+            height: '100%',
+            width: width > TABLET_WIDTH ? ROLE_FORM_WIDTH : '100%',
+            display: 'grid',
+            gridTemplateColumns: '1fr 2fr 1fr 2fr',
+            gridGap: FORM_GAP,
+            paddingTop: '30px',
+            gridTemplateAreas: `
+                            'name name name name'
+                            'description description description description'
+                            'status status status status'
+                            'action action action action'
+                            `,
+          }}
         >
           <LocaleInput
             label={translate('NAME')}
@@ -76,21 +90,27 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
             onChange={(data: any) => setValue('name', data)}
             defaultValue={getValues('name')}
             error={errors?.name}
+            gridArea='name'
           />
           <TextInput
             {...register('description')}
             label={translate('DESCRIPTION')}
             multiline
+            sx={{ gridArea: 'description' }}
           />
           <FormControlLabel
-            control={<Checkbox {...register('status')} checked={watch('status')} />}
+            control={
+              <Checkbox {...register('status')} checked={watch('status')} />
+            }
             label={translate('STATUS')}
+            sx={{ gridArea: 'status' }}
           />
           <Stack
             direction={'row'}
             justifyContent={'end'}
             gap={2}
             width={'100%'}
+            sx={{ gridArea: 'action' }}
           >
             <CancelButton onClick={() => navigate(-1)} />
             {id ? (
@@ -108,7 +128,14 @@ const form = ({ defaultValues }: { defaultValues: IRoleForm }) => {
             )}
           </Stack>
         </Stack>
-        <Box sx={{ width: width > TABLET_WIDTH ? `calc(100% - ${ROLE_FORM_WIDTH}px)` : '100%' }}>
+        <Box
+          sx={{
+            width:
+              width > TABLET_WIDTH
+                ? `calc(100% - ${ROLE_FORM_WIDTH}px)`
+                : '100%',
+          }}
+        >
           <PrivilegeBox
             defaultNavigation={watch('navigation')}
             defaultPrivilege={watch('privilege')}
