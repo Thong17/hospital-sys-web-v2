@@ -73,7 +73,7 @@ const mapData = (
     duration: calculateDuration(item.duration),
     category: renderCategory(item.category, theme),
     note: item.note,
-    patient: `${item.patient?.lastName} ${item.patient?.firstName}`,
+    patient: item.patient?.username,
     contact: item.patient?.contact,
     stage: renderStage(item.stage, theme),
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,

@@ -226,13 +226,13 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
             <SelectInput
               {...register('doctors')}
               options={doctors?.map((item: any) => ({
-                label: `${item?.lastName} ${item?.firstName} - ${translate(
+                label: <span>{`${item?.lastName} ${item?.firstName}`}<span className='hidden-label'>{` - ${translate(
                   'SPECIALTY_ON'
                 )}: ${item.specialties
                   ?.map(
                     (item: any) => item?.name?.[lang] || item?.name?.['English']
                   )
-                  .join(', ')}`,
+                  .join(', ')}`}</span></span>,
                 value: item?._id,
               }))}
               defaultValue={''}

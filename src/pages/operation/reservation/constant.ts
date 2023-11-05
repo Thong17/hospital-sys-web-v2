@@ -3,7 +3,7 @@ import * as yup from 'yup'
 export const initReservation = {
   category: '',
   patient: '',
-  duration: '',
+  duration: '60',
   appointmentDate: '',
   specialties: [],
   doctors: [],
@@ -12,10 +12,10 @@ export const initReservation = {
 }
 
 export const createReservationSchema = yup.object().shape({
-  appointmentDate: yup.string().required(),
+  appointmentDate: yup.string().optional(),
   category: yup.string().required('PLEASE_SELECT_THE_CATEGORY'),
   patient: yup.string().required('PLEASE_SELECT_THE_PATIENT'),
-  duration: yup.number().required('PLEASE_SELECT_THE_DURATION'),
+  duration: yup.number().optional(),
   doctors: yup.array().optional(),
   specialties: yup.array().optional(),
   status: yup.boolean(),

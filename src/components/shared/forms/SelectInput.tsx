@@ -43,7 +43,7 @@ export const StyledSelectInput = styled(Select)(
     '& svg.MuiSvgIcon-root': {
       marginRight: endAdornment ? '37px' : '0',
     },
-    '& .remove-btn': {
+    '& .remove-btn, & .hidden-label': {
       display: 'none',
     },
     '& fieldset': {

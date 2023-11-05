@@ -52,10 +52,10 @@ const mapReservationBody = (data: any): IReservationForm => {
   if (!data) return initReservation
   return {
     appointmentDate: inputDateTimeFormat(data.appointmentDate),
-    patient: data.patient,
+    patient: data.patient?._id,
     duration: data.duration,
-    specialties: data.specialties,
-    doctors: data.doctors,
+    specialties: data.specialties?.map((item: any) => item._id),
+    doctors: data.doctors?.map((item: any) => item._id),
     category: data.category,
     note: data.note,
     status: data.status,
