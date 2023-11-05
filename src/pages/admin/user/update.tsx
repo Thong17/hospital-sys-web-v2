@@ -51,7 +51,7 @@ const mapUserBody = (data: any): IUserForm => {
   if (!data) return initUser
   return {
     username: data.username,
-    role: data.role?._id,
+    role: data.role?._id ?? '',
     segment: data.segment,
     email: data.email,
     contact: data.contact,

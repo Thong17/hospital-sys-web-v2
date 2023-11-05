@@ -1,10 +1,10 @@
 import { Button, Menu, MenuItem } from '@mui/material'
 import { Box } from '@mui/system'
-import { useAppSelector } from 'app/store'
+import { store, useAppSelector } from 'app/store'
 import useLanguage from 'hooks/useLanguage'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { selectSession } from 'stores/session/selector'
 
 const Profile = ({ ...props }) => {
@@ -12,6 +12,12 @@ const Profile = ({ ...props }) => {
   const { theme } = useTheme()
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const { language } = useLanguage()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    store.dispatch({ type: 'session/clearSession' })
+    navigate('/login')
+  }
 
   return (
     <Box {...props}>
@@ -61,7 +67,7 @@ const Profile = ({ ...props }) => {
             }}
           >
             <MenuItem>{language.PROFILE}</MenuItem>
-            <MenuItem>{language.LOGOUT}</MenuItem>
+            <MenuItem onClick={handleLogout}>{language.LOGOUT}</MenuItem>
           </Menu>
         </>
       ) : (

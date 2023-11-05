@@ -144,7 +144,7 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
             />
             <TextInput
               {...register('password')}
-              label={translate('PASSWORD')}
+              label={id ? translate('RESET_PASSWORD') : translate('PASSWORD')}
               error={!!errors.password?.message}
               helperText={errors.password?.message as ReactNode}
               type='password'

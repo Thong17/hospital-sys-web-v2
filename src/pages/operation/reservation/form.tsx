@@ -202,6 +202,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
                 helperText={errors.patient?.message}
                 label={translate('PATIENT')}
                 gridArea='patient'
+                required
                 endAdornment={
                   <AddAdornmentButton
                     onClick={() => setPatientDialog({ open: true })}
