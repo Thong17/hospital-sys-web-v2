@@ -1,15 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getProfile } from "./action";
 
 interface ISession {
     accessToken?: string
     refreshToken?: string
     user?: any
+    status: 'INIT' | 'LOADING' | 'FAILED' | 'COMPLETED'
 }
 
-const initialState: ISession = {
+export const initialState: ISession = {
     accessToken: undefined,
     refreshToken: undefined,
-    user: null
+    user: null,
+    status: 'INIT'
 }
 
 const sessionSlice = createSlice({
@@ -26,6 +29,19 @@ const sessionSlice = createSlice({
             state.refreshToken = undefined
             state.user = null
         }
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(getProfile.pending, (state) => {
+                state.status = 'LOADING'
+            })
+            .addCase(getProfile.rejected, (state) => {
+                state.status = 'FAILED'
+            })
+            .addCase(getProfile.fulfilled, (state, action) => {
+                state.status = 'COMPLETED'
+                state.user = action.payload.data
+            })
     },
 })
 

@@ -22,4 +22,14 @@ export class AuthService {
             throw error
         }
     }
+    async profile() {
+        try {
+            const response = await axios.get('/auth/profile')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
 }

@@ -253,7 +253,7 @@ export const StickyTable = ({
             <SelectInput
               height={'33px'}
               width={'70px'}
-              value={limit}
+              value={limit ?? 5}
               onChange={(event) =>
                 onChangeLimit && onChangeLimit(event.target.value)
               }
@@ -266,7 +266,7 @@ export const StickyTable = ({
               ]}
             />
             <Pagination
-              count={Math.ceil(count / limit)}
+              count={Math.ceil(count / (limit ?? 5))}
               page={skip + 1}
               size='medium'
               onChange={(_event, page) => onChangePage && onChangePage(page)}

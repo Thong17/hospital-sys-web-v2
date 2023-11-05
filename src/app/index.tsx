@@ -1,4 +1,5 @@
 import AlertProvider from 'contexts/alert/AlertContext'
+import AuthProvider from 'contexts/auth/AuthContext'
 import Compose from 'contexts/index'
 import WebProvider from 'contexts/web/WebContext'
 import { useRoutes } from 'react-router-dom'
@@ -8,7 +9,7 @@ const App = () => {
   let routers = useRoutes(routes)
 
   return (
-    <Compose components={[WebProvider, AlertProvider]}>
+    <Compose components={[WebProvider, AlertProvider, AuthProvider]}>
       {routers}
     </Compose>
   )
