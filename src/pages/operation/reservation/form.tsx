@@ -8,7 +8,7 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
-import { createReservationSchema } from './constant'
+import { RESERVATION_FORM_WIDTH, createReservationSchema } from './constant'
 import { Box, Stack, Typography } from '@mui/material'
 import { ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -31,6 +31,7 @@ import { selectPatientList } from 'stores/patient/selector'
 import { getPatientList } from 'stores/patient/action'
 import { calculateDuration } from 'utils/index'
 import Loading from 'components/shared/Loading'
+import AppointmentCalendar from 'components/shared/calendar/AppointmentCalendar'
 
 export interface IReservationForm {
   appointmentDate: string
@@ -101,7 +102,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
       <Stack direction={width > TABLET_WIDTH ? 'row' : 'column'} gap={4} pt={5}>
         <Box
           sx={{
-            width: '100%',
+            width: width > TABLET_WIDTH ? RESERVATION_FORM_WIDTH : '100%',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
             gridGap: FORM_GAP,
@@ -233,6 +234,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
             )}
           </Stack>
         </Box>
+        <AppointmentCalendar />
       </Stack>
     </form>
   )

@@ -33,4 +33,4 @@ export const updateReservationSchema = yup.object().shape({
   note: yup.string().optional(),
 })
 
-export const RESERVATION_FORM_WIDTH = 500
+export const RESERVATION_FORM_WIDTH = 570
