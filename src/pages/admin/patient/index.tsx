@@ -22,8 +22,8 @@ import { selectPatientList } from 'stores/patient/selector'
 import { getPatientDelete, getPatientExport, getPatientImport, getPatientList, getPatientValidate } from 'stores/patient/action'
 
 const patientColumns: ITableColumn<any>[] = [
-  { label: translate('LAST_NAME'), id: 'lastName', sort: 'desc' },
-  { label: translate('FIRST_NAME'), id: 'firstName', sort: 'desc' },
+  { label: translate('NAME'), id: 'username', sort: 'desc' },
+  { label: translate('FULL_NAME'), id: 'fullName' },
   { label: translate('GENDER'), id: 'gender' },
   { label: translate('DATE_OF_BIRTH'), id: 'dateOfBirth' },
   { label: translate('POINT'), id: 'point' },
@@ -39,8 +39,8 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    lastName: item.lastName,
-    firstName: item.firstName,
+    username: item.username,
+    fullName: item.fullName,
     gender: item.gender,
     dateOfBirth: timeFormat(item.dateOfBirth, 'DD MMM YYYY'),
     point: item.point,

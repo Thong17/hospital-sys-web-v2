@@ -10,6 +10,7 @@ import { selectPatientDetail } from 'stores/patient/selector'
 import { getPatientDetail } from 'stores/patient/action'
 import { initPatient } from './constant'
 import Container from 'components/shared/Container'
+import { inputDateFormat } from 'utils/index'
 
 const PatientUpdate = () => {
   const dispatch = useAppDispatch()
@@ -50,14 +51,14 @@ const PatientUpdate = () => {
 const mapPatientBody = (data: any): IPatientForm => {
   if (!data) return initPatient
   return {
-    patientname: data.patientname,
-    role: data.role?._id,
-    segment: data.segment,
-    email: data.email,
+    username: data.username,
+    fullName: data.fullName,
+    dateOfBirth: inputDateFormat(data.dateOfBirth),
+    gender: data.gender,
     contact: data.contact,
+    email: data.email,
     description: data.description,
     status: data.status,
-    password: ''
   }
 }
 

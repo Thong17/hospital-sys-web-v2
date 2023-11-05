@@ -22,8 +22,8 @@ import { GENDERS } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
 
 export interface IPatientForm {
-  firstName: string
-  lastName: string
+  fullName: string
+  username: string
   gender: string
   email: string
   contact: string
@@ -68,7 +68,7 @@ const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
             gridTemplateColumns: '1fr 1fr 1fr',
             gridGap: FORM_GAP,
             gridTemplateAreas: `
-                              'lastName firstName firstName'
+                              'username fullName fullName'
                               'dateOfBirth dateOfBirth gender'
                               'contact email email'
                               'description description description'
@@ -78,20 +78,19 @@ const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
           }}
         >
           <TextInput
-            {...register('lastName')}
-            label={translate('LAST_NAME')}
-            error={!!errors.lastName?.message}
-            helperText={errors.lastName?.message as ReactNode}
+            {...register('username')}
+            label={translate('USERNAME')}
+            error={!!errors.username?.message}
+            helperText={errors.username?.message as ReactNode}
             required
-            sx={{ gridArea: 'lastName' }}
+            sx={{ gridArea: 'username' }}
           />
           <TextInput
-            {...register('firstName')}
-            label={translate('FIRST_NAME')}
-            error={!!errors.firstName?.message}
-            helperText={errors.firstName?.message as ReactNode}
-            required
-            sx={{ gridArea: 'firstName' }}
+            {...register('fullName')}
+            label={translate('FULL_NAME')}
+            error={!!errors.fullName?.message}
+            helperText={errors.fullName?.message as ReactNode}
+            sx={{ gridArea: 'fullName' }}
           />
           <TextInput
             {...register('dateOfBirth')}
@@ -119,6 +118,7 @@ const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
             error={!!errors.contact?.message}
             helperText={errors.contact?.message as ReactNode}
             sx={{ gridArea: 'contact' }}
+            required
           />
           <TextInput
             {...register('email')}
