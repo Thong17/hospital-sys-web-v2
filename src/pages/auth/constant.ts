@@ -23,6 +23,13 @@ export const GENDERS = [
     { value: 'FEMALE', label: 'FEMALE' },
 ]
 
+export const PATIENT_CATEGORIES = [
+    { value: 'NORMAL', label: 'NORMAL' },
+    { value: 'MILD', label: 'MILD' },
+    { value: 'URGENT', label: 'URGENT' },
+    { value: 'EMERGENCY', label: 'EMERGENCY' },
+]
+
 export const SHIFT_DAY = [
     { value: 'MONDAY', label: 'MONDAY' },
     { value: 'TUESDAY', label: 'TUESDAY' },

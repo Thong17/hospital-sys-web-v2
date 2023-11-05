@@ -37,7 +37,7 @@ export interface IDoctorForm {
   gender: string
   email: string
   contact: string
-  specialty: string[]
+  specialties: string[]
   shift: string[]
   dateOfBirth: string
   startTime: string
@@ -78,7 +78,9 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
 
   useEffect(() => {
     if (status !== 'INIT') return
-    dispatch(getSpecialtyList({}))
+    const params = new URLSearchParams()
+    params.append('limit', '0')
+    dispatch(getSpecialtyList({ params }))
   }, [status])
 
   useEffect(() => {
@@ -120,7 +122,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
                               'lastName lastName firstName firstName'
                               'dateOfBirth dateOfBirth dateOfBirth gender'
                               'contact contact email email'
-                              'specialty specialty specialty specialty'
+                              'specialties specialties specialties specialties'
                               'startTime startTime endTime endTime'
                               'shift shift shift shift'
                               'description description description description'
@@ -180,14 +182,14 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             sx={{ gridArea: 'email' }}
           />
           <SelectInput
-            {...register('specialty')}
+            {...register('specialties')}
             options={data?.map((item: any) => ({ label: item?.name?.[lang] || item?.name?.['English'], value: item?._id }))}
             defaultValue={''}
-            value={watch('specialty')}
-            error={!!errors.specialty?.message}
-            helperText={errors.specialty?.message}
-            label={translate('SPECIALTY')}
-            gridArea='specialty'
+            value={watch('specialties')}
+            error={!!errors.specialties?.message}
+            helperText={errors.specialties?.message}
+            label={translate('SPECIALTIES')}
+            gridArea='specialties'
             multiple
             onRemoveOption={handleRemoveSpecialty}
             endAdornment={

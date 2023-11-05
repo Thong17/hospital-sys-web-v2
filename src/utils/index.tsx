@@ -1,3 +1,4 @@
+import { translate } from 'contexts/language/LanguageContext'
 import { IThemeStyle } from 'contexts/theme/interface'
 import { sha256 } from 'js-sha256'
 import moment from 'moment'
@@ -253,6 +254,23 @@ export const calculateDay = (from: any, to: any) => {
   return duration.asDays()
 }
 
+export const calculateDuration = (value: number) => {
+  let number = Number(value ?? 0)
+  if (number < 0) number = 0
+  if (typeof number !== 'number') return translate('INVALID') 
+  let duration = moment.duration(number, 'minutes')
+  let hours = Math.floor(duration.asHours())
+  let minutes = duration.minutes()
+
+  if (hours > 0 && minutes > 0) {
+    return hours + 'h\u00a0' + minutes + 'min'
+  } else if (hours > 0) {
+    return hours + 'h'
+  } else {
+    return minutes + 'min'
+  }
+}
+
 export const capitalizeText = (text: any) => {
   if (!text) return '...'
   return text?.charAt(0).toUpperCase() + text?.slice(1)
@@ -442,10 +460,16 @@ export const determineCheckAll = (obj: any) => {
   Object.keys(obj).forEach((key: any) => {
     if (typeof obj[key]?.[Object.keys(obj[key])[0]] === 'object') {
       Object.keys(obj[key]).forEach((action: any) => {
-        values.push(...Object.values(obj[key]?.[action]).filter(item => item !== undefined))
+        values.push(
+          ...Object.values(obj[key]?.[action]).filter(
+            (item) => item !== undefined
+          )
+        )
       })
     } else {
-      values.push(...Object.values(obj[key]).filter(item => item !== undefined))
+      values.push(
+        ...Object.values(obj[key]).filter((item) => item !== undefined)
+      )
     }
   })
   if (values.length === 0) return false
@@ -487,16 +511,16 @@ export const mergeObjects = (obj1: Object = {}, obj2: Object = {}) => {
 
 export const filterSelectedMenu = (privilege: any, selectedMenu: any) => {
   let filteredObj: any = {}
-  Object.keys(selectedMenu).forEach(menu => {
+  Object.keys(selectedMenu).forEach((menu) => {
     filteredObj = {
       ...filteredObj,
-      [menu]: {}
+      [menu]: {},
     }
-    Object.keys(selectedMenu[menu]).forEach(nav => {
+    Object.keys(selectedMenu[menu]).forEach((nav) => {
       if (!selectedMenu[menu]?.[nav]) return
       filteredObj[menu] = {
         ...filteredObj[menu],
-        [nav]: privilege?.[menu]?.[nav]
+        [nav]: privilege?.[menu]?.[nav],
       }
     })
   })
@@ -525,12 +549,12 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
 export const downloadBuffer = (buffer: any, filename: string) => {
   const url = window.URL.createObjectURL(
     new Blob([buffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
-    }),
-  );
-  const link = document.createElement("a")
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
+    })
+  )
+  const link = document.createElement('a')
   link.href = url
-  link.setAttribute("download", filename)
+  link.setAttribute('download', filename)
   document.body.appendChild(link)
   link.click()
 }

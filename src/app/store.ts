@@ -27,6 +27,7 @@ import { specialtyReducer } from 'stores/specialty/slice'
 import { exchangeRateReducer } from 'stores/exchangeRate/slice'
 import { patientReducer } from 'stores/patient/slice'
 import { sessionReducer } from 'stores/session/slice'
+import { reservationReducer } from 'stores/reservation/slice'
 
 const mainReducer = combineReducers({
   auth: authReducer,
@@ -39,6 +40,7 @@ const mainReducer = combineReducers({
   patient: patientReducer,
   specialty: specialtyReducer,
   exchangeRate: exchangeRateReducer,
+  reservation: reservationReducer,
 })
 
 const rootReducer = (state: any, action: any) => {

@@ -4,6 +4,7 @@ import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate,
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
+import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate } from 'pages/operation'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
@@ -185,6 +186,52 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard>
                         <PatientHistory />
+                    </AuthGuard>
+                ),
+            },
+        ],
+    },
+    {
+        path: '/operation',
+        element: <Operation />,
+        children: [
+            {
+                path: 'reservation',
+                element: (
+                    <AuthGuard>
+                        <Reservation />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'reservation/create',
+                element: (
+                    <AuthGuard>
+                        <ReservationCreate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'reservation/update/:id',
+                element: (
+                    <AuthGuard>
+                        <ReservationUpdate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'reservation/detail/:id',
+                element: (
+                    <AuthGuard>
+                        <ReservationDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'reservation/detail/:id/history',
+                element: (
+                    <AuthGuard>
+                        <ReservationHistory />
                     </AuthGuard>
                 ),
             },

@@ -63,7 +63,9 @@ const SpecialtyCreateForm = ({
   })
 
   useEffect(() => {
-    dispatch(getExchangeRateList({}))
+    const params = new URLSearchParams()
+    params.append('limit', '0')
+    dispatch(getExchangeRateList({ params }))
   }, [])
 
   const onSubmit = (data: any) => {

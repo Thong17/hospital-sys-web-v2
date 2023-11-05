@@ -216,6 +216,7 @@ export const themeStyle = {
     info: '#2196f3',
     warning: '#ff9800',
     purple: '#510ac9',
+    orange: '#f04a00',
   },
   responsive: {
     mobile: {

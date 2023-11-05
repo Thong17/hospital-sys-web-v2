@@ -72,6 +72,7 @@ export declare type IColorOption = {
   info: string,
   warning: string,
   purple: string,
+  orange: string,
 }
 
 export declare type IDeviceProps = {

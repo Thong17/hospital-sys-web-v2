@@ -156,7 +156,7 @@ const User = () => {
   }
 
   const handleChangeSearch = debounce((value: string) => {
-    handleChangeQuery({ search: value, page: 0 })
+    handleChangeQuery({ search: value, page: 1 })
   }, 500)
 
   const handleRemoveImport = (data: any) => {
