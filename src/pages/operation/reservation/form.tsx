@@ -30,10 +30,12 @@ import { getDoctorList } from 'stores/doctor/action'
 import { selectPatientList } from 'stores/patient/selector'
 import { getPatientList } from 'stores/patient/action'
 import { calculateDuration } from 'utils/index'
+import Loading from 'components/shared/Loading'
 
 export interface IReservationForm {
   appointmentDate: string
   patient: string
+  duration: string
   category: string
   specialties: string[]
   doctors: string[]
@@ -151,19 +153,23 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
             gridArea='category'
             required
           />
-          <SelectInput
-            {...register('patient')}
-            options={patients?.map((item: any) => ({
-              label: `${item?.lastName} ${item?.firstName}`,
-              value: item?._id,
-            }))}
-            defaultValue={''}
-            value={watch('patient')}
-            error={!!errors.patient?.message}
-            helperText={errors.patient?.message}
-            label={translate('PATIENT')}
-            gridArea='patient'
-          />
+          {patientStatus !== 'COMPLETED' ? (
+            <Loading sx={{ gridArea: 'patient' }} />
+          ) : (
+            <SelectInput
+              {...register('patient')}
+              options={patients?.map((item: any) => ({
+                label: `${item?.lastName} ${item?.firstName}`,
+                value: item?._id,
+              }))}
+              defaultValue={''}
+              value={watch('patient')}
+              error={!!errors.patient?.message}
+              helperText={errors.patient?.message}
+              label={translate('PATIENT')}
+              gridArea='patient'
+            />
+          )}
           <SelectInput
             {...register('specialties')}
             options={data?.map((item: any) => ({

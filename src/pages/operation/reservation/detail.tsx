@@ -9,16 +9,14 @@ import { selectReservationDetail } from 'stores/reservation/selector'
 import { getReservationDelete, getReservationDetail } from 'stores/reservation/action'
 import Container from 'components/shared/Container'
 import { Stack, Typography } from '@mui/material'
-import PrivilegeContainer from 'components/shared/containers/PrivilegeContainer'
 import { LabelDetail } from 'components/shared/containers/LabelContainer'
-import ItemContainer from 'components/shared/containers/ItemContainer'
 import RestoreRoundedIcon from '@mui/icons-material/RestoreRounded'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 import useAlert from 'hooks/useAlert'
 import ActivityContainer from 'components/shared/containers/ActivityContainer'
-import useLanguage from 'hooks/useLanguage'
+import { calculateDuration } from 'utils/index'
 
 const ReservationDetail = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +24,6 @@ const ReservationDetail = () => {
   const confirm = useAlert()
   const { id } = useParams()
   const { theme } = useTheme()
-  const { lang } = useLanguage()
   const { data } = useAppSelector(selectReservationDetail)
 
   useEffect(() => {
@@ -90,44 +87,35 @@ const ReservationDetail = () => {
         </TitleContainer>
         <Stack direction={'column'} mb={2} sx={{ paddingTop: '20px', '& .section-container': { marginTop: '20px' } }}>
           <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('RESERVATIONNAME') as String}>
-              <Typography>{data?.reservationname || '...'}</Typography>
+            <LabelDetail label={translate('APPOINTMENT_DATE') as String}>
+              <Typography>{data?.appointmentDate || '...'}</Typography>
             </LabelDetail>
-            <LabelDetail label={translate('SEGMENT') as String}>
-              <Typography>{data?.segment || '...'}</Typography>
-            </LabelDetail>
-          </Stack>
-          <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('EMAIL') as String}>
-              <Typography>{data?.email || '...'}</Typography>
-            </LabelDetail>
-            <LabelDetail label={translate('CONTACT') as String}>
-              <Typography>{data?.contact || '...'}</Typography>
+            <LabelDetail label={translate('DURATION') as String}>
+              <Typography>{calculateDuration(data?.duration) || '...'}</Typography>
             </LabelDetail>
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('ROLE') as String}>
-              <Typography>{data?.role?.name?.[lang] || data?.role?.name?.['English'] || '...'}</Typography>
+            <LabelDetail label={translate('CATEGORY') as String}>
+              <Typography>{data?.category || '...'}</Typography>
             </LabelDetail>
-            <LabelDetail label={translate('STATUS') as String}>
-              <ItemContainer
-                text={
-                  data?.status ? translate('ENABLED') : translate('DISABLED')
-                }
-                color={data?.status ? theme.color.success : theme.color.error}
-              />
+            <LabelDetail label={translate('STAGE') as String}>
+              <Typography>{data?.stage || '...'}</Typography>
             </LabelDetail>
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('DESCRIPTION') as String}>
-              <Typography>{data?.description || '...'}</Typography>
+            <LabelDetail label={translate('PATIENT_NAME') as String}>
+              <Typography>{`${data?.patient?.lastName} ${data?.patient?.firstName}`}</Typography>
+            </LabelDetail>
+            <LabelDetail label={translate('PATIENT_CONTACT') as String}>
+              <Typography>{data?.patient?.contact || '...'}</Typography>
+            </LabelDetail>
+          </Stack>
+          <Stack sx={{ width: '100%' }} direction={'row'}>
+            <LabelDetail label={translate('NOTE') as String}>
+              <Typography>{data?.note || '...'}</Typography>
             </LabelDetail>
           </Stack>
         </Stack>
-        <PrivilegeContainer
-          navigation={data?.role?.navigation}
-          privilege={data?.role?.privilege}
-        />
         <ActivityContainer data={data} />
       </Container>
     </Layout>

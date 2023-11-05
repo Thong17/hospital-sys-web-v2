@@ -10,6 +10,7 @@ import { selectReservationDetail } from 'stores/reservation/selector'
 import { getReservationDetail } from 'stores/reservation/action'
 import { initReservation } from './constant'
 import Container from 'components/shared/Container'
+import { inputDateTimeFormat } from 'utils/index'
 
 const ReservationUpdate = () => {
   const dispatch = useAppDispatch()
@@ -50,8 +51,9 @@ const ReservationUpdate = () => {
 const mapReservationBody = (data: any): IReservationForm => {
   if (!data) return initReservation
   return {
-    appointmentDate: data.appointmentDate,
-    patient: data.patient?._id,
+    appointmentDate: inputDateTimeFormat(data.appointmentDate),
+    patient: data.patient,
+    duration: data.duration,
     specialties: data.specialties,
     doctors: data.doctors,
     category: data.category,
