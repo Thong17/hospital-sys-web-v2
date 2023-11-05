@@ -61,7 +61,7 @@ const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
         }}
       >
         <Stack direction={'row'} gap={2}>
-          <MenuButton />
+          {width > TABLET_WIDTH && <MenuButton />}
           {navbar}
         </Stack>
         <Stack direction={'row'} gap={1}>

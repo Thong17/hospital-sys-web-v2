@@ -8,8 +8,9 @@ import { selectSession } from 'stores/session/selector'
 interface IAuthRoute {
   children: ReactElement
   role?: {
+    menu: string,
     route: string,
-    action: string
+    action?: string
   }
 }
 
@@ -19,8 +20,8 @@ const AuthGuard: FC<IAuthRoute> = ({ children, role }) => {
   const location = useLocation()
   if (!role && user) return <>{children}</>
   if (role && user) {
-    const { route, action } = role
-    const isAuthenticated = user.privilege?.[route]?.[action]
+    const { menu, route, action } = role
+    const isAuthenticated = user.privilege?.[menu]?.[route]?.[action as any] ?? user.privilege?.[menu]?.[route]
     if (isAuthenticated) return <>{children}</>
   }
   notify(`You don't have permission to access this page`, 'error')

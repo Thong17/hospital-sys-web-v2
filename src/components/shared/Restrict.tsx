@@ -10,11 +10,11 @@ const Restrict = ({ redirect }: { redirect?: string }) => {
   const { language } = useLanguage()
 
   return (
-    <Container>
+    <Container sx={{ backgroundColor: theme.layout.container, height: '100vh' }}>
       <div
         style={{
           display: 'flex',
-          height: '100%',
+          height: 'fit-content',
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',

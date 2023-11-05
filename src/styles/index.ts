@@ -34,7 +34,7 @@ export const CustomPagination = styled('div')(
     width: '100%',
     bottom: 0,
     right: 0,
-    height: 40,
+    height: 50,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',

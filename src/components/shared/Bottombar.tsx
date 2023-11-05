@@ -24,7 +24,7 @@ const Bottombar = () => {
     >
       <Box
         sx={{
-          backgroundColor: theme.layout.footer,
+          backgroundColor: theme.layout.sidebar,
           display: 'flex',
           justifyContent: 'space-evenly',
           alignItems: 'center',
@@ -34,11 +34,11 @@ const Bottombar = () => {
           boxShadow: theme.shadow.quaternary,
           '& a.active': {
             textDecoration: 'none',
-            backgroundColor: '#BB8FCE22',
-            padding: '10px 10px',
+            backgroundColor: `${theme.color.info}22`,
+            padding: '8px 10px',
             borderRadius: theme.radius.rounded,
             '& *': {
-              color: '#BB8FCE',
+              color: theme.color.info,
             }
           },
           '& a.active span': {

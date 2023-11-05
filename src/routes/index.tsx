@@ -24,10 +24,11 @@ const routes: RouteObject[] = [
         path: '/admin',
         element: <Admin />,
         children: [
+            // ? MENU: Role
             {
                 path: 'role',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'role', action: 'list' }}>
                         <Role />
                     </AuthGuard>
                 ),
@@ -35,7 +36,7 @@ const routes: RouteObject[] = [
             {
                 path: 'role/create',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'role', action: 'create' }}>
                         <RoleCreate />
                     </AuthGuard>
                 ),
@@ -43,7 +44,7 @@ const routes: RouteObject[] = [
             {
                 path: 'role/update/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'role', action: 'update' }}>
                         <RoleUpdate />
                     </AuthGuard>
                 ),
@@ -51,7 +52,7 @@ const routes: RouteObject[] = [
             {
                 path: 'role/detail/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'role', action: 'detail' }}>
                         <RoleDetail />
                     </AuthGuard>
                 ),
@@ -59,16 +60,16 @@ const routes: RouteObject[] = [
             {
                 path: 'role/detail/:id/history',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'role', action: 'detail' }}>
                         <RoleHistory />
                     </AuthGuard>
                 ),
             },
-            // User
+            // ? MENU: User
             {
                 path: 'user',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'user', action: 'list' }}>
                         <User />
                     </AuthGuard>
                 ),
@@ -76,7 +77,7 @@ const routes: RouteObject[] = [
             {
                 path: 'user/create',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'user', action: 'create' }}>
                         <UserCreate />
                     </AuthGuard>
                 ),
@@ -84,7 +85,7 @@ const routes: RouteObject[] = [
             {
                 path: 'user/update/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'user', action: 'update' }}>
                         <UserUpdate />
                     </AuthGuard>
                 ),
@@ -92,7 +93,7 @@ const routes: RouteObject[] = [
             {
                 path: 'user/detail/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'user', action: 'detail' }}>
                         <UserDetail />
                     </AuthGuard>
                 ),
@@ -100,17 +101,17 @@ const routes: RouteObject[] = [
             {
                 path: 'user/detail/:id/history',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'user', action: 'detail' }}>
                         <UserHistory />
                     </AuthGuard>
                 ),
             },
             
-            // Doctor
+            // ? Menu: Doctor
             {
                 path: 'doctor',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'doctor', action: 'list' }}>
                         <Doctor />
                     </AuthGuard>
                 ),
@@ -118,7 +119,7 @@ const routes: RouteObject[] = [
             {
                 path: 'doctor/create',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'doctor', action: 'create' }}>
                         <DoctorCreate />
                     </AuthGuard>
                 ),
@@ -126,7 +127,7 @@ const routes: RouteObject[] = [
             {
                 path: 'doctor/update/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'doctor', action: 'update' }}>
                         <DoctorUpdate />
                     </AuthGuard>
                 ),
@@ -134,7 +135,7 @@ const routes: RouteObject[] = [
             {
                 path: 'doctor/detail/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'doctor', action: 'detail' }}>
                         <DoctorDetail />
                     </AuthGuard>
                 ),
@@ -142,17 +143,17 @@ const routes: RouteObject[] = [
             {
                 path: 'doctor/detail/:id/history',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'doctor', action: 'detail' }}>
                         <DoctorHistory />
                     </AuthGuard>
                 ),
             },
 
-            // Patient
+            // ? MENU: Patient
             {
                 path: 'patient',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'list' }}>
                         <Patient />
                     </AuthGuard>
                 ),
@@ -160,7 +161,7 @@ const routes: RouteObject[] = [
             {
                 path: 'patient/create',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'create' }}>
                         <PatientCreate />
                     </AuthGuard>
                 ),
@@ -168,7 +169,7 @@ const routes: RouteObject[] = [
             {
                 path: 'patient/update/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'update' }}>
                         <PatientUpdate />
                     </AuthGuard>
                 ),
@@ -176,7 +177,7 @@ const routes: RouteObject[] = [
             {
                 path: 'patient/detail/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'detail' }}>
                         <PatientDetail />
                     </AuthGuard>
                 ),
@@ -184,7 +185,7 @@ const routes: RouteObject[] = [
             {
                 path: 'patient/detail/:id/history',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'detail' }}>
                         <PatientHistory />
                     </AuthGuard>
                 ),
@@ -198,7 +199,7 @@ const routes: RouteObject[] = [
             {
                 path: 'reservation',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'list' }}>
                         <Reservation />
                     </AuthGuard>
                 ),
@@ -206,7 +207,7 @@ const routes: RouteObject[] = [
             {
                 path: 'reservation/create',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'create' }}>
                         <ReservationCreate />
                     </AuthGuard>
                 ),
@@ -214,7 +215,7 @@ const routes: RouteObject[] = [
             {
                 path: 'reservation/update/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'update' }}>
                         <ReservationUpdate />
                     </AuthGuard>
                 ),
@@ -222,7 +223,7 @@ const routes: RouteObject[] = [
             {
                 path: 'reservation/detail/:id',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'detail' }}>
                         <ReservationDetail />
                     </AuthGuard>
                 ),
@@ -230,7 +231,7 @@ const routes: RouteObject[] = [
             {
                 path: 'reservation/detail/:id/history',
                 element: (
-                    <AuthGuard>
+                    <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'detail' }}>
                         <ReservationHistory />
                     </AuthGuard>
                 ),
