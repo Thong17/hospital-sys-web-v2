@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 
 export const initDoctor = {
-  firstName: '',
-  lastName: '',
+  fullName: '',
+  username: '',
   gender: '',
   email: '',
   contact: '',
@@ -16,8 +16,8 @@ export const initDoctor = {
 }
 
 export const createDoctorSchema = yup.object().shape({
-  firstName: yup.string().min(2).required('PLEASE_FILL_THE_FIRST_NAME'),
-  lastName: yup.string().min(2).required('PLEASE_FILL_THE_LAST_NAME'),
+  fullName: yup.string().optional(),
+  username: yup.string().min(2).required('PLEASE_FILL_THE_USERNAME'),
   gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
   specialties: yup.array().optional(),
   shift: yup.array().optional(),
@@ -31,8 +31,8 @@ export const createDoctorSchema = yup.object().shape({
 })
 
 export const updateDoctorSchema = yup.object().shape({
-  firstName: yup.string().min(2).required('PLEASE_FILL_THE_FIRST_NAME'),
-  lastName: yup.string().min(2).required('PLEASE_FILL_THE_LAST_NAME'),
+  fullName: yup.string().optional(),
+  username: yup.string().min(2).required('PLEASE_FILL_THE_USERNAME'),
   gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
   specialties: yup.array().optional(),
   shift: yup.array().optional(),

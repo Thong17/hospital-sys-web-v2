@@ -32,8 +32,8 @@ import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
 
 export interface IDoctorForm {
-  firstName: string
-  lastName: string
+  fullName: string
+  username: string
   gender: string
   email: string
   contact: string

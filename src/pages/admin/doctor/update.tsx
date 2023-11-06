@@ -51,8 +51,8 @@ const DoctorUpdate = () => {
 const mapDoctorBody = (data: any): IDoctorForm => {
   if (!data) return initDoctor
   return {
-    firstName: data.firstName,
-    lastName: data.lastName,
+    fullName: data.fullName,
+    username: data.username,
     gender: data.gender,
     email: data.email,
     contact: data.contact,

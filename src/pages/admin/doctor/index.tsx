@@ -22,8 +22,8 @@ import { selectDoctorList } from 'stores/doctor/selector'
 import { getDoctorDelete, getDoctorExport, getDoctorImport, getDoctorList, getDoctorValidate } from 'stores/doctor/action'
 
 const doctorColumns: ITableColumn<any>[] = [
-  { label: translate('LAST_NAME'), id: 'lastName', sort: 'desc' },
-  { label: translate('FIRST_NAME'), id: 'firstName', sort: 'desc' },
+  { label: translate('USERNAME'), id: 'username', sort: 'desc' },
+  { label: translate('FULL_NAME'), id: 'fullName', sort: 'desc' },
   { label: translate('GENDER'), id: 'gender' },
   { label: translate('RATE'), id: 'rate' },
   { label: translate('STATUS'), id: 'status' },
@@ -37,8 +37,8 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    lastName: item.lastName,
-    firstName: item.firstName,
+    username: item.username,
+    fullName: item.fullName,
     gender: item.gender,
     rate: item.rate,
     status: item.status,
