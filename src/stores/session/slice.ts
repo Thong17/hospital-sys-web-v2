@@ -22,7 +22,7 @@ const sessionSlice = createSlice({
         setSession: (state, action) => {
             state.accessToken = action.payload.accessToken
             state.refreshToken = action.payload.refreshToken
-            if (action.payload.data) state.user = action.payload.data
+            if (action.payload.data) state.user = action.payload?.data
         },
         clearSession: (state) => {
             state.accessToken = undefined
@@ -40,7 +40,7 @@ const sessionSlice = createSlice({
             })
             .addCase(getProfile.fulfilled, (state, action) => {
                 state.status = 'COMPLETED'
-                state.user = action.payload.data
+                state.user = action.payload?.data
             })
     },
 })

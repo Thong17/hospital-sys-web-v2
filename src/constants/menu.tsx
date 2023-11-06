@@ -95,6 +95,7 @@ export const APP_MENU: any = [
         route: '/admin/role',
         title: 'ROLE',
         icon: <ArrowRightAltRoundedIcon />,
+        permission: 'role'
       },
       {
         route: '/admin/user',
@@ -126,11 +127,13 @@ export const APP_MENU: any = [
         route: '/report/transaction',
         title: 'TRANSACTION',
         icon: <ArrowRightAltRoundedIcon />,
+        permission: 'transaction',
       },
       {
         route: '/report/sale',
         title: 'SALE',
         icon: <ArrowRightAltRoundedIcon />,
+        permission: 'sale',
       },
     ]
   },

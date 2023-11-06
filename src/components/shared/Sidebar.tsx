@@ -15,9 +15,12 @@ import useTheme from 'hooks/useTheme'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded'
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded'
+import { selectSession } from 'stores/session/selector'
+import { checkAllFieldObject } from 'utils/index'
 
 const Sidebar = () => {
   const { theme } = useTheme()
+  const { user } = useAppSelector(selectSession)
   const { isOpenedSidebar } = useAppSelector(selectConfig)
 
   return (
@@ -56,7 +59,7 @@ const Sidebar = () => {
           },
           '& .sidebar-menu a': {
             color: theme.text.primary,
-            textDecoration: 'none'
+            textDecoration: 'none',
           },
           '& .sidebar-menu a.active, & .sidebar-menu a.active p': {
             color: `${theme.color.info} !important`,
@@ -65,16 +68,20 @@ const Sidebar = () => {
             backgroundColor: '#ffffff22',
             width: isOpenedSidebar ? '100%' : 'fit-content !important',
             boxShadow: theme.shadow.quaternary,
-            backdropFilter: 'blur(2px)'
+            backdropFilter: 'blur(2px)',
           },
           '& .sidebar-menu:has(a.active)': {
             backgroundColor: `${theme.color.info}44`,
           },
         }}
       >
-        {APP_MENU.map((nav: any, key: number) => (
-          <SidebarItem key={key} nav={nav} />
-        ))}
+        {APP_MENU.map((nav: any, key: number) => {
+          return checkAllFieldObject(user?.navigation?.[nav?.permission]) ? (
+            <SidebarItem key={key} nav={nav} />
+          ) : (
+            <span key={key} style={{ display: 'none' }}></span>
+          )
+        })}
       </Box>
     </Box>
   )
@@ -83,6 +90,7 @@ const Sidebar = () => {
 const SidebarItem = ({ nav }: any) => {
   const { theme } = useTheme()
   const { language } = useLanguage()
+  const { user } = useAppSelector(selectSession)
   const { isOpenedSidebar, expandedSidebarItems } = useAppSelector(selectConfig)
   const dispatch = useAppDispatch()
 
@@ -121,14 +129,14 @@ const SidebarItem = ({ nav }: any) => {
           },
           '& .expand-button': {
             '& *': {
-              color: theme.text.secondary
-            }
+              color: theme.text.secondary,
+            },
           },
           '&:has(a.active) .expand-button': {
             '& *': {
-              color: theme.color.info
-            }
-          }
+              color: theme.color.info,
+            },
+          },
         }}
       >
         <NavLink
@@ -141,7 +149,7 @@ const SidebarItem = ({ nav }: any) => {
             padding: '13px 14px',
             boxSizing: 'border-box',
             overflow: isOpenedSidebar ? 'visible' : 'hidden',
-            width: '100%'
+            width: '100%',
           }}
         >
           {nav.icon}
@@ -168,7 +176,11 @@ const SidebarItem = ({ nav }: any) => {
                 transition: isOpenedSidebar ? LAYOUT_TRANSITION : 0,
               }}
             >
-              { expandedSidebarItems?.includes(nav.title) ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />}
+              {expandedSidebarItems?.includes(nav.title) ? (
+                <ExpandLessRoundedIcon />
+              ) : (
+                <ExpandMoreRoundedIcon />
+              )}
             </IconButton>
             {expandedSidebarItems?.includes(nav.title) && (
               <Box
@@ -176,37 +188,45 @@ const SidebarItem = ({ nav }: any) => {
                   padding: '0 14px 13px 14px',
                   boxSizing: 'border-box',
                   '& .sidebar-menu-item': { color: theme.text.secondary },
-                  '& .sidebar-menu-item.active': { color: `${theme.color.info} !important` },
+                  '& .sidebar-menu-item.active': {
+                    color: `${theme.color.info} !important`,
+                  },
                 }}
               >
-                {nav.children.map((item: any, key: number) => (
-                  <NavLink
-                    className='sidebar-menu-item'
-                    to={item.route}
-                    key={key}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      marginTop: '5px',
-                    }}
-                  >
-                    <FiberManualRecordRoundedIcon
-                      sx={{ fontSize: '13px', margin: '0 5px' }}
-                    />
-                    <Typography
-                      className='sidebar-item-title'
-                      sx={{
-                        opacity: isOpenedSidebar ? 1 : 0,
-                        transition: isOpenedSidebar
-                          ? LAYOUT_TRANSITION
-                          : '0s ease',
+                {nav.children.map((item: any, key: number) => {
+                  return user?.navigation?.[nav?.permission]?.[
+                    item?.permission
+                  ] ? (
+                    <NavLink
+                      className='sidebar-menu-item'
+                      to={item.route}
+                      key={key}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        marginTop: '5px',
                       }}
                     >
-                      {item.title}
-                    </Typography>
-                  </NavLink>
-                ))}
+                      <FiberManualRecordRoundedIcon
+                        sx={{ fontSize: '13px', margin: '0 5px' }}
+                      />
+                      <Typography
+                        className='sidebar-item-title'
+                        sx={{
+                          opacity: isOpenedSidebar ? 1 : 0,
+                          transition: isOpenedSidebar
+                            ? LAYOUT_TRANSITION
+                            : '0s ease',
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                    </NavLink>
+                  ) : (
+                    <span key={key} style={{ display: 'none' }}></span>
+                  )
+                })}
               </Box>
             )}
           </Box>

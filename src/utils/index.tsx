@@ -558,3 +558,8 @@ export const downloadBuffer = (buffer: any, filename: string) => {
   document.body.appendChild(link)
   link.click()
 }
+
+export const checkAllFieldObject = (obj: any) => {
+  if (typeof obj !== 'object') return false
+  return Object.values(obj).every(value => value === true)
+}
