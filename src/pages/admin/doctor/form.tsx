@@ -119,7 +119,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             gridTemplateColumns: '1fr 2fr 1fr 2fr',
             gridGap: FORM_GAP,
             gridTemplateAreas: `
-                              'lastName lastName firstName firstName'
+                              'username username fullName fullName'
                               'dateOfBirth dateOfBirth dateOfBirth gender'
                               'contact contact email email'
                               'specialties specialties specialties specialties'
@@ -132,20 +132,19 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
           }}
         >
           <TextInput
-            {...register('lastName')}
-            label={translate('LAST_NAME')}
-            error={!!errors.lastName?.message}
-            helperText={errors.lastName?.message as ReactNode}
+            {...register('username')}
+            label={translate('USERNAME')}
+            error={!!errors.username?.message}
+            helperText={errors.username?.message as ReactNode}
             required
-            sx={{ gridArea: 'lastName' }}
+            sx={{ gridArea: 'username' }}
           />
           <TextInput
-            {...register('firstName')}
-            label={translate('FIRST_NAME')}
-            error={!!errors.firstName?.message}
-            helperText={errors.firstName?.message as ReactNode}
-            required
-            sx={{ gridArea: 'firstName' }}
+            {...register('fullName')}
+            label={translate('FULL_NAME')}
+            error={!!errors.fullName?.message}
+            helperText={errors.fullName?.message as ReactNode}
+            sx={{ gridArea: 'fullName' }}
           />
           <TextInput
             {...register('dateOfBirth')}

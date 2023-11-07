@@ -253,7 +253,7 @@ export const StickyTable = ({
             <SelectInput
               height={'33px'}
               width={'70px'}
-              value={limit ?? 5}
+              value={limit || 5}
               onChange={(event) =>
                 onChangeLimit && onChangeLimit(event.target.value)
               }

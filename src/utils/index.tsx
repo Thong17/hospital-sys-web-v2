@@ -561,5 +561,5 @@ export const downloadBuffer = (buffer: any, filename: string) => {
 
 export const checkAllFieldObject = (obj: any) => {
   if (typeof obj !== 'object') return false
-  return Object.values(obj).every(value => value === true)
+  return !Object.values(obj).every(value => value === false)
 }

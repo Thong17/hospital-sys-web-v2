@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getReservationCreate, getReservationDelete, getReservationDetail, getReservationExport, getReservationHistory, getReservationImport, getReservationList, getReservationUpdate, getReservationValidate } from "./action";
+import { getReservationAccept, getReservationCreate, getReservationDelete, getReservationDetail, getReservationExport, getReservationHistory, getReservationImport, getReservationList, getReservationRefuse, getReservationUpdate, getReservationValidate } from "./action";
 import { TypeStatus } from "stores/constant";
 
 interface IReservation {
@@ -169,6 +169,28 @@ const reservationSlice = createSlice({
             state.update.error = null
             state.update.isLoading = false
             state.update.data = action.payload?.data
+        })
+
+        // Reject
+        builder.addCase(getReservationRefuse.pending, (state) => {
+            state.form.isLoading = true
+        })
+        builder.addCase(getReservationRefuse.rejected, (state) => {
+            state.form.isLoading = false
+        })
+        builder.addCase(getReservationRefuse.fulfilled, (state) => {
+            state.form.isLoading = false
+        })
+
+        // Accept
+        builder.addCase(getReservationAccept.pending, (state) => {
+            state.form.isLoading = true
+        })
+        builder.addCase(getReservationAccept.rejected, (state) => {
+            state.form.isLoading = false
+        })
+        builder.addCase(getReservationAccept.fulfilled, (state) => {
+            state.form.isLoading = false
         })
 
         // Export

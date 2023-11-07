@@ -25,6 +25,28 @@ export class ReservationService {
             throw error
         }
     }
+    async accept({ id, reason }: { id: String, reason: String }) {
+        try {
+            const response = await axios.post(`/operation/reservation/accept/${id}`, { note: reason })
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async refuse({ id, reason }: { id: String, reason: String }) {
+        try {
+            const response = await axios.post(`/operation/reservation/refuse/${id}`, { note: reason })
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async delete({ id, reason }: { id: String, reason: String }) {
         try {
             const response = await axios.delete(`/operation/reservation/delete/${id}?reason=${reason}`)

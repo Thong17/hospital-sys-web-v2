@@ -17,8 +17,9 @@ import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
 import { selectReservationList } from 'stores/reservation/selector'
-import { getReservationDelete, getReservationList } from 'stores/reservation/action'
+import { getReservationAccept, getReservationDelete, getReservationList, getReservationRefuse } from 'stores/reservation/action'
 import LabelStatus from 'components/shared/LabelStatus'
+import { selectSession } from 'stores/session/selector'
 
 const reservationColumns: ITableColumn<any>[] = [
   { label: translate('APPOINTMENT_TIME'), id: 'appointmentDate', sort: 'desc' },
@@ -52,7 +53,7 @@ const renderStage = (value: string, theme: any) => {
     case value === 'ACCEPTED':
       return <LabelStatus label={translate(value)} color={theme.color.success} />
 
-    case value === 'REJECT':
+    case value === 'REFUSED':
       return <LabelStatus label={translate(value)} color={theme.color.error} />
   
     default:
@@ -63,9 +64,13 @@ const renderStage = (value: string, theme: any) => {
 const mapData = (
   item: any,
   theme: any,
+  user: any,
+  onAccept: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onRefuse: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  const { approve = false, reject = false, update = false, delete: _delete = false } = user?.privilege?.operation?.reservation ?? {}
   return {
     _id: item._id,
     endTime: item.endTime,
@@ -76,7 +81,7 @@ const mapData = (
     patient: item.patient?.username,
     contact: item.patient?.contact,
     stage: renderStage(item.stage, theme),
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: <ActionButton data={item} onAccept={approve && onAccept} onRefuse={reject && onRefuse} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
   }
 }
 
@@ -84,6 +89,7 @@ const Reservation = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const confirm = useAlert()
+  const { user } = useAppSelector(selectSession)
   const { theme } = useTheme()
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectReservationList)
@@ -114,19 +120,59 @@ const Reservation = () => {
     navigate(`/operation/reservation/detail/${data._id}`)
   }
 
-  const handleReject = (
+  const handleDelete = (
     event: React.MouseEvent<HTMLButtonElement>,
     data: any
   ) => {
     event.stopPropagation()
     confirm({
-      title: translate('REJECT_RESERVATION_TITLE'),
-      description: translate('REJECT_RESERVATION_DESCRIPTION'),
+      title: translate('DELETE_RESERVATION_TITLE'),
+      description: translate('DELETE_RESERVATION_DESCRIPTION'),
       reason: true,
       variant: 'error',
     })
       .then((confirmData: any) => {
         dispatch(getReservationDelete({ id: data._id, reason: confirmData?.reason }))
+          .unwrap()
+          .then(() => fetchListReservation(queryParams))
+          .catch(() => {})
+      })
+      .catch(() => {})
+  }
+
+  const handleRefuse = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    data: any
+  ) => {
+    event.stopPropagation()
+    confirm({
+      title: translate('REFUSE_RESERVATION_TITLE'),
+      description: translate('REFUSE_RESERVATION_DESCRIPTION'),
+      reason: true,
+      variant: 'error',
+    })
+      .then((confirmData: any) => {
+        dispatch(getReservationRefuse({ id: data._id, reason: confirmData?.reason }))
+          .unwrap()
+          .then(() => fetchListReservation(queryParams))
+          .catch(() => {})
+      })
+      .catch(() => {})
+  }
+
+  const handleAccept = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    data: any
+  ) => {
+    event.stopPropagation()
+    confirm({
+      title: translate('ACCEPT_RESERVATION_TITLE'),
+      description: translate('ACCEPT_RESERVATION_DESCRIPTION'),
+      reason: true,
+      variant: 'info',
+    })
+      .then((confirmData: any) => {
+        dispatch(getReservationAccept({ id: data._id, reason: confirmData?.reason }))
           .unwrap()
           .then(() => fetchListReservation(queryParams))
           .catch(() => {})
@@ -179,7 +225,7 @@ const Reservation = () => {
         <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, theme, handleEdit, handleReject)
+              mapData(item, theme, user, handleAccept, handleRefuse, handleEdit, handleDelete)
             )}
             columns={columns}
             onSort={handleSort}

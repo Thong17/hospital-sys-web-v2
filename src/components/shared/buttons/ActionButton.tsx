@@ -4,6 +4,8 @@ import { CustomIconButton } from 'styles/index'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
 
 interface IButton extends ButtonProps {
   isLoading?: boolean
@@ -77,6 +79,64 @@ export const AddButton = ({ isLoading, ...props }: IButton) => {
   )
 }
 
+export const AcceptButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        backgroundColor: `${theme.color.success}22`,
+        boxShadow: theme.shadow.quaternary,
+        '&:hover': { backgroundColor: `${theme.color.success}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.success}22` },
+        '& *': {
+          color: `${theme.color.success} !important`,
+          margin: '0 !important',
+        }
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={16} sx={{ position: 'absolute' }} />
+      )}
+      <CheckRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
+  )
+}
+
+export const RemoveButton = ({ isLoading, ...props }: IButton) => {
+  const { theme } = useTheme()
+  return (
+    <CustomIconButton
+      {...props}
+      disabled={isLoading}
+      size='small'
+      sx={{
+        backgroundColor: `${theme.color.error}22`,
+        boxShadow: theme.shadow.quaternary,
+        '&:hover': { backgroundColor: `${theme.color.error}44` },
+        '&.Mui-disabled': { backgroundColor: `${theme.color.error}22` },
+        '& *': {
+          color: `${theme.color.error} !important`,
+          margin: '0 !important',
+        }
+      }}
+    >
+      {isLoading && (
+        <CircularProgress size={16} sx={{ position: 'absolute' }} />
+      )}
+      <CloseRoundedIcon
+        fontSize='small'
+        sx={{ opacity: isLoading ? '0' : '1' }}
+      />
+    </CustomIconButton>
+  )
+}
+
 export const EditButton = ({ isLoading, ...props }: IButton) => {
   const { theme } = useTheme()
   return (
@@ -136,16 +196,22 @@ export const DeleteButton = ({ isLoading, ...props }: IButton) => {
 export const ActionButton = ({
   data,
   onEdit,
+  onAccept,
+  onRefuse,
   onDelete,
 }: {
   data: any
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
-  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onEdit?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onAccept?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onRefuse?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onDelete?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 }) => {
   return (
     <Stack direction={'row'} gap={1} justifyContent={'end'}>
-      <EditButton onClick={(event) => onEdit(event, data)} />
-      <DeleteButton onClick={(event) => onDelete(event, data)} />
+      {onAccept && <AcceptButton onClick={(event) => onAccept(event, data)} />}
+      {onRefuse && <RemoveButton onClick={(event) => onRefuse(event, data)} />}
+      {onEdit && <EditButton onClick={(event) => onEdit(event, data)} />}
+      {onDelete && <DeleteButton onClick={(event) => onDelete(event, data)} />}
     </Stack>
   )
 }

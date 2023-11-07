@@ -14,6 +14,16 @@ export const getReservationUpdate: any = createAsyncThunk(
     serviceWrapper(service.update)
 )
 
+export const getReservationAccept: any = createAsyncThunk(
+    'reservation/accept',
+    serviceWrapper(service.accept)
+)
+
+export const getReservationRefuse: any = createAsyncThunk(
+    'reservation/refuse',
+    serviceWrapper(service.refuse)
+)
+
 export const getReservationDelete: any = createAsyncThunk(
     'reservation/delete',
     serviceWrapper(service.delete)
