@@ -10,6 +10,8 @@ import ReservationCreate from './reservation/create'
 import ReservationUpdate from './reservation/update'
 import ReservationDetail from './reservation/detail'
 import ReservationHistory from './reservation/history'
+import Schedule from './schedule'
+import ScheduleDetail from './schedule/detail'
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
@@ -54,4 +56,4 @@ const Operation = () => {
   )
 }
 
-export { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate }
+export { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail }

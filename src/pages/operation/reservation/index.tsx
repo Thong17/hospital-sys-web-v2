@@ -12,13 +12,12 @@ import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { calculateDuration, debounce, timeFormat } from 'utils/index'
+import { calculateDuration, debounce, renderCategory, renderStage, timeFormat } from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
 import { selectReservationList } from 'stores/reservation/selector'
 import { getReservationAccept, getReservationDelete, getReservationList, getReservationRefuse } from 'stores/reservation/action'
-import LabelStatus from 'components/shared/LabelStatus'
 import { selectSession } from 'stores/session/selector'
 
 const reservationColumns: ITableColumn<any>[] = [
@@ -32,35 +31,6 @@ const reservationColumns: ITableColumn<any>[] = [
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
 
-const renderCategory = (value: string, theme: any) => {
-  switch (true) {
-    case value === 'MILD':
-      return <LabelStatus label={translate(value)} color={theme.color.warning} />
-
-    case value === 'URGENT':
-      return <LabelStatus label={translate(value)} color={theme.color.orange} />
-
-    case value === 'EMERGENCY':
-      return <LabelStatus label={translate(value)} color={theme.color.error} />
-  
-    default:
-      return <LabelStatus label={translate(value)} color={theme.color.info} />
-  }
-}
-
-const renderStage = (value: string, theme: any) => {
-  switch (true) {
-    case value === 'ACCEPTED':
-      return <LabelStatus label={translate(value)} color={theme.color.success} />
-
-    case value === 'REFUSED':
-      return <LabelStatus label={translate(value)} color={theme.color.error} />
-  
-    default:
-      return <LabelStatus label={translate(value)} color={theme.color.warning} />
-  }
-}
-
 const mapData = (
   item: any,
   theme: any,
@@ -70,7 +40,7 @@ const mapData = (
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
-  const { approve = false, reject = false, update = false, delete: _delete = false } = user?.privilege?.operation?.reservation ?? {}
+  const { accept = false, refuse = false, update = false, delete: _delete = false } = user?.privilege?.operation?.reservation ?? {}
   return {
     _id: item._id,
     endTime: item.endTime,
@@ -81,7 +51,7 @@ const mapData = (
     patient: item.patient?.username,
     contact: item.patient?.contact,
     stage: renderStage(item.stage, theme),
-    action: <ActionButton data={item} onAccept={approve && onAccept} onRefuse={reject && onRefuse} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
+    action: <ActionButton data={item} onAccept={accept && onAccept} onRefuse={refuse && onRefuse} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
   }
 }
 

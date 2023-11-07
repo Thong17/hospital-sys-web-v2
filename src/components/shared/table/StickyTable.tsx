@@ -123,7 +123,7 @@ export const StickyTable = ({
                         }}
                       >
                         {hasNumOrder && (
-                          <TableCell>{skip * limit + index + 1}</TableCell>
+                          <TableCell width={'30px'}>{skip * limit + index + 1}</TableCell>
                         )}
                         {columns.map((column) => {
                           let value = row[column.id]

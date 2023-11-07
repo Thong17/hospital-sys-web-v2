@@ -1,3 +1,4 @@
+import LabelStatus from 'components/shared/LabelStatus'
 import { translate } from 'contexts/language/LanguageContext'
 import { IThemeStyle } from 'contexts/theme/interface'
 import { sha256 } from 'js-sha256'
@@ -562,4 +563,38 @@ export const downloadBuffer = (buffer: any, filename: string) => {
 export const checkAllFieldObject = (obj: any) => {
   if (typeof obj !== 'object') return false
   return !Object.values(obj).every(value => value === false)
+}
+
+
+
+export const renderCategory = (value: string, theme: any) => {
+  switch (true) {
+    case value === 'MILD':
+      return <LabelStatus label={translate(value)} color={theme.color.warning} />
+
+    case value === 'URGENT':
+      return <LabelStatus label={translate(value)} color={theme.color.orange} />
+
+    case value === 'EMERGENCY':
+      return <LabelStatus label={translate(value)} color={theme.color.error} />
+  
+    default:
+      return <LabelStatus label={translate(value)} color={theme.color.info} />
+  }
+}
+
+export const renderStage = (value: string, theme: any) => {
+  switch (true) {
+    case value === 'STARTED':
+      return <LabelStatus label={translate(value)} color={theme.color.info} />
+
+    case value === 'ACCEPTED':
+      return <LabelStatus label={translate(value)} color={theme.color.success} />
+
+    case ['REFUSED', 'ENDED'].includes(value):
+      return <LabelStatus label={translate(value)} color={theme.color.error} />
+  
+    default:
+      return <LabelStatus label={translate(value)} color={theme.color.warning} />
+  }
 }

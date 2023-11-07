@@ -4,7 +4,7 @@ import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate,
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
-import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate } from 'pages/operation'
+import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail } from 'pages/operation'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
@@ -233,6 +233,23 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ menu: 'operation', route: 'reservation', action: 'detail' }}>
                         <ReservationHistory />
+                    </AuthGuard>
+                ),
+            },
+            // ? MENU: Schedule
+            {
+                path: 'schedule',
+                element: (
+                    <AuthGuard role={{ menu: 'operation', route: 'schedule', action: 'list' }}>
+                        <Schedule />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'schedule/detail/:id',
+                element: (
+                    <AuthGuard role={{ menu: 'operation', route: 'schedule', action: 'detail' }}>
+                        <ScheduleDetail />
                     </AuthGuard>
                 ),
             },

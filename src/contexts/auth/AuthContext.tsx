@@ -19,24 +19,25 @@ const AuthProvider = ({ children }: any) => {
     dispatch(getProfile())
   }, [])
 
-  if (status === 'LOADING')
-    return (
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          display: 'grid',
-          placeItems: 'center',
-        }}
-      >
-        <Loading />
-      </Box>
-    )
   return (
-    <AuthContext.Provider value={{ ...user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ ...user }}>
+      {status === 'LOADING' && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            display: 'grid',
+            placeItems: 'center',
+          }}
+        >
+          <Loading />
+        </Box>
+      )}
+      {children}
+    </AuthContext.Provider>
   )
 }
 
