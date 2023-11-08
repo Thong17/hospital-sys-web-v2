@@ -13,9 +13,9 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
 import {  CustomizedIconButton } from 'components/shared/buttons/ActionButton'
 import { debounce, renderStage, timeFormat } from 'utils/index'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { selectScheduleList } from 'stores/schedule/selector'
-import { getScheduleList } from 'stores/schedule/action'
+import { getScheduleList, getScheduleStart } from 'stores/schedule/action'
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded'
 
 const scheduleColumns: ITableColumn<any>[] = [
@@ -54,6 +54,7 @@ const mapData = (
 
 const Schedule = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { theme } = useTheme()
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectScheduleList)
@@ -73,7 +74,11 @@ const Schedule = () => {
     data: any
   ) => {
     event.stopPropagation()
-    console.log(data)
+    if (data?.startedAt) return navigate(`/operation/schedule/${data?._id}`)
+    dispatch(getScheduleStart({ id: data?._id }))
+      .unwrap()
+      .then(() => { navigate(`/operation/schedule/${data?._id}`) })
+      .catch(() => {})
   }
 
   const handleSort = (column: any) => {

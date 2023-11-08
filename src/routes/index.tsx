@@ -246,7 +246,7 @@ const routes: RouteObject[] = [
                 ),
             },
             {
-                path: 'schedule/detail/:id',
+                path: 'schedule/:id',
                 element: (
                     <AuthGuard role={{ menu: 'operation', route: 'schedule', action: 'detail' }}>
                         <ScheduleDetail />
