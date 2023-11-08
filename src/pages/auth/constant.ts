@@ -18,6 +18,12 @@ export const SEGMENTS = [
     { value: 'PATIENT', label: 'PATIENT' },
 ]
 
+export const PATIENT_CONDITIONS = [
+    { value: 'HEALTHY', label: 'HEALTHY' },
+    { value: 'NEED_SCHEDULE', label: 'NEED_SCHEDULE' },
+    { value: 'WEAK', label: 'WEAK' },
+]
+
 export const GENDERS = [
     { value: 'MALE', label: 'MALE' },
     { value: 'FEMALE', label: 'FEMALE' },

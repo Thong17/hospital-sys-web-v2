@@ -15,22 +15,20 @@ const ScheduleInfo = ({ data }: any) => {
       }}
     >
       <Stack direction={'row'}>
-        <LabelDetail label={translate('FULL_NAME') as String}>
-          <Typography>{data?.patient?.fullName || '...'}</Typography>
-        </LabelDetail>
+        {data?.patient?.fullName && <LabelDetail label={translate('FULL_NAME') as String}>
+          <Typography>{data?.patient?.fullName}</Typography>
+        </LabelDetail>}
         <LabelDetail label={translate('USERNAME') as String}>
           <Typography>{data?.patient?.username || '...'}</Typography>
         </LabelDetail>
         <LabelDetail label={translate('GENDER') as String}>
           <Typography>{data?.patient?.gender || '...'}</Typography>
         </LabelDetail>
-        <LabelDetail label={translate('DATE_OF_BIRTH') as String}>
+        {data?.patient?.dateOfBirth && <LabelDetail label={translate('DATE_OF_BIRTH') as String}>
           <Typography>
-            {data?.patient?.dateOfBirth
-              ? timeFormat(data?.patient?.dateOfBirth, 'DD MM YYYY')
-              : '...'}
+            {timeFormat(data?.patient?.dateOfBirth, 'DD MM YYYY')}
           </Typography>
-        </LabelDetail>
+        </LabelDetail>}
       </Stack>
     </Box>
   )

@@ -1,23 +1,33 @@
-import { translate } from 'contexts/language/LanguageContext'
 import * as yup from 'yup'
 
 export const initPatientHistory = {
-  name: {},
-  description: '',
+  symptoms: [],
+  treatments: [],
+  medications: [],
+  attachments: [],
+  diagnose: '',
+  condition: '',
+  comment: '',
 }
 
 export const createPatientHistorySchema = yup.object().shape({
-  name: yup.object({
-    English: yup.string().required(translate('NAME_IS_REQUIRED') as string),
-  }),
-  description: yup.string().optional(),
+  symptoms: yup.array().optional(),
+  treatments: yup.array().optional(),
+  medications: yup.array().optional(),
+  attachments: yup.array().optional(),
+  diagnose: yup.string().optional(),
+  condition: yup.string().optional(),
+  comment: yup.string().optional(),
 })
 
 export const updatePatientHistorySchema = yup.object().shape({
-  name: yup.object({
-    English: yup.string().required(translate('NAME_IS_REQUIRED') as string),
-  }),
-  description: yup.string().optional(),
+  symptoms: yup.array().optional(),
+  treatments: yup.array().optional(),
+  medications: yup.array().optional(),
+  attachments: yup.array().optional(),
+  diagnose: yup.string().optional(),
+  condition: yup.string().optional(),
+  comment: yup.string().optional(),
 })
 
-export const RESERVATION_FORM_WIDTH = 570
+export const FORM_WIDTH = 570

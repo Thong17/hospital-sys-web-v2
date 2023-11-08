@@ -31,6 +31,7 @@ const AuthProvider = ({ children }: any) => {
             height: '100vh',
             display: 'grid',
             placeItems: 'center',
+            backgroundColor: 'black'
           }}
         >
           <Loading />

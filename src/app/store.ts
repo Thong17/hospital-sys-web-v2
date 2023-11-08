@@ -29,6 +29,8 @@ import { patientReducer } from 'stores/patient/slice'
 import { sessionReducer } from 'stores/session/slice'
 import { reservationReducer } from 'stores/reservation/slice'
 import { scheduleReducer } from 'stores/schedule/slice'
+import { symptomReducer } from 'stores/symptom/slice'
+import { treatmentReducer } from 'stores/treatment/slice'
 
 const mainReducer = combineReducers({
   auth: authReducer,
@@ -43,6 +45,8 @@ const mainReducer = combineReducers({
   exchangeRate: exchangeRateReducer,
   reservation: reservationReducer,
   schedule: scheduleReducer,
+  symptom: symptomReducer,
+  treatment: treatmentReducer,
 })
 
 const rootReducer = (state: any, action: any) => {
