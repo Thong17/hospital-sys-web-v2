@@ -19,7 +19,6 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { getDoctorCreate, getDoctorUpdate } from 'stores/doctor/action'
 import { selectDoctorCreate } from 'stores/doctor/selector'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { GENDERS, SHIFT_DAY } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
 import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
 import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
@@ -30,6 +29,7 @@ import { selectSpecialtyList } from 'stores/specialty/selector'
 import { getSpecialtyList } from 'stores/specialty/action'
 import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
+import { GENDERS, SHIFT_DAY } from 'constants/options'
 
 export interface IDoctorForm {
   fullName: string

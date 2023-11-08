@@ -15,7 +15,7 @@ import { useAppDispatch } from 'app/store'
 import { getPatientCreate, getPatientList } from 'stores/patient/action'
 import { createPatientSchema } from '../constant'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { GENDERS } from 'pages/auth/constant'
+import { GENDERS } from 'constants/options'
 
 const PatientForm = ({
   defaultValues,

@@ -35,13 +35,13 @@ import FormDialog from 'components/shared/dialogs/FormDialog'
 import ListTable from 'components/shared/table/ListTable'
 import SymptomForm from 'components/module/symptom/SymptomForm'
 import { initSymptom } from 'components/module/symptom/constant'
-import { PATIENT_CONDITIONS } from 'pages/auth/constant'
-import { selectTreatmentList } from 'stores/treatment/selector'
-import { initTreatment } from 'components/module/treatment/constant'
+import { selectCategoryList } from 'stores/category/selector'
+import { initCategory } from 'components/module/category/constant'
 import { getSymptomList } from 'stores/symptom/action'
-import { getTreatmentList } from 'stores/treatment/action'
-import TreatmentCreateForm from 'components/module/treatment/TreatmentForm'
+import { getCategoryList } from 'stores/category/action'
+import CategoryCreateForm from 'components/module/category/CategoryForm'
 import { LanguageOptions } from 'contexts/language/interface'
+import { PATIENT_CONDITIONS } from 'constants/options'
 
 const mapSymptomDetail = (data: any, lang: LanguageOptions) => {
   return {
@@ -49,7 +49,7 @@ const mapSymptomDetail = (data: any, lang: LanguageOptions) => {
   }
 }
 
-const mapTreatmentDetail = (data: any, lang: LanguageOptions) => {
+const mapCategoryDetail = (data: any, lang: LanguageOptions) => {
   return {
     name: data?.name?.[lang] || data?.name?.['English']
   }
@@ -64,10 +64,10 @@ const ScheduleDetail = () => {
   const { isLoading } = useAppSelector(selectScheduleForm)
   const { data: symptoms, status: symptomStatus } =
     useAppSelector(selectSymptomList)
-  const { data: treatments, status: treatmentStatus } =
-    useAppSelector(selectTreatmentList)
+  const { data: categories, status: categoryStatus } =
+    useAppSelector(selectCategoryList)
   const [symptomDialog, setSymptomDialog] = useState({ open: false })
-  const [treatmentDialog, setTreatmentDialog] = useState({ open: false })
+  const [categoryDialog, setCategoryDialog] = useState({ open: false })
   const {
     handleSubmit,
     watch,
@@ -86,11 +86,11 @@ const ScheduleDetail = () => {
   }, [symptomStatus])
 
   useEffect(() => {
-    if (treatmentStatus !== 'INIT') return
+    if (categoryStatus !== 'INIT') return
     const params = new URLSearchParams()
     params.append('limit', '0')
-    dispatch(getTreatmentList({ params }))
-  }, [treatmentStatus])
+    dispatch(getCategoryList({ params }))
+  }, [categoryStatus])
 
   useEffect(() => {
     dispatch(getScheduleDetail({ id }))
@@ -135,17 +135,17 @@ const ScheduleDetail = () => {
       />
       <FormDialog
         justify='end'
-        isOpen={treatmentDialog.open}
-        onClose={() => setTreatmentDialog({ open: false })}
+        isOpen={categoryDialog.open}
+        onClose={() => setCategoryDialog({ open: false })}
         form={
-          <TreatmentCreateForm
-            defaultValues={initTreatment}
-            onCancel={() => setTreatmentDialog({ open: false })}
+          <CategoryCreateForm
+            defaultValues={initCategory}
+            onCancel={() => setCategoryDialog({ open: false })}
           />
         }
         list={
           <ListTable
-            list={treatments?.map((item: any) => mapTreatmentDetail(item, lang))}
+            list={categories?.map((item: any) => mapCategoryDetail(item, lang))}
           />
         }
       />
@@ -163,7 +163,7 @@ const ScheduleDetail = () => {
                   gridGap: FORM_GAP,
                   gridTemplateAreas: `
                               'symptoms symptoms symptoms'
-                              'condition treatments treatments'
+                              'condition categories categories'
                               'diagnose diagnose diagnose'
                               'attachments attachments attachments'
                               'action action action'
@@ -204,26 +204,26 @@ const ScheduleDetail = () => {
                   label={translate('CONDITION')}
                   gridArea='condition'
                 />
-                {treatmentStatus !== 'COMPLETED' ? (
-                  <Loading sx={{ gridArea: 'treatments' }} />
+                {categoryStatus !== 'COMPLETED' ? (
+                  <Loading sx={{ gridArea: 'categories' }} />
                 ) : (
                   <SelectInput
-                    {...register('treatments')}
-                    options={treatments?.map((item: any) => ({
+                    {...register('categories')}
+                    options={categories?.map((item: any) => ({
                       label: item?.name?.[lang] || item?.name?.['English'],
                       value: item?._id,
                     }))}
                     defaultValue={[]}
-                    value={watch('treatments')}
-                    error={!!errors.treatments?.message}
-                    helperText={errors.treatments?.message}
+                    value={watch('categories')}
+                    error={!!errors.categories?.message}
+                    helperText={errors.categories?.message}
                     label={translate('TREATMENT')}
-                    gridArea='treatments'
+                    gridArea='categories'
                     multiple
                     required
                     endAdornment={
                       <AddAdornmentButton
-                        onClick={() => setTreatmentDialog({ open: true })}
+                        onClick={() => setCategoryDialog({ open: true })}
                       />
                     }
                   />

@@ -22,9 +22,9 @@ import { selectRoleList } from 'stores/role/selector'
 import { getRoleList } from 'stores/role/action'
 import useLanguage from 'hooks/useLanguage'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { SEGMENTS } from 'pages/auth/constant'
 import Loading from 'components/shared/Loading'
 import { FORM_GAP } from 'constants/layout'
+import { SEGMENTS } from 'constants/options'
 
 export interface IUserForm {
   username: string

@@ -1,7 +1,7 @@
 import axios from 'configs/axios'
 import { notify } from 'contexts/notify/NotifyContext'
 
-export class TreatmentService {
+export class CategoryService {
     async create(data: any) {
         try {
             const response = await axios.post('/organize/category/create', data)

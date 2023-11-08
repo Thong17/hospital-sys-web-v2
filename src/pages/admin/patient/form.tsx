@@ -18,8 +18,8 @@ import { selectPatientCreate } from 'stores/patient/selector'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { GENDERS } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
+import { GENDERS } from 'constants/options'
 
 export interface IPatientForm {
   fullName: string

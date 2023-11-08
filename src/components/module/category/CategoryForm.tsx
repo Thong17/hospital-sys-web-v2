@@ -12,11 +12,11 @@ import useDevice from 'hooks/useDevice'
 import { FORM_GAP } from 'constants/layout'
 import { ALERT_SIDE_PADDING } from 'components/shared/dialogs'
 import { useAppDispatch } from 'app/store'
-import { getTreatmentCreate, getTreatmentList } from 'stores/treatment/action'
-import { treatmentSchema } from './constant'
+import { getCategoryCreate, getCategoryList } from 'stores/category/action'
+import { categorySchema } from './constant'
 
 
-const TreatmentCreateForm = ({
+const CategoryCreateForm = ({
   defaultValues,
   onCancel,
 }: {
@@ -32,15 +32,15 @@ const TreatmentCreateForm = ({
     handleSubmit,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(treatmentSchema),
+    resolver: yupResolver(categorySchema),
     defaultValues,
   })
 
   const onSubmit = (data: any) => {
-    dispatch(getTreatmentCreate(data))
+    dispatch(getCategoryCreate(data))
       .unwrap()
       .then(() => {
-        dispatch(getTreatmentList({}))
+        dispatch(getCategoryList({}))
       })
       .catch(() => {})
   }
@@ -103,4 +103,4 @@ const TreatmentCreateForm = ({
   )
 }
 
-export default TreatmentCreateForm
+export default CategoryCreateForm

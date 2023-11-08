@@ -20,7 +20,6 @@ import { selectReservationCreate } from 'stores/reservation/selector'
 import useDevice from 'hooks/useDevice'
 import { TABLET_WIDTH } from 'contexts/web/constant'
 import SelectInput from 'components/shared/forms/SelectInput'
-import { PATIENT_CATEGORIES } from 'pages/auth/constant'
 import { FORM_GAP } from 'constants/layout'
 import { getSpecialtyList } from 'stores/specialty/action'
 import { selectSpecialtyList } from 'stores/specialty/selector'
@@ -37,6 +36,7 @@ import FormDialog from 'components/shared/dialogs/FormDialog'
 import { initPatient } from 'pages/admin/patient/constant'
 import ListTable from 'components/shared/table/ListTable'
 import PatientForm from 'pages/admin/patient/components/PatientForm'
+import { PATIENT_CATEGORIES } from 'constants/options'
 
 export interface IReservationForm {
   appointmentDate: string

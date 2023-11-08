@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Select, Typography, FormControl, InputLabel, MenuItem } from '@mui/material'
-import { LOGIN_FORM_WIDTH, SEGMENTS, registerSchema } from './constant'
+import { LOGIN_FORM_WIDTH, registerSchema } from './constant'
 import BACKGROUND from 'assets/backgrounds/login_background.jpg'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from 'app/store'
 import { getAuthRegister } from 'stores/auth/action'
 import { selectAuthRegister } from 'stores/auth/selector'
 import { useEffect } from 'react'
+import { SEGMENTS } from 'constants/options'
 
 const defaultValues = { segment: 'GENERAL', username: 'Thong', password: '123' }
 
