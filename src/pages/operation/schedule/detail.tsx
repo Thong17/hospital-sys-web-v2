@@ -55,7 +55,7 @@ const ScheduleDetail = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
   const { lang } = useLanguage()
-  const { data } = useAppSelector(selectScheduleDetail)
+  const { data, status } = useAppSelector(selectScheduleDetail)
   const { data: symptoms, status: symptomStatus } =
     useAppSelector(selectSymptomList)
   const { data: categories, status: categoryStatus } =
@@ -64,6 +64,7 @@ const ScheduleDetail = () => {
   const [symptomDialog, setSymptomDialog] = useState({ open: false })
   const [categoryDialog, setCategoryDialog] = useState({ open: false })
   const {
+    reset,
     getValues,
     handleSubmit,
     watch,
@@ -73,6 +74,11 @@ const ScheduleDetail = () => {
     resolver: yupResolver(createPatientHistorySchema),
     defaultValues: initPatientHistory,
   })
+
+  useEffect(() => {
+    if (!data || status !== 'COMPLETED') return
+    reset(data.patientRecord)
+  }, [data, status])
 
   useEffect(() => {
     if (symptomStatus !== 'INIT') return
@@ -231,14 +237,15 @@ const ScheduleDetail = () => {
                     }
                   />
                 )}
-                <TextInput
+                {status !== 'LOADING' && <TextInput
                   {...register('diagnose')}
                   label={translate('DIAGNOSE')}
                   error={!!errors.diagnose?.message}
                   helperText={errors.diagnose?.message as ReactNode}
                   multiline
+                  InputLabelProps={{ shrink: true }}
                   sx={{ gridArea: 'diagnose' }}
-                />
+                />}
                 <TextInput
                   {...register('attachments')}
                   label={translate('ATTACHMENTS')}
@@ -251,7 +258,7 @@ const ScheduleDetail = () => {
                 />
               </Box>
             </Box>
-            <CartContainer onSave={handleSave} onEnd={handleEnd} />
+            <CartContainer data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
           </Stack>
         </form>
       </Container>

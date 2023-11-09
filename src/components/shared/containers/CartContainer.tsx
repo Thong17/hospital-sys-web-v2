@@ -9,22 +9,29 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { translate } from 'contexts/language/LanguageContext'
 import { CustomizedButton } from '../buttons/CustomButton'
 import { TextInput } from '../forms/TextInput'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 export const FORM_WIDTH_EXPANDED = 470
 export const FORM_WIDTH_COMPACTED = 60
 
 const CartContainer = ({
+  data,
   onSave,
   onEnd,
 }: {
+  data: any
   onSave: (data: any) => void
   onEnd: (data: any) => void
 }) => {
   const { isOpenedCart } = useAppSelector(selectConfig)
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
-  const commentRef = useRef<any>(null)
+  const commentRef = useRef<any>(document.createElement('input'))
+
+  useEffect(() => {
+    commentRef.current.value = data?.comment
+  }, [data])
+  
   return (
     <Box
       sx={{
