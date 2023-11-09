@@ -1,4 +1,4 @@
-import { ButtonProps, CircularProgress, Stack, Tooltip } from '@mui/material'
+import { ButtonProps, CircularProgress, IconButton, Stack, Tooltip, styled } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import { CustomIconButton } from 'styles/index'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -6,10 +6,30 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded'
+import { IThemeStyle } from 'contexts/theme/interface'
 
 interface IButton extends ButtonProps {
   isLoading?: boolean
 }
+
+export const StyledIconButton = styled(IconButton)(
+  ({
+    styled,
+    color,
+  }: {
+    styled: IThemeStyle,
+    color?: any
+  }) => ({
+    borderRadius: styled.radius.primary,
+    backgroundColor: `${color || styled.color.info}22`,
+    color: color || styled.color.info,
+    boxShadow: styled.shadow.quaternary,
+    '&:hover': { backgroundColor: `${color || styled.color.info}44` },
+    '&.Mui-disabled': {
+      backgroundColor: `${color || styled.color.info}22`,
+    },
+  })
+)
 
 export const CustomizedIconButton = ({
   isLoading,
@@ -26,26 +46,18 @@ export const CustomizedIconButton = ({
   const { theme } = useTheme()
   return (
     <Tooltip title={tooltip}>
-      <CustomIconButton
+      <StyledIconButton
         {...props}
         disabled={isLoading}
         size='small'
-        sx={{
-          backgroundColor: `${color || theme.color.info}22`,
-          color: color || theme.color.info,
-          boxShadow: theme.shadow.quaternary,
-          '&:hover': { backgroundColor: `${color || theme.color.info}44` },
-          '&.Mui-disabled': {
-            backgroundColor: `${color || theme.color.info}22`,
-          },
-          '& button': { opacity: isLoading ? '0' : '1' },
-        }}
+        styled={theme}
+        color={color as any}
       >
         {isLoading && (
           <CircularProgress size={16} sx={{ position: 'absolute' }} />
         )}
         {icon}
-      </CustomIconButton>
+      </StyledIconButton>
     </Tooltip>
   )
 }

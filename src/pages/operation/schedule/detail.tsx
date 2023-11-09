@@ -2,20 +2,18 @@ import { Layout } from 'components/layouts/Layout'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '..'
 import { translate } from 'contexts/language/LanguageContext'
-import { useNavigate, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { ReactNode, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { getScheduleDetail } from 'stores/schedule/action'
+import { getScheduleDetail, getScheduleEnd, getScheduleUpdate } from 'stores/schedule/action'
 import Container from 'components/shared/Container'
 import {
   selectScheduleDetail,
-  selectScheduleForm,
 } from 'stores/schedule/selector'
 import ScheduleInfo from './components/ScheduleInfo'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
-  FORM_WIDTH,
   createPatientHistorySchema,
   initPatientHistory,
 } from './constant'
@@ -26,10 +24,6 @@ import { FORM_GAP } from 'constants/layout'
 import Loading from 'components/shared/Loading'
 import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
 import useLanguage from 'hooks/useLanguage'
-import {
-  CancelButton,
-  UpdateButton,
-} from 'components/shared/buttons/CustomButton'
 import { selectSymptomList } from 'stores/symptom/selector'
 import FormDialog from 'components/shared/dialogs/FormDialog'
 import ListTable from 'components/shared/table/ListTable'
@@ -39,9 +33,11 @@ import { selectCategoryList } from 'stores/category/selector'
 import { initCategory } from 'components/module/category/constant'
 import { getSymptomList } from 'stores/symptom/action'
 import { getCategoryList } from 'stores/category/action'
-import CategoryCreateForm from 'components/module/category/CategoryForm'
+import CategoryCreateForm from 'components/module/category/TreatmentForm'
 import { LanguageOptions } from 'contexts/language/interface'
 import { PATIENT_CONDITIONS } from 'constants/options'
+import { selectConfig } from 'stores/config/selector'
+import CartContainer, { FORM_WIDTH_COMPACTED, FORM_WIDTH_EXPANDED } from 'components/shared/containers/CartContainer'
 
 const mapSymptomDetail = (data: any, lang: LanguageOptions) => {
   return {
@@ -56,19 +52,19 @@ const mapCategoryDetail = (data: any, lang: LanguageOptions) => {
 }
 
 const ScheduleDetail = () => {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { id } = useParams()
   const { lang } = useLanguage()
   const { data } = useAppSelector(selectScheduleDetail)
-  const { isLoading } = useAppSelector(selectScheduleForm)
   const { data: symptoms, status: symptomStatus } =
     useAppSelector(selectSymptomList)
   const { data: categories, status: categoryStatus } =
     useAppSelector(selectCategoryList)
+  const { isOpenedCart } = useAppSelector(selectConfig)
   const [symptomDialog, setSymptomDialog] = useState({ open: false })
   const [categoryDialog, setCategoryDialog] = useState({ open: false })
   const {
+    getValues,
     handleSubmit,
     watch,
     register,
@@ -97,7 +93,15 @@ const ScheduleDetail = () => {
   }, [id])
 
   const onSubmit = (data: any) => {
-    console.log(data)
+    console.log({data})
+  }
+
+  const handleSave = (data: any) => {
+    dispatch(getScheduleUpdate({ id, data: { ...getValues(), comment: data?.comment } }))
+  }
+
+  const handleEnd = (data: any) => {
+    dispatch(getScheduleEnd({ id, data: { ...getValues(), comment: data?.comment } }))
   }
 
   return (
@@ -151,8 +155,8 @@ const ScheduleDetail = () => {
       />
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack direction={'row'} gap={2}>
-            <Box sx={{ width: FORM_WIDTH, height: 'fit-content' }}>
+          <Stack direction={'row'} gap={'10px'}>
+            <Box sx={{ width: isOpenedCart ? `calc(100% - ${FORM_WIDTH_EXPANDED}px)` : `calc(100% - ${FORM_WIDTH_COMPACTED}px)`, height: 'fit-content' }}>
               <ScheduleInfo data={data} />
               <Box
                 sx={{
@@ -163,10 +167,9 @@ const ScheduleDetail = () => {
                   gridGap: FORM_GAP,
                   gridTemplateAreas: `
                               'symptoms symptoms symptoms'
-                              'condition categories categories'
+                              'condition treatments treatments'
                               'diagnose diagnose diagnose'
                               'attachments attachments attachments'
-                              'action action action'
                               `,
                 }}
               >
@@ -208,17 +211,17 @@ const ScheduleDetail = () => {
                   <Loading sx={{ gridArea: 'categories' }} />
                 ) : (
                   <SelectInput
-                    {...register('categories')}
+                    {...register('treatments')}
                     options={categories?.map((item: any) => ({
                       label: item?.name?.[lang] || item?.name?.['English'],
                       value: item?._id,
                     }))}
                     defaultValue={[]}
-                    value={watch('categories')}
-                    error={!!errors.categories?.message}
-                    helperText={errors.categories?.message}
+                    value={watch('treatments')}
+                    error={!!errors.treatments?.message}
+                    helperText={errors.treatments?.message}
                     label={translate('TREATMENT')}
-                    gridArea='categories'
+                    gridArea='treatments'
                     multiple
                     required
                     endAdornment={
@@ -246,31 +249,9 @@ const ScheduleDetail = () => {
                   InputLabelProps={{ shrink: true }}
                   sx={{ gridArea: 'attachments' }}
                 />
-                <Stack
-                  direction={'row'}
-                  justifyContent={'end'}
-                  gap={2}
-                  width={'100%'}
-                  sx={{ gridArea: 'action' }}
-                >
-                  <CancelButton onClick={() => navigate(-1)} />
-                  <UpdateButton
-                    type='submit'
-                    isLoading={isLoading}
-                    onClick={handleSubmit(onSubmit)}
-                  />
-                </Stack>
               </Box>
             </Box>
-            <Box
-              sx={{
-                backgroundColor: 'blueviolet',
-                width: `calc(100% - ${FORM_WIDTH}px)`,
-                height: 'fit-content',
-              }}
-            >
-              <p>Hello</p>
-            </Box>
+            <CartContainer onSave={handleSave} onEnd={handleEnd} />
           </Stack>
         </form>
       </Container>

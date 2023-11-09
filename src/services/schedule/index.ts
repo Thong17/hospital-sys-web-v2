@@ -13,9 +13,20 @@ export class ScheduleService {
             throw error
         }
     }
-    async end({ id }: { id: String }) {
+    async update({ id, data }: { id: String, data: any }) {
         try {
-            const response = await axios.post(`/operation/schedule/end/${id}`)
+            const response = await axios.post(`/operation/schedule/update/${id}`, data)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async end({ id, data }: { id: String, data: any }) {
+        try {
+            const response = await axios.post(`/operation/schedule/end/${id}`, data)
             notify(response?.data?.message, 'success')
             return response
         } catch (error: any) {

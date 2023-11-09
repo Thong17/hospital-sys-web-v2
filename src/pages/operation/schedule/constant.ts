@@ -2,7 +2,7 @@ import * as yup from 'yup'
 
 export const initPatientHistory = {
   symptoms: [],
-  categories: [],
+  treatments: [],
   medications: [],
   attachments: [],
   diagnose: '',
@@ -12,7 +12,7 @@ export const initPatientHistory = {
 
 export const createPatientHistorySchema = yup.object().shape({
   symptoms: yup.array().optional(),
-  categories: yup.array().optional(),
+  treatments: yup.array().optional(),
   medications: yup.array().optional(),
   attachments: yup.array().optional(),
   diagnose: yup.string().optional(),
@@ -22,12 +22,10 @@ export const createPatientHistorySchema = yup.object().shape({
 
 export const updatePatientHistorySchema = yup.object().shape({
   symptoms: yup.array().optional(),
-  categories: yup.array().optional(),
+  treatments: yup.array().optional(),
   medications: yup.array().optional(),
   attachments: yup.array().optional(),
   diagnose: yup.string().optional(),
   condition: yup.string().optional(),
   comment: yup.string().optional(),
 })
-
-export const FORM_WIDTH = 570

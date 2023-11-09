@@ -76,7 +76,7 @@ export const Layout: FC<ILayout> = ({ navbar, children }) => {
         }}
       >
         <Navbar navbar={navbar} />
-        <ContentContainer sx={{ padding: `${NAVBAR_HEIGHT}px 0px 0 0px` }}>
+        <ContentContainer sx={{ padding: `${NAVBAR_HEIGHT}px 0px 0 0px`, boxSizing: 'border-box' }}>
           {children}
         </ContentContainer>
         {width > TABLET_WIDTH ? <Footer /> : <Bottombar />}

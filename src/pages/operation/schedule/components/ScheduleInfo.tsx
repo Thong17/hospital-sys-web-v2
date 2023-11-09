@@ -9,7 +9,7 @@ const ScheduleInfo = ({ data }: any) => {
   return (
     <Box
       sx={{
-        backgroundColor: `${theme.color.info}22`,
+        backgroundColor: theme.layout.sidebar,
         padding: '0 20px',
         borderRadius: theme.radius.ternary,
       }}

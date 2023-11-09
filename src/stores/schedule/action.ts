@@ -9,6 +9,11 @@ export const getScheduleStart: any = createAsyncThunk(
     serviceWrapper(service.start)
 )
 
+export const getScheduleUpdate: any = createAsyncThunk(
+    'schedule/update',
+    serviceWrapper(service.update)
+)
+
 export const getScheduleEnd: any = createAsyncThunk(
     'schedule/end',
     serviceWrapper(service.end)
