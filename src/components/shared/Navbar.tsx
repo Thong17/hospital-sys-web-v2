@@ -1,68 +1,76 @@
+import { Box, IconButton, Stack } from '@mui/material'
+import { LAYOUT_TRANSITION } from 'components/layouts/Layout'
+import { useAppSelector } from 'app/store'
+import { selectConfig } from 'stores/config/selector'
+import {
+  COLLAPSED_SIDEBAR_WIDTH,
+  EXPANDED_SIDEBAR_WIDTH,
+  NAVBAR_HEIGHT,
+  OUTER_MENU_SPACING,
+} from 'constants/layout'
+import useDevice from 'hooks/useDevice'
+import { TABLET_WIDTH } from 'contexts/web/constant'
 import useTheme from 'hooks/useTheme'
-import { useLocation } from 'react-router-dom'
-import { ListNavbar, CustomNavbar } from 'styles'
-import useWeb from 'hooks/useWeb'
-import { useEffect, useRef, useState } from 'react'
-import { Box } from '@mui/material'
-import Button from './Button'
-import useConfig from 'hooks/useConfig'
-import { downloadFile } from 'utils/index'
+import MenuButton from './MenuButton'
+import Profile from './Profile'
+import EventRoundedIcon from '@mui/icons-material/EventRounded'
+import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded'
+import { ReactElement } from 'react'
 
-const Navbar = ({ children }: { children: React.ReactNode }) => {
-  const [navbar, setNavbar] = useState(false)
+const Navbar = ({ navbar }: { navbar?: ReactElement }) => {
+  const { isOpenedSidebar, isAttachedSidebar } = useAppSelector(selectConfig)
+  const { width, device } = useDevice()
   const { theme } = useTheme()
-  const { sidebar } = useConfig()
-  const { width, device } = useWeb()
-  const navRef = useRef<HTMLDivElement>(document.createElement('div'))
-  const location = useLocation()
-
-  const closeNavbar = (event: any) => {
-    !navRef.current.contains(event.target) && setNavbar(false)
-  }
-
-  useEffect(() => {
-    setNavbar(false)
-  }, [location])
-
-  useEffect(() => {
-    navbar && document.addEventListener('mousedown', closeNavbar)
-    return () => {
-      document.removeEventListener('mousedown', closeNavbar)
-    }
-  }, [navbar])
-
-  const handleDownloadCV = () => {
-    downloadFile('/assets/files/CHHAN Bunthong CV.pdf', 'CHHAN Bunthong CV.pdf')
-  }
-
   return (
-    <CustomNavbar
-      className='navbar'
-      direction='row'
-      alignItems='center'
-      justifyContent='space-between'
-      styled={theme}
-      device={width}
-      sidebar={sidebar ? 258 : 78}
+    <Box
+      id='navbar'
+      sx={{
+        height: NAVBAR_HEIGHT,
+        position: 'fixed',
+        zIndex: 1000,
+        backgroundColor: theme.layout.container,
+        width:
+          width > TABLET_WIDTH
+            ? `calc(100% - ${
+                isOpenedSidebar && isAttachedSidebar
+                  ? EXPANDED_SIDEBAR_WIDTH
+                  : COLLAPSED_SIDEBAR_WIDTH
+              }px)`
+            : '100%',
+        transition: LAYOUT_TRANSITION,
+        padding: `${OUTER_MENU_SPACING}px ${OUTER_MENU_SPACING}px 0 ${OUTER_MENU_SPACING}px`,
+        boxSizing: 'border-box',
+        '&.active': {
+          transform: 'translateY(-100%)',
+        },
+      }}
     >
-      <Box sx={{ color: theme.text.secondary, fontSize: theme.responsive[device]?.text.h5 }}>Portfolio.</Box>
-      <ListNavbar>{children}</ListNavbar>
-      <Button
-        onClick={handleDownloadCV}
+      <Box
         sx={{
-          backgroundColor: `${theme.color.info}22`,
-          color: theme.color.info,
-          transition: '0.2s ease',
-          borderRadius: theme.radius.quaternary,
-          boxShadow: `0 0 11px ${theme.color.info}77`,
-          '&:hover': {
-            letterSpacing: 2.5,
-          },
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: `0 ${theme.responsive[device]?.padding.side}px`,
+          boxSizing: 'border-box',
+          backgroundColor: theme.layout.navbar,
+          borderRadius: theme.radius.ternary,
+          boxShadow: theme.shadow.quaternary,
+          width: '100%',
+          height: '100%',
+          '& *': { color: theme.text.secondary }
         }}
       >
-        {`Download\u00a0CV`}
-      </Button>
-    </CustomNavbar>
+        <Stack direction={'row'} gap={2}>
+          {width > TABLET_WIDTH && <MenuButton />}
+          {navbar}
+        </Stack>
+        <Stack direction={'row'} gap={1}>
+          <IconButton><NotificationsRoundedIcon /></IconButton>
+          <IconButton><EventRoundedIcon /></IconButton>
+          <Profile sx={{ marginLeft: '8px', display: 'grid', placeItems: 'center' }} />
+        </Stack>
+      </Box>
+    </Box>
   )
 }
 

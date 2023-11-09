@@ -23,6 +23,12 @@ export declare type TextOptions = {
 }
 
 export interface IThemeMode {
+  layout: {
+    container: string,
+    sidebar: string,
+    navbar: string,
+    footer: string
+  }
   background: {
     primary: string
     secondary: string
@@ -34,6 +40,7 @@ export interface IThemeMode {
     secondary: string
     tertiary?: string
     quaternary?: string
+    contrast?: string
   }
   active: {
     primary: string
@@ -52,8 +59,26 @@ export interface IThemeMode {
     container: string
     primary: string
     secondary: string
+    tertiary: string
+    quaternary: string
     inset: string
     bottom: string
+  }
+}
+
+export declare type IColorOption = {
+  error: string,
+  success: string,
+  info: string,
+  warning: string,
+  purple: string,
+  orange: string,
+}
+
+export declare type IDeviceProps = {
+  text: TextOptions
+  padding: {
+    side: any
   }
 }
 
@@ -70,25 +95,12 @@ export interface IThemeStyle extends IThemeMode {
     family: string
     weight: number
   }
-  color: {
-    error: string,
-    success: string,
-    info: string,
-    warning: string
-  },
+  color: IColorOption,
   responsive: {
-    mobile: {
-      text: TextOptions
-    }
-    tablet: {
-      text: TextOptions
-    }
-    laptop: {
-      text: TextOptions
-    }
-    desktop: {
-      text: TextOptions
-    }
+    mobile: IDeviceProps
+    tablet: IDeviceProps
+    laptop: IDeviceProps
+    desktop: IDeviceProps
   }
 }
 

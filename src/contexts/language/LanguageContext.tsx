@@ -1,20 +1,27 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { LanguageOptions, ILanguageContext } from './interface'
 import { languages } from './constant'
-import useAuth from 'hooks/useAuth'
 import useNotify from 'hooks/useNotify'
 import axios from 'configs/axios'
+import { store, useAppSelector } from 'app/store'
+import { selectSession } from 'stores/session/selector'
 
 const initState: LanguageOptions = 'English'
 
 export const LanguageContext = createContext<ILanguageContext>({
   lang: initState,
   language: languages[initState],
-  changeLanguage: (language: LanguageOptions) => {},
+  changeLanguage: (_language: LanguageOptions) => {},
 })
 
+export const translate = (key: String) => {
+  const { session } = store.getState()
+  const lang = session.user?.language || initState
+  return languages?.[lang as keyof typeof languages]?.[key as keyof typeof languages.English] || key
+}
+
 const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { user } = useAppSelector(selectSession)
   const [lang, setLang] = useState<LanguageOptions>(user?.language || initState)
   const { notify } = useNotify()
 

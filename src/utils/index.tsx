@@ -1,6 +1,7 @@
+import LabelStatus from 'components/shared/LabelStatus'
+import { translate } from 'contexts/language/LanguageContext'
+import { IThemeStyle } from 'contexts/theme/interface'
 import { sha256 } from 'js-sha256'
-import { IToken } from 'contexts/auth/interface'
-import jwtDecode from 'jwt-decode'
 import moment from 'moment'
 
 export const generateHash = async (
@@ -14,12 +15,15 @@ export const generateHash = async (
   return hash
 }
 
-export const isValidToken = (token: any) => {
-  if (!token) return false
-
-  const decodedToken: IToken = jwtDecode(token)
-  const currentTime = Date.now() / 1000
-  return decodedToken.exp > currentTime
+export const serviceWrapper = (cb: (p: any, t: any) => any) => {
+  return async (options: any, thunkApi: any) => {
+    try {
+      const res = await cb(options, thunkApi)
+      return res?.data
+    } catch (error: any) {
+      throw (thunkApi as any).rejectWithValue(error)
+    }
+  }
 }
 
 export const throttle = (cb: any, delay = 1000) => {
@@ -69,7 +73,7 @@ export const currencyFormat = (value: any, currency: any, decimal = 0) => {
     case currency === 'KHR':
       symbol = <>&#6107;</>
       break
-  
+
     default:
       decimal = value % 1 !== 0 ? 2 : decimal
       symbol = <>&#37;</>
@@ -99,7 +103,7 @@ export const durationFormat = (value: any, time: any) => {
     case time === 'week':
       symbol = value > 1 ? 'weeks' : 'week'
       break
-  
+
     default:
       symbol = value > 1 ? 'days' : 'day'
       break
@@ -113,7 +117,11 @@ export const durationFormat = (value: any, time: any) => {
   )
 }
 
-export const durationPriceFormat = (value: any, currency: any, duration: any) => {
+export const durationPriceFormat = (
+  value: any,
+  currency: any,
+  duration: any
+) => {
   let symbol
   let decimal
 
@@ -127,7 +135,7 @@ export const durationPriceFormat = (value: any, currency: any, duration: any) =>
       symbol = <>&#6107;</>
       decimal = 0
       break
-  
+
     default:
       symbol = <>&#37;</>
       decimal = 0
@@ -150,7 +158,8 @@ export const compareDate = (date1: any, date2: any) => {
 
 export const combineDate = (date1: any, date2: any) => {
   if (!date1 && !date2) return moment(new Date()).format('L')
-  if (moment(date1).format('L') === moment(date2).format('L')) return moment(date1).format('L')
+  if (moment(date1).format('L') === moment(date2).format('L'))
+    return moment(date1).format('L')
   else return `${moment(date1).format('L')} - ${moment(date2).format('L')}`
 }
 
@@ -161,7 +170,7 @@ export const dateFormat = (date: any = null) => {
   return localDate
 }
 
-export const timeFormat = (date: any, format = 'HH:mm') => {
+export const timeFormat = (date: any, format = 'h:mm A') => {
   if (!date) return new Date().toLocaleTimeString()
 
   const localDate = moment(date).format(format)
@@ -242,8 +251,25 @@ export const calculateDay = (from: any, to: any) => {
   let x = moment(from)
   let y = moment(to)
   const duration = moment.duration(x.diff(y))
-  
+
   return duration.asDays()
+}
+
+export const calculateDuration = (value: number) => {
+  let number = Number(value ?? 0)
+  if (number < 0) number = 0
+  if (typeof number !== 'number') return translate('INVALID')
+  let duration = moment.duration(number, 'minutes')
+  let hours = Math.floor(duration.asHours())
+  let minutes = duration.minutes()
+
+  if (hours > 0 && minutes > 0) {
+    return hours + 'h\u00a0' + minutes + 'min'
+  } else if (hours > 0) {
+    return hours + 'h'
+  } else {
+    return minutes + 'min'
+  }
 }
 
 export const capitalizeText = (text: any) => {
@@ -277,7 +303,7 @@ export const calculateAverageScore = (scores: any, number: any) => {
 }
 
 export const calculatePercentage = (value: any, limit: any) => {
-  return value / limit * 100 || 0
+  return (value / limit) * 100 || 0
 }
 
 export const calculateGraduateResult = (scores: any, subjects: any) => {
@@ -353,8 +379,8 @@ export const checkArraySequence = (array: any, increment: any) => {
   let result = true
   let sortedArray = array.sort((a: any, b: any) => a - b)
   sortedArray.forEach((element: any, index: any) => {
-    let nextElement = sortedArray[index+1]
-    
+    let nextElement = sortedArray[index + 1]
+
     if (!nextElement || !result) return
     if (nextElement !== element + increment) result = false
   })
@@ -385,7 +411,7 @@ export const calculateStructuresPrice = (structures: any, buyRate: any) => {
       case '1y':
         price += structurePrice / (24 * 365)
         break
-    
+
       default:
         price += structurePrice
         break
@@ -395,9 +421,9 @@ export const calculateStructuresPrice = (structures: any, buyRate: any) => {
 }
 
 export const downloadFile = (url: any, filename: any) => {
-  const link = document.createElement("a")
+  const link = document.createElement('a')
   link.href = url
-  link.setAttribute("download", filename)
+  link.setAttribute('download', filename)
   document.body.appendChild(link)
   link.click()
 }
@@ -406,17 +432,187 @@ export const convertBufferToArrayBuffer = (buf: any) => {
   const ab = new ArrayBuffer(buf.length)
   const view = new Uint8Array(ab)
   for (let i = 0; i < buf.length; ++i) {
-      view[i] = buf[i]
+    view[i] = buf[i]
   }
   return ab
 }
 
 export const checkVisibleElement = (element: HTMLElement | null) => {
   if (!element) return
-	const position = element.getBoundingClientRect();
+  const position = element.getBoundingClientRect()
 
-	if(position.top >= 0 && position.bottom <= window.innerHeight) {
-		if (!element.id) return 'profile'
+  if (position.top >= 0 && position.bottom <= window.innerHeight) {
+    if (!element.id) return 'profile'
     return element.id.split('-')[0]
-	}
+  }
+}
+
+export const determineObjectValue = (obj: Object) => {
+  if (typeof obj !== 'object') return false
+  const values = Object.values(obj)
+  if (values.every((v) => v === true)) return true
+  if (values.every((v) => v === false)) return false
+  return 'indeterminate'
+}
+
+export const determineCheckAll = (obj: any) => {
+  if (typeof obj !== 'object') return false
+  let values: any = []
+  Object.keys(obj).forEach((key: any) => {
+    if (typeof obj[key]?.[Object.keys(obj[key])[0]] === 'object') {
+      Object.keys(obj[key]).forEach((action: any) => {
+        values.push(
+          ...Object.values(obj[key]?.[action]).filter(
+            (item) => item !== undefined
+          )
+        )
+      })
+    } else {
+      values.push(
+        ...Object.values(obj[key]).filter((item) => item !== undefined)
+      )
+    }
+  })
+  if (values.length === 0) return false
+  if (values.every((v: boolean) => v === true)) return true
+  if (values.every((v: boolean) => v === false)) return false
+  return 'indeterminate'
+}
+
+export const mergeObjects = (obj1: Object = {}, obj2: Object = {}) => {
+  const mergedObj: any = {}
+
+  for (let key in obj1) {
+    if (
+      typeof obj1[key as keyof typeof obj1] === 'object' &&
+      typeof obj2[key as keyof typeof obj2] === 'object'
+    ) {
+      mergedObj[key] = mergeObjects(
+        obj1[key as keyof typeof obj1],
+        obj2[key as keyof typeof obj2]
+      )
+    } else {
+      mergedObj[key] =
+        obj2[key as keyof typeof obj2] ?? obj1[key as keyof typeof obj1]
+    }
+  }
+
+  for (let key in obj2) {
+    if (
+      typeof obj2[key as keyof typeof obj2] === 'object' &&
+      typeof mergedObj[key] === 'undefined'
+    ) {
+      mergedObj[key] =
+        obj2[key as keyof typeof obj2] ?? obj1[key as keyof typeof obj1]
+    }
+  }
+
+  return mergedObj
+}
+
+export const filterSelectedMenu = (privilege: any, selectedMenu: any) => {
+  let filteredObj: any = {}
+  Object.keys(selectedMenu).forEach((menu) => {
+    filteredObj = {
+      ...filteredObj,
+      [menu]: {},
+    }
+    Object.keys(selectedMenu[menu]).forEach((nav) => {
+      if (!selectedMenu[menu]?.[nav]) return
+      filteredObj[menu] = {
+        ...filteredObj[menu],
+        [nav]: privilege?.[menu]?.[nav],
+      }
+    })
+  })
+  return filteredObj
+}
+
+export const renderColor = (color: String, theme: IThemeStyle) => {
+  switch (true) {
+    case ['list', 'detail'].includes(color as any):
+      return theme.color.info
+
+    case ['create', 'approve', 'HEALTHY'].includes(color as any):
+      return theme.color.success
+
+    case ['delete', 'reject', 'WEAK'].includes(color as any):
+      return theme.color.error
+
+    case ['update', 'NEED_SCHEDULE'].includes(color as any):
+      return theme.color.warning
+
+    default:
+      return theme.color.info
+  }
+}
+
+export const downloadBuffer = (buffer: any, filename: string) => {
+  const url = window.URL.createObjectURL(
+    new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
+    })
+  )
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', filename)
+  document.body.appendChild(link)
+  link.click()
+}
+
+export const checkAllFieldObject = (obj: any) => {
+  if (typeof obj !== 'object') return false
+  return !Object.values(obj).every((value) => value === false)
+}
+
+export const renderCategory = (value: string, theme: any) => {
+  switch (true) {
+    case value === 'MILD':
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.warning} />
+      )
+
+    case value === 'URGENT':
+      return <LabelStatus label={translate(value)} color={theme.color.orange} />
+
+    case value === 'EMERGENCY':
+      return <LabelStatus label={translate(value)} color={theme.color.error} />
+
+    default:
+      return <LabelStatus label={translate(value)} color={theme.color.info} />
+  }
+}
+
+export const renderStage = (value: string, theme: any) => {
+  switch (true) {
+    case value === 'STARTED':
+      return <LabelStatus label={translate(value)} color={theme.color.info} />
+
+    case value === 'ACCEPTED':
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.success} />
+      )
+
+    case ['REFUSED', 'ENDED'].includes(value):
+      return <LabelStatus label={translate(value)} color={theme.color.error} />
+
+    default:
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.warning} />
+      )
+  }
+}
+
+export const calculateYearOfDate = (value: string) => {
+  const birthDate = new Date(value)
+  const currentDate = new Date()
+  let age = currentDate.getFullYear() - birthDate.getFullYear()
+  if (
+    currentDate.getMonth() < birthDate.getMonth() ||
+    (currentDate.getMonth() === birthDate.getMonth() &&
+      currentDate.getDate() < birthDate.getDate())
+  ) {
+    age -= 1
+  }
+  return age
 }

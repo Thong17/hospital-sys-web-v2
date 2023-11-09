@@ -1,48 +1,25 @@
-import useWeb from 'hooks/useWeb'
-import { FC, ReactElement } from 'react'
-import { NAVBAR_HEIGHT } from 'styles/constant'
+import { Box } from '@mui/material'
+import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
+import useDevice from 'hooks/useDevice'
+import useTheme from 'hooks/useTheme'
 
-interface IContainer {
-  children: any
-  header?: ReactElement
-}
-
-const Container: FC<IContainer> = ({ children, header }) => {
-  const { width, device } = useWeb()
-  const HEADER_HEIGHT = header ? 30 : 0
-  const SPACE_TOP = device !== 'mobile' ? 10 : 10
-  const MOBILE_HEIGHT = header
-    ? `calc(100vh - ${180 + NAVBAR_HEIGHT - HEADER_HEIGHT - SPACE_TOP}px + 20px)`
-    : `calc(100vh - ${110 + NAVBAR_HEIGHT - HEADER_HEIGHT - SPACE_TOP}px + 20px)`
-  const CONTAINER_HEIGHT = header
-    ? `calc(100vh - ${190 + NAVBAR_HEIGHT}px + 60px)`
-    : `calc(100vh - ${150 + NAVBAR_HEIGHT}px + 60px)`
-
+const Container = ({ padding, children }: { padding?: string, children: any }) => {
+  const { theme } = useTheme()
+  const { device } = useDevice()
   return (
-    <>
-      {header && <div
-        style={{
-          padding: width < 1024 ? '0 20px' : '0 100px',
-          height: HEADER_HEIGHT,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        {header}
-      </div>}
-      <div
-        style={{
-          padding: 0,
-          margin: width < 1024 ? '0 20px' : '0 50px',
-          minHeight: device !== 'mobile' ? CONTAINER_HEIGHT : MOBILE_HEIGHT,
-          boxSizing: 'border-box',
-          position: 'relative',
-        }}
-      >
-        {children}
-      </div>
-    </>
+    <Box
+      sx={{
+        marginTop: `${SPACE_TOP}px`,
+        position: 'relative',
+        minHeight: `calc(100vh - ${
+          FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP
+        }px)`,
+        boxSizing: 'border-box',
+        paddingX: padding ?? `${theme.responsive[device]?.padding.side}px`,
+      }}
+    >
+      {children}
+    </Box>
   )
 }
 

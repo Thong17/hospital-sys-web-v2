@@ -1,73 +1,42 @@
-import { createContext, useEffect, useReducer, useState } from 'react'
-import { AuthReducer } from './authReducer'
-import axios from 'configs/axios'
-import { EnumAuth } from './authReducer'
-import { ILogin, IAuthInit, IRegister } from './interface'
-import { useNavigate } from 'react-router'
-import { getProfile, setSession } from './shared'
-import Loading from 'components/shared/Loading'
+import { createContext, useEffect } from 'react'
 
-const initState: IAuthInit = {
-  isInit: false,
-  isAuthenticated: false,
-  user: null,
-}
+import Loading from 'components/shared/Loading'
+import { useAppDispatch, useAppSelector } from 'app/store'
+import { initialState } from 'stores/session/slice'
+import { selectSession } from 'stores/session/selector'
+import { getProfile } from 'stores/session/action'
+import { Box } from '@mui/material'
 
 export const AuthContext = createContext({
-  ...initState,
-  reload: () => Promise.resolve(),
-  login: (data: ILogin) => Promise.resolve(),
-  register: (data: IRegister) => Promise.resolve(),
-  logout: () => {},
+  ...initialState,
 })
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const navigate = useNavigate()
-  const [state, dispatch] = useReducer(AuthReducer, initState)
-  const [toggleReload, setToggleReload] = useState(true)
-  
+const AuthProvider = ({ children }: any) => {
+  const { user, status } = useAppSelector(selectSession)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
-    getProfile(dispatch)
-  }, [toggleReload])
+    dispatch(getProfile())
+  }, [])
 
-  const reload = async () => {
-    setToggleReload(!toggleReload)
-  }
-
-  const login = async (data: ILogin) => {
-    try {
-      const response = await axios.post('/auth/login', data)
-
-      dispatch({ type: EnumAuth.LOGIN, payload: response.data })
-      setSession(response.data.accessToken)
-      return response.data
-
-    } catch (err: any) {      
-      return err?.response?.data
-    }
-  }
-
-  const register = async (data: IRegister) => {
-    try {
-      const response = await axios.post('/auth/register', data)
-
-      dispatch({ type: EnumAuth.REGISTER, payload: null })
-      return response.data
-
-    } catch (err: any) {      
-      return err?.response?.data
-    }
-  }
-
-  const logout = () => {
-    dispatch({ type: EnumAuth.LOGOUT, payload: null })
-    setSession(null)
-    navigate('/login')
-  }
-  
-  if (!state.isInit) return <Loading />
   return (
-    <AuthContext.Provider value={{ ...state, reload, login, logout, register }}>
+    <AuthContext.Provider value={{ ...user }}>
+      {status === 'LOADING' && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            display: 'grid',
+            placeItems: 'center',
+            backgroundColor: 'black'
+          }}
+        >
+          <Loading />
+        </Box>
+      )}
       {children}
     </AuthContext.Provider>
   )

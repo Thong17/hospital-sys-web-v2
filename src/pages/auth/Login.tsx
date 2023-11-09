@@ -4,18 +4,38 @@ import BACKGROUND from 'assets/backgrounds/login_background.jpg'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useLanguage from 'hooks/useLanguage'
-import { useAppDispatch } from 'app/store'
+import { useAppDispatch, useAppSelector } from 'app/store'
 import { getAuthLogin } from 'stores/auth/action'
+import { selectAuthLogin } from 'stores/auth/selector'
+import { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 
 const Login = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { language } = useLanguage()
   const { formState: { errors }, register, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
   })
+  const data = useAppSelector(selectAuthLogin)
 
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+  
   const submit = (data: any) => {
     dispatch(getAuthLogin(data))
+      .unwrap()
+      .then((data: any) => {
+        dispatch({ type: 'session/setSession', payload: data })
+        navigate(location.state ? (location.state as string) : '/')
+      })
+      .catch(console.error)
+  }
+  
+  const handleRegister = () => {
+    navigate('/register')
   }
 
   return (
@@ -61,7 +81,10 @@ const Login = () => {
           style={{ width: '100%', margin: '10px 0' }}
           {...register('password')}
         />
-        <Button type='submit'>{language.LOGIN_BUTTON}</Button>
+        <Box>
+          <Button type='submit'>{language.LOGIN_BUTTON}</Button>
+          <Button onClick={handleRegister}>{language.REGISTER_BUTTON}</Button>
+        </Box>
       </Box>
     </Box>
   )
