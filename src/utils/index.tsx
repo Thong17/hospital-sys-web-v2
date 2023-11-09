@@ -258,7 +258,7 @@ export const calculateDay = (from: any, to: any) => {
 export const calculateDuration = (value: number) => {
   let number = Number(value ?? 0)
   if (number < 0) number = 0
-  if (typeof number !== 'number') return translate('INVALID') 
+  if (typeof number !== 'number') return translate('INVALID')
   let duration = moment.duration(number, 'minutes')
   let hours = Math.floor(duration.asHours())
   let minutes = duration.minutes()
@@ -533,13 +533,13 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
     case ['list', 'detail'].includes(color as any):
       return theme.color.info
 
-    case ['create', 'approve'].includes(color as any):
+    case ['create', 'approve', 'HEALTHY'].includes(color as any):
       return theme.color.success
 
-    case ['delete', 'reject'].includes(color as any):
+    case ['delete', 'reject', 'WEAK'].includes(color as any):
       return theme.color.error
 
-    case ['update'].includes(color as any):
+    case ['update', 'NEED_SCHEDULE'].includes(color as any):
       return theme.color.warning
 
     default:
@@ -562,22 +562,22 @@ export const downloadBuffer = (buffer: any, filename: string) => {
 
 export const checkAllFieldObject = (obj: any) => {
   if (typeof obj !== 'object') return false
-  return !Object.values(obj).every(value => value === false)
+  return !Object.values(obj).every((value) => value === false)
 }
-
-
 
 export const renderCategory = (value: string, theme: any) => {
   switch (true) {
     case value === 'MILD':
-      return <LabelStatus label={translate(value)} color={theme.color.warning} />
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.warning} />
+      )
 
     case value === 'URGENT':
       return <LabelStatus label={translate(value)} color={theme.color.orange} />
 
     case value === 'EMERGENCY':
       return <LabelStatus label={translate(value)} color={theme.color.error} />
-  
+
     default:
       return <LabelStatus label={translate(value)} color={theme.color.info} />
   }
@@ -589,12 +589,30 @@ export const renderStage = (value: string, theme: any) => {
       return <LabelStatus label={translate(value)} color={theme.color.info} />
 
     case value === 'ACCEPTED':
-      return <LabelStatus label={translate(value)} color={theme.color.success} />
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.success} />
+      )
 
     case ['REFUSED', 'ENDED'].includes(value):
       return <LabelStatus label={translate(value)} color={theme.color.error} />
-  
+
     default:
-      return <LabelStatus label={translate(value)} color={theme.color.warning} />
+      return (
+        <LabelStatus label={translate(value)} color={theme.color.warning} />
+      )
   }
+}
+
+export const calculateYearOfDate = (value: string) => {
+  const birthDate = new Date(value)
+  const currentDate = new Date()
+  let age = currentDate.getFullYear() - birthDate.getFullYear()
+  if (
+    currentDate.getMonth() < birthDate.getMonth() ||
+    (currentDate.getMonth() === birthDate.getMonth() &&
+      currentDate.getDate() < birthDate.getDate())
+  ) {
+    age -= 1
+  }
+  return age
 }

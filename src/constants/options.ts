@@ -6,8 +6,7 @@ export const SEGMENTS = [
 
 export const PATIENT_CONDITIONS = [
     { value: 'HEALTHY', label: 'HEALTHY' },
-    { value: 'NEED_SCHEDULE', label: 'NEED_SCHEDULE' },
-    { value: 'WEAK', label: 'WEAK' },
+    { value: 'FOLLOW_UP', label: 'FOLLOW_UP' },
 ]
 
 export const GENDERS = [

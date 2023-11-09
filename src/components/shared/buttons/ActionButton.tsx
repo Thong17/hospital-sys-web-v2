@@ -211,15 +211,18 @@ export const ActionButton = ({
   onAccept,
   onRefuse,
   onDelete,
+  children,
 }: {
   data: any
   onEdit?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
   onAccept?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
   onRefuse?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
   onDelete?: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  children?: any
 }) => {
   return (
     <Stack direction={'row'} gap={1} justifyContent={'end'}>
+      {children}
       {onAccept && <AcceptButton onClick={(event) => onAccept(event, data)} />}
       {onRefuse && <RemoveButton onClick={(event) => onRefuse(event, data)} />}
       {onEdit && <EditButton onClick={(event) => onEdit(event, data)} />}

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPatientCreate, getPatientDelete, getPatientDetail, getPatientExport, getPatientHistory, getPatientImport, getPatientList, getPatientUpdate, getPatientValidate } from "./action";
+import { getPatientCreate, getPatientDelete, getPatientDetail, getPatientExport, getPatientHistory, getPatientImport, getPatientList, getPatientRecord, getPatientUpdate, getPatientValidate } from "./action";
 import { TypeStatus } from "stores/constant";
 
 interface IPatient {
@@ -51,6 +51,16 @@ interface IPatient {
         data: any,
         error: any
     }
+    record: {
+        status: TypeStatus
+        data: any,
+        error: any,
+        metaData: {
+            skip: number,
+            limit: number,
+            total: number,
+        }
+    }
     history: {
         status: TypeStatus
         data: any,
@@ -73,6 +83,7 @@ const initialState: IPatient = {
     import: { isLoading: false, data: null, error: null },
     detail: { status: 'INIT', data: null, error: null },
     history: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
+    record: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
     list: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
 
@@ -141,6 +152,20 @@ const patientSlice = createSlice({
             state.detail.error = null
             state.detail.status = 'COMPLETED'
             state.detail.data = action.payload?.data
+        })
+
+        // Record
+        builder.addCase(getPatientRecord.pending, (state) => {
+            state.record.status = 'PENDING'
+        })
+        builder.addCase(getPatientRecord.rejected, (state, action) => {
+            state.record.status = 'FAILED'
+            state.record.error = action.payload?.response?.data
+        })
+        builder.addCase(getPatientRecord.fulfilled, (state, action) => {
+            state.record.error = null
+            state.record.status = 'COMPLETED'
+            state.record.data = action.payload?.data
         })
 
         // History

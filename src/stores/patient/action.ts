@@ -29,6 +29,11 @@ export const getPatientDetail: any = createAsyncThunk(
     serviceWrapper(service.detail)
 )
 
+export const getPatientRecord: any = createAsyncThunk(
+    'patient/record',
+    serviceWrapper(service.record)
+)
+
 export const getPatientHistory: any = createAsyncThunk(
     'patient/history',
     serviceWrapper(service.history)

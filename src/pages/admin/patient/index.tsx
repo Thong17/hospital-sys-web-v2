@@ -6,20 +6,41 @@ import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
 import { Box, DialogActions, Stack } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
-import { CancelButton, CreateButton, CustomizedButton, OptionButton, SearchButton } from 'components/shared/buttons/CustomButton'
+import {
+  CancelButton,
+  CreateButton,
+  CustomizedButton,
+  OptionButton,
+  SearchButton,
+} from 'components/shared/buttons/CustomButton'
 import useDevice from 'hooks/useDevice'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
-import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { convertBufferToArrayBuffer, debounce, downloadBuffer, timeFormat } from 'utils/index'
+import {
+  ActionButton,
+  CustomizedIconButton,
+} from 'components/shared/buttons/ActionButton'
+import {
+  convertBufferToArrayBuffer,
+  debounce,
+  downloadBuffer,
+  timeFormat,
+} from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import PatientImportTable from './components/PatientImportTable'
 import { selectPatientList } from 'stores/patient/selector'
-import { getPatientDelete, getPatientExport, getPatientImport, getPatientList, getPatientValidate } from 'stores/patient/action'
+import FolderRoundedIcon from '@mui/icons-material/FolderRounded'
+import {
+  getPatientDelete,
+  getPatientExport,
+  getPatientImport,
+  getPatientList,
+  getPatientValidate,
+} from 'stores/patient/action'
 
 const patientColumns: ITableColumn<any>[] = [
   { label: translate('NAME'), id: 'username', sort: 'desc' },
@@ -35,7 +56,8 @@ const patientColumns: ITableColumn<any>[] = [
 const mapData = (
   item: any,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
-  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onClickRecord: (_data: any) => void
 ) => {
   return {
     _id: item._id,
@@ -46,7 +68,18 @@ const mapData = (
     point: item.point,
     contact: item.contact,
     status: item.status,
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: (
+      <ActionButton data={item} onDelete={onDelete} onEdit={onEdit}>
+        <CustomizedIconButton
+          onClick={(event: any) => {
+            event.stopPropagation()
+            onClickRecord(item)
+          }}
+          tooltip={translate('RECORD_BUTTON')}
+          icon={<FolderRoundedIcon fontSize='small' />}
+        />
+      </ActionButton>
+    ),
   }
 }
 
@@ -97,7 +130,9 @@ const Patient = () => {
       variant: 'error',
     })
       .then((confirmData: any) => {
-        dispatch(getPatientDelete({ id: data._id, reason: confirmData?.reason }))
+        dispatch(
+          getPatientDelete({ id: data._id, reason: confirmData?.reason })
+        )
           .unwrap()
           .then(() => fetchListPatient(queryParams))
           .catch(() => {})
@@ -186,8 +221,20 @@ const Patient = () => {
       .catch(() => {})
   }
 
+  const handleClickRecord = (data: any) => {
+    navigate(`/admin/patient/detail/${data?._id}/record`)
+  }
+
   return (
-    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} selectedOption={{ navbar: '/admin/patient' }} />}>
+    <Layout
+      navbar={
+        <Breadcrumb
+          list={breadcrumbs}
+          step={2}
+          selectedOption={{ navbar: '/admin/patient' }}
+        />
+      }
+    >
       <ContainerDialog
         justify='center'
         isOpen={importDialog.open}
@@ -222,10 +269,12 @@ const Patient = () => {
             </Stack>
           </TitleContainer>
         </Box>
-        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
+        <Box
+          sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}
+        >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, handleEdit, handleDelete)
+              mapData(item, handleEdit, handleDelete, handleClickRecord)
             )}
             columns={columns}
             onSort={handleSort}

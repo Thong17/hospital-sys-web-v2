@@ -46,6 +46,16 @@ export class PatientService {
             throw error
         }
     }
+    async record({ id }: { id: String }) {
+        try {
+            const response = await axios.get(`/admin/patient/record/${id}`)
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async history({ id }: { id: String }) {
         try {
             const response = await axios.get(`/admin/patient/history/${id}`)

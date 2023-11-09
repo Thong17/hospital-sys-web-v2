@@ -9,16 +9,15 @@ import { selectPatientDetail } from 'stores/patient/selector'
 import { getPatientDelete, getPatientDetail } from 'stores/patient/action'
 import Container from 'components/shared/Container'
 import { Stack, Typography } from '@mui/material'
-import PrivilegeContainer from 'components/shared/containers/PrivilegeContainer'
 import { LabelDetail } from 'components/shared/containers/LabelContainer'
-import ItemContainer from 'components/shared/containers/ItemContainer'
 import RestoreRoundedIcon from '@mui/icons-material/RestoreRounded'
+import FolderRoundedIcon from '@mui/icons-material/FolderRounded'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 import useAlert from 'hooks/useAlert'
 import ActivityContainer from 'components/shared/containers/ActivityContainer'
-import useLanguage from 'hooks/useLanguage'
+import { calculateYearOfDate } from 'utils/index'
 
 const PatientDetail = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +25,6 @@ const PatientDetail = () => {
   const confirm = useAlert()
   const { id } = useParams()
   const { theme } = useTheme()
-  const { lang } = useLanguage()
   const { data } = useAppSelector(selectPatientDetail)
 
   useEffect(() => {
@@ -42,6 +40,10 @@ const PatientDetail = () => {
 
   const handleClickHistory = () => {
     navigate(`/admin/patient/detail/${id}/history`)
+  }
+
+  const handleClickRecord = () => {
+    navigate(`/admin/patient/detail/${id}/record`)
   }
 
   const handleDelete = (
@@ -86,15 +88,16 @@ const PatientDetail = () => {
             <EditButton onClick={handleEdit} />
             <DeleteButton onClick={handleDelete} />
             <CustomizedIconButton onClick={handleClickHistory} color={theme.color.info} tooltip={translate('HISTORY_BUTTON')} icon={<RestoreRoundedIcon fontSize='small' />} />
+            <CustomizedIconButton onClick={handleClickRecord} color={theme.color.info} tooltip={translate('RECORD_BUTTON')} icon={<FolderRoundedIcon fontSize='small' />} />
           </Stack>
         </TitleContainer>
         <Stack direction={'column'} mb={2} sx={{ paddingTop: '20px', '& .section-container': { marginTop: '20px' } }}>
           <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('PATIENTNAME') as String}>
-              <Typography>{data?.patientname || '...'}</Typography>
+            <LabelDetail label={translate('FULL_NAME') as String}>
+              <Typography>{data?.fullName || '...'}</Typography>
             </LabelDetail>
-            <LabelDetail label={translate('SEGMENT') as String}>
-              <Typography>{data?.segment || '...'}</Typography>
+            <LabelDetail label={translate('USERNAME') as String}>
+              <Typography>{data?.username || '...'}</Typography>
             </LabelDetail>
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
@@ -106,16 +109,11 @@ const PatientDetail = () => {
             </LabelDetail>
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
-            <LabelDetail label={translate('ROLE') as String}>
-              <Typography>{data?.role?.name?.[lang] || data?.role?.name?.['English'] || '...'}</Typography>
+            <LabelDetail label={translate('GENDER') as String}>
+              <Typography>{data?.gender}</Typography>
             </LabelDetail>
-            <LabelDetail label={translate('STATUS') as String}>
-              <ItemContainer
-                text={
-                  data?.status ? translate('ENABLED') : translate('DISABLED')
-                }
-                color={data?.status ? theme.color.success : theme.color.error}
-              />
+            <LabelDetail label={translate('AGE') as String}>
+              <Typography>{`${calculateYearOfDate(data?.dateOfBirth)} ${translate('YEARS_OLD')}` ?? '...'}</Typography>
             </LabelDetail>
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
@@ -124,10 +122,6 @@ const PatientDetail = () => {
             </LabelDetail>
           </Stack>
         </Stack>
-        <PrivilegeContainer
-          navigation={data?.role?.navigation}
-          privilege={data?.role?.privilege}
-        />
         <ActivityContainer data={data} />
       </Container>
     </Layout>

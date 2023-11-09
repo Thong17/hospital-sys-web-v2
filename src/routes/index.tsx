@@ -1,6 +1,7 @@
 import AuthGuard from 'auth/AuthGuard'
 import NotFound from 'components/shared/NotFound'
 import { Admin, Doctor, DoctorCreate, DoctorDetail, DoctorHistory, DoctorUpdate, Patient, PatientCreate, PatientDetail, PatientHistory, PatientUpdate, Role, RoleCreate, RoleDetail, RoleHistory, RoleUpdate, UserCreate, UserDetail, UserHistory, UserUpdate } from 'pages/admin'
+import PatientRecord from 'pages/admin/patient/record'
 import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
@@ -187,6 +188,14 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'detail' }}>
                         <PatientHistory />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'patient/detail/:id/record',
+                element: (
+                    <AuthGuard role={{ menu: 'admin', route: 'patient', action: 'detail' }}>
+                        <PatientRecord />
                     </AuthGuard>
                 ),
             },

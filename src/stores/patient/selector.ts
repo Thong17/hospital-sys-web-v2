@@ -21,6 +21,11 @@ export const selectPatientDetail = createSelector(
     (state) => state
 )
 
+export const selectPatientRecord = createSelector(
+    (state: RootState) => state.patient.record,
+    (state) => state
+)
+
 export const selectPatientHistory = createSelector(
     (state: RootState) => state.patient.history,
     (state) => state
