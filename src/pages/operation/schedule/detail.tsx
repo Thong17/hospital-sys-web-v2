@@ -237,15 +237,15 @@ const ScheduleDetail = () => {
                     }
                   />
                 )}
-                {status !== 'LOADING' && <TextInput
+                <TextInput
                   {...register('diagnose')}
                   label={translate('DIAGNOSE')}
                   error={!!errors.diagnose?.message}
                   helperText={errors.diagnose?.message as ReactNode}
                   multiline
-                  InputLabelProps={{ shrink: true }}
+                  InputLabelProps={{ shrink: !!data?.patientRecord?.diagnose }}
                   sx={{ gridArea: 'diagnose' }}
-                />}
+                />
                 <TextInput
                   {...register('attachments')}
                   label={translate('ATTACHMENTS')}
