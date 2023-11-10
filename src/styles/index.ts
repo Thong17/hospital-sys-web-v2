@@ -47,7 +47,8 @@ export const CustomPagination = styled('div')(
       backgroundColor: `${theme.text.secondary}11`,
     },
     '& .Mui-selected': {
-      backgroundColor: `${theme.text.secondary}22 !important`,
+      backgroundColor: `${theme.color.info}22 !important`,
+      color: `${theme.color.info} !important`,
     }
   })
 )

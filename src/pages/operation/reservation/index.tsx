@@ -27,6 +27,7 @@ const reservationColumns: ITableColumn<any>[] = [
   { label: translate('NOTE'), id: 'note' },
   { label: translate('PATIENT'), id: 'patient' },
   { label: translate('CONTACT'), id: 'contact' },
+  { label: translate('DOCTOR'), id: 'doctors' },
   { label: translate('STAGE'), id: 'stage' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
@@ -49,6 +50,7 @@ const mapData = (
     category: renderCategory(item.category, theme),
     note: item.note,
     patient: item.patient?.username,
+    doctors: item.doctors?.map((item: any) => item.username).join(', '),
     contact: item.patient?.contact,
     stage: renderStage(item.stage, theme),
     action: <ActionButton data={item} onAccept={accept && onAccept} onRefuse={refuse && onRefuse} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
