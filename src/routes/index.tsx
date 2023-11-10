@@ -6,6 +6,7 @@ import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail } from 'pages/operation'
+import { Product, ProductCreate, ProductDetail, ProductHistory, ProductUpdate } from 'pages/organize'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
@@ -259,6 +260,52 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ menu: 'operation', route: 'schedule', action: 'detail' }}>
                         <ScheduleDetail />
+                    </AuthGuard>
+                ),
+            },
+        ],
+    },
+    {
+        path: '/organize',
+        element: <Operation />,
+        children: [
+            {
+                path: 'product',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'list' }}>
+                        <Product />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'product/create',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'create' }}>
+                        <ProductCreate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'product/update/:id',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'update' }}>
+                        <ProductUpdate />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'product/detail/:id',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'detail' }}>
+                        <ProductDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'product/detail/:id/history',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'detail' }}>
+                        <ProductHistory />
                     </AuthGuard>
                 ),
             },
