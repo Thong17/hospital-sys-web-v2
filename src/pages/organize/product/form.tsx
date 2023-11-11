@@ -30,6 +30,7 @@ import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
 import { GENDERS } from 'constants/options'
 import { LocaleInput } from 'components/shared/forms/LocaleInput'
+import { ImageInput } from 'components/shared/forms/ImageInput'
 
 export interface IProductForm {
   name: any
@@ -40,6 +41,7 @@ export interface IProductForm {
   code: string
   isStock: boolean
   status: boolean
+  images: string[] | Blob[]
   description: string | undefined
 }
 
@@ -118,6 +120,7 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
                               'price price price currency'
                               'category category symptom symptom'
                               'code code code code'
+                              'images images images images'
                               'description description description description'
                               'isStock status status status'
                               'action action action action'
@@ -181,7 +184,15 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
             error={!!errors.code?.message}
             helperText={errors.code?.message as ReactNode}
             sx={{ gridArea: 'code' }}
-            required
+          />
+          <ImageInput
+            {...register('images')}
+            label={translate('IMAGE')}
+            error={!!errors.images?.message}
+            helperText={errors.images?.message as ReactNode}
+            containerProps={{ sx: { gridArea: 'images' } }}
+            urls={watch('images')}
+            inputProps={{ multiple: true }}
           />
           <TextInput
             {...register('description')}

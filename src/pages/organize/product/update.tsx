@@ -58,6 +58,7 @@ const mapProductBody = (data: any): IProductForm => {
     code: data.code,
     isStock: data.isStock,
     status: data.status,
+    images: data.images,
     description: data.description,
   }
 }

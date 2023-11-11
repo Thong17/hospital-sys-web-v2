@@ -1,11 +1,13 @@
 import axios from 'configs/axios'
 import { languages } from 'contexts/language/constant'
 import { notify } from 'contexts/notify/NotifyContext'
+import { convertToFormData } from 'utils/index'
 
 export class ProductService {
-    async create(data: { name: Object, status: boolean, description: String, navigation: Object, privilege: Object }) {
+    async create(data: any) {
         try {
-            const response = await axios.post('/organize/product/create', data)
+            const body = convertToFormData(data)
+            const response = await axios.post('/organize/product/create', body, { headers: { 'Content-Type': 'multipart/form-data' } })
             notify(response?.data?.message, 'success')
             return response
         } catch (error: any) {

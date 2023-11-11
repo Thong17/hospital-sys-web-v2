@@ -10,6 +10,7 @@ export const initProduct = {
   code: '',
   isStock: false,
   status: false,
+  images: [],
   description: '',
 }
 
@@ -19,11 +20,12 @@ export const createProductSchema = yup.object().shape({
   }),
   price: yup.number().required('PRICE_FILL_THE_VALUE'),
   currency: yup.string().required('PLEASE_SELECT_THE_CURRENCY'),
-  category: yup.string().optional(),
-  symptom: yup.string().optional(),
+  category: yup.string().required(),
+  symptom: yup.string().required(),
   code: yup.string().optional(),
   isStock: yup.boolean(),
   status: yup.boolean(),
+  images: yup.mixed().optional(),
   description: yup.string().optional(),
 })
 
@@ -33,11 +35,12 @@ export const updateProductSchema = yup.object().shape({
   }),
   price: yup.number().required('PRICE_FILL_THE_VALUE'),
   currency: yup.string().required('PLEASE_SELECT_THE_CURRENCY'),
-  category: yup.string().optional(),
-  symptom: yup.string().optional(),
+  category: yup.string().required(),
+  symptom: yup.string().required(),
   code: yup.string().optional(),
   isStock: yup.boolean(),
   status: yup.boolean(),
+  images: yup.mixed().optional(),
   description: yup.string().optional(),
 })
 

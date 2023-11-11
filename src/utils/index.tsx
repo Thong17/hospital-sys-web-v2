@@ -616,3 +616,38 @@ export const calculateYearOfDate = (value: string) => {
   }
   return age
 }
+
+export const convertToFormData = (data: any) => {
+  const formData = new FormData()
+
+  function appendToFormData(key: any, value: any) {
+    if (typeof value === 'object' && value !== null) {
+      if (Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          appendToFormData(`${key}[${i}]`, value[i])
+        }
+      } else if (value instanceof FileList) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append(key, value[i])
+        }
+      } else {
+        for (const nestedKey in value) {
+          if (value.hasOwnProperty(nestedKey)) {
+            appendToFormData(`${key}[${nestedKey}]`, value[nestedKey])
+          }
+        }
+      }
+    } else {
+      formData.append(key, value)
+    }
+  }
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const value = data[key]
+      appendToFormData(key, value)
+    }
+  }
+
+  return formData
+}
