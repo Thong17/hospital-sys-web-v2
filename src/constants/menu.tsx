@@ -60,28 +60,16 @@ export const APP_MENU: any = [
     permission: 'organize',
     children: [
       {
-        route: '/organize/brand',
-        title: 'BRAND',
-        icon: <ArrowRightAltRoundedIcon />,
-        permission: 'brand'
-      },
-      {
-        route: '/organize/category',
-        title: 'CATEGORY',
-        icon: <ArrowRightAltRoundedIcon />,
-        permission: 'category'
-      },
-      {
         route: '/organize/product',
         title: 'PRODUCT',
         icon: <ArrowRightAltRoundedIcon />,
         permission: 'product'
       },
       {
-        route: '/organize/place',
-        title: 'PLACE',
+        route: '/organize/clinic',
+        title: 'CLINIC',
         icon: <ArrowRightAltRoundedIcon />,
-        permission: 'place'
+        permission: 'clinic'
       },
     ]
   },
