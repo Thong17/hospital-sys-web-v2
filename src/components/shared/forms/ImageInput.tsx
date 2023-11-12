@@ -3,17 +3,16 @@ import { IThemeStyle } from 'contexts/theme/interface'
 import useTheme from 'hooks/useTheme'
 import { forwardRef, useEffect, useState } from 'react'
 import { TextInput } from './TextInput'
+import ImageContainer from '../containers/ImageContainer'
+import Loading from '../Loading'
 
 const BoxStyle = styled(Box)(({ styled }: { styled: IThemeStyle }) => ({
   '& .preview-item': {
     height: '70px',
+    minWidth: '70px',
     borderRadius: styled.radius.primary,
     border: styled.border.tertiary,
     overflow: 'hidden',
-    '& img': {
-      width: '100%',
-      height: '100%',
-    }
   }
 }))
 
@@ -31,28 +30,28 @@ export const ImageInput = forwardRef(({ containerProps, urls, ...props }: Combin
     <InputLabel></InputLabel>
     <TextInput type='file' inputRef={ref} InputLabelProps={{ shrink: true }} {...props} />
     <Stack direction={'row'} flexWrap={'wrap'} gap={1} mt={1}>
-      {Array.from([...urls || []])?.map((item, key) => <ImageBox key={key} url={item} />)}
+      {Array.from([...urls || []])?.map((item, key) => <ImageBox key={key} data={item} />)}
     </Stack>
   </BoxStyle>
 })
 
-const ImageBox = ({ url }: { url: string | Blob }) => {
+const ImageBox = ({ data }: { data: any | Blob }) => {
   const [file, setFile] = useState<any>(null)
 
   useEffect(() => {
-    if (!url) return
-    if (typeof url !== 'object') return setFile(url)
+    if (!data) return
+    if (!(data instanceof Blob)) return setFile(data.filename)
     const reader = new FileReader()
     reader.onloadend = () => {
       setFile(reader.result)
     }
-    reader.readAsDataURL(url as Blob)
+    reader.readAsDataURL(data as Blob)
     return () => {
       setFile(null)
     }
-  }, [url])
+  }, [data])
   
   return <Box className='preview-item'>
-    <img src={file} alt={'IMAGE'} loading='lazy' />
+    {file ? <ImageContainer url={file} /> : <Loading />}
   </Box>
 }

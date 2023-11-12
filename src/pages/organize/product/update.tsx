@@ -54,7 +54,7 @@ const mapProductBody = (data: any): IProductForm => {
     price: data.price,
     currency: data.currency,
     category: data.category,
-    symptom: data.symptom,
+    symptoms: data.symptoms,
     code: data.code,
     isStock: data.isStock,
     status: data.status,

@@ -43,7 +43,7 @@ export interface IProductForm {
   price: number
   currency: string
   category: string
-  symptom: string
+  symptoms: string[]
   code: string
   isStock: boolean
   status: boolean
