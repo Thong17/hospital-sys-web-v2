@@ -36,12 +36,8 @@ const mapData = (
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
   return {
-    _id: item._id,
-    username: item.username,
-    fullName: item.fullName,
-    gender: item.gender,
-    rate: item.rate,
-    status: item.status,
+    ...item,
+    image: `${item?.images[0]?.filename}?bucket=${item?.images[0]?.bucketName}&mimetype=${item?.images[0]?.mimetype}`,
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
   }
 }
@@ -231,6 +227,7 @@ const Product = () => {
             onChangeLimit={handleChangeLimit}
             onChangePage={handleChangePage}
             onClick={handleClick}
+            isGrid={true}
           />
         </Box>
       </Container>

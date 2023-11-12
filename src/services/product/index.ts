@@ -18,7 +18,8 @@ export class ProductService {
     }
     async update({ id, data }: { id: String, data: any }) {
         try {
-            const response = await axios.put(`/organize/product/update/${id}`, data)
+            const body = convertToFormData(data)
+            const response = await axios.put(`/organize/product/update/${id}`, body, { headers: { 'Content-Type': 'multipart/form-data' } })
             notify(response?.data?.message, 'success')
             return response
         } catch (error: any) {

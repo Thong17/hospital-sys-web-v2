@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import LabelStatus from 'components/shared/LabelStatus'
 import { translate } from 'contexts/language/LanguageContext'
 import { IThemeStyle } from 'contexts/theme/interface'
@@ -61,30 +62,28 @@ export const debounce = (cb: any, delay = 1000) => {
   }
 }
 
-export const currencyFormat = (value: any, currency: any, decimal = 0) => {
-  let symbol
+export const currencyFormat = (value: any, symbol: any, decimal = 0) => {
+  let place = value % 1 !== 0 ? 2 : decimal
 
-  switch (true) {
-    case currency === 'USD':
-      symbol = <>&#36;</>
-      decimal = value % 1 !== 0 ? 2 : decimal
-      break
-
-    case currency === 'KHR':
-      symbol = <>&#6107;</>
-      break
-
-    default:
-      decimal = value % 1 !== 0 ? 2 : decimal
-      symbol = <>&#37;</>
-      break
-  }
   if (!value || typeof value !== 'number') return <span>0{symbol}</span>
   return (
-    <span>
-      {value?.toFixed(decimal).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') || 0}
-      {symbol}
-    </span>
+    <Box
+      component={'span'}
+      sx={{
+        display: 'flex',
+        gap: '1px',
+        alignItems: 'center',
+        '& p,': {
+          lineHeight: 1,
+        },
+        '& .currency-symbol': {
+          fontSize: '14px',
+        },
+      }}
+    >
+      <span>{value?.toFixed(place).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') || 0}</span>
+      <span className='currency-symbol'>{symbol}</span>
+    </Box>
   )
 }
 
@@ -650,4 +649,8 @@ export const convertToFormData = (data: any) => {
   }
 
   return formData
+}
+
+export const isBase64 = (value: string) => {
+  return value.includes('base64')
 }
