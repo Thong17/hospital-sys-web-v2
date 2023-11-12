@@ -22,7 +22,7 @@ export const GridContainer = ({ children }: { children: any }) => {
   )
 }
 
-const IMAGE_ITEM_HEIGHT = 130
+const IMAGE_ITEM_HEIGHT = 125
 
 export const GridItem = ({ data }: { data: any }) => {
   const { theme } = useTheme()
@@ -48,6 +48,7 @@ export const GridItem = ({ data }: { data: any }) => {
       )}
       <Box
         sx={{
+          minHeight: `${IMAGE_ITEM_HEIGHT}px`,
           height: `${IMAGE_ITEM_HEIGHT}px`,
           borderRadius: theme.radius.ternary,
           boxShadow: theme.shadow.quaternary,
@@ -68,11 +69,13 @@ export const GridItem = ({ data }: { data: any }) => {
       >
         <Stack direction={'column'} sx={{ padding: '0 5px' }}>
           <Typography
+            noWrap
             sx={{ fontSize: theme.responsive[device]?.text?.secondary }}
           >
             {data?.name?.[lang] || data?.name?.['English']}
           </Typography>
           <Typography
+            noWrap
             sx={{
               fontSize: theme.responsive[device]?.text?.quaternary,
               color: theme.text.quaternary,
