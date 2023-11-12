@@ -9,10 +9,7 @@ import { TextInput } from 'components/shared/forms/TextInput'
 import { translate } from 'contexts/language/LanguageContext'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
-import {
-  createProductSchema,
-  updateProductSchema,
-} from './constant'
+import { createProductSchema, updateProductSchema } from './constant'
 import { Box, FormControlLabel, Stack } from '@mui/material'
 import { ReactNode, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
@@ -20,17 +17,26 @@ import { getProductCreate, getProductUpdate } from 'stores/product/action'
 import { selectProductCreate } from 'stores/product/selector'
 import SelectInput from 'components/shared/forms/SelectInput'
 import { FORM_GAP } from 'constants/layout'
-import SpecialtyForm from 'components/module/specialty/SpecialtyForm'
 import FormDialog from 'components/shared/dialogs/FormDialog'
-import { initSpecialty } from 'components/module/specialty/constant'
 import ListTable from 'components/shared/table/ListTable'
-import { selectSpecialtyList } from 'stores/specialty/selector'
-import { getSpecialtyList } from 'stores/specialty/action'
 import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
-import { GENDERS } from 'constants/options'
 import { LocaleInput } from 'components/shared/forms/LocaleInput'
 import { ImageInput } from 'components/shared/forms/ImageInput'
+import { AddAdornmentButton } from 'components/shared/buttons/ActionButton'
+import CategoryCreateForm from 'components/module/category/CategoryForm'
+import { initCategory } from 'components/module/category/constant'
+import { selectSymptomList } from 'stores/symptom/selector'
+import { selectCategoryList } from 'stores/category/selector'
+import { selectExchangeRateList } from 'stores/exchangeRate/selector'
+import ExchangeRateForm from 'components/module/exchangeRate/ExchangeRateForm'
+import { initExchangeRate } from 'components/module/exchangeRate/constant'
+import SymptomForm from 'components/module/symptom/SymptomForm'
+import { initSymptom } from 'components/module/symptom/constant'
+import Loading from 'components/shared/Loading'
+import { getCategoryList } from 'stores/category/action'
+import { getSymptomList } from 'stores/symptom/action'
+import { getExchangeRateList } from 'stores/exchangeRate/action'
 
 export interface IProductForm {
   name: any
@@ -45,12 +51,21 @@ export interface IProductForm {
   description: string | undefined
 }
 
-const mapSpecialtyDetail = (data: any, lang: LanguageOptions) => {
+const mapCategoryDetail = (data: any, lang: LanguageOptions) => {
   return {
     name: data?.name?.[lang] || data?.name?.['English'],
-    cost: data?.cost,
-    currency: data?.currency?.currency,
-    description: data?.description,
+  }
+}
+
+const mapCurrencyDetail = (data: any, lang: LanguageOptions) => {
+  return {
+    name: data?.name?.[lang] || data?.name?.['English'],
+  }
+}
+
+const mapSymptomDetail = (data: any, lang: LanguageOptions) => {
+  return {
+    name: data?.name?.[lang] || data?.name?.['English'],
   }
 }
 
@@ -60,8 +75,16 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isLoading } = useAppSelector(selectProductCreate)
-  const [specialtyDialog, setSpecialtyDialog] = useState({ open: false })
-  const { data, status } = useAppSelector(selectSpecialtyList)
+  const { data: symptoms, status: symptomStatus } =
+    useAppSelector(selectSymptomList)
+  const { data: categories, status: categoryStatus } =
+    useAppSelector(selectCategoryList)
+  const { data: currencies, status: currencyStatus } = useAppSelector(
+    selectExchangeRateList
+  )
+  const [symptomDialog, setSymptomDialog] = useState({ open: false })
+  const [categoryDialog, setCategoryDialog] = useState({ open: false })
+  const [exchangeRateDialog, setExchangeRateDialog] = useState({ open: false })
   const {
     watch,
     reset,
@@ -78,11 +101,25 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
   })
 
   useEffect(() => {
-    if (status !== 'INIT') return
+    if (categoryStatus !== 'INIT') return
     const params = new URLSearchParams()
     params.append('limit', '0')
-    dispatch(getSpecialtyList({ params }))
-  }, [status])
+    dispatch(getCategoryList({ params }))
+  }, [categoryStatus])
+
+  useEffect(() => {
+    if (symptomStatus !== 'INIT') return
+    const params = new URLSearchParams()
+    params.append('limit', '0')
+    dispatch(getSymptomList({ params }))
+  }, [symptomStatus])
+
+  useEffect(() => {
+    if (currencyStatus !== 'INIT') return
+    const params = new URLSearchParams()
+    params.append('limit', '0')
+    dispatch(getExchangeRateList({ params }))
+  }, [currencyStatus])
 
   useEffect(() => {
     reset(defaultValues)
@@ -97,15 +134,51 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
     <>
       <FormDialog
         justify='end'
-        isOpen={specialtyDialog.open}
-        onClose={() => setSpecialtyDialog({ open: false })}
+        isOpen={categoryDialog.open}
+        onClose={() => setCategoryDialog({ open: false })}
         form={
-          <SpecialtyForm
-            defaultValues={initSpecialty}
-            onCancel={() => setSpecialtyDialog({ open: false })}
+          <CategoryCreateForm
+            defaultValues={initCategory}
+            onCancel={() => setCategoryDialog({ open: false })}
           />
         }
-        list={<ListTable list={data?.map((item: any) => mapSpecialtyDetail(item, lang))} />}
+        list={
+          <ListTable
+            list={categories?.map((item: any) => mapCategoryDetail(item, lang))}
+          />
+        }
+      />
+      <FormDialog
+        justify='start'
+        isOpen={exchangeRateDialog.open}
+        onClose={() => setExchangeRateDialog({ open: false })}
+        form={
+          <ExchangeRateForm
+            defaultValues={initExchangeRate}
+            onCancel={() => setExchangeRateDialog({ open: false })}
+          />
+        }
+        list={
+          <ListTable
+            list={currencies?.map((item: any) => mapCurrencyDetail(item, lang))}
+          />
+        }
+      />
+      <FormDialog
+        justify='start'
+        isOpen={symptomDialog.open}
+        onClose={() => setSymptomDialog({ open: false })}
+        form={
+          <SymptomForm
+            defaultValues={initSymptom}
+            onCancel={() => setSymptomDialog({ open: false })}
+          />
+        }
+        list={
+          <ListTable
+            list={symptoms?.map((item: any) => mapSymptomDetail(item, lang))}
+          />
+        }
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box
@@ -118,7 +191,7 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
             gridTemplateAreas: `
                               'name name name name'
                               'price price price currency'
-                              'category category symptom symptom'
+                              'category category symptoms symptoms'
                               'code code code code'
                               'images images images images'
                               'description description description description'
@@ -144,40 +217,76 @@ const form = ({ defaultValues }: { defaultValues: IProductForm }) => {
             required
             sx={{ gridArea: 'price' }}
           />
+          {currencyStatus !== 'COMPLETED' ? (
+            <Loading sx={{ gridArea: 'currency' }} />
+          ) : (
             <SelectInput
-            {...register('currency')}
-            options={GENDERS}
-            defaultValue={''}
-            value={watch('currency')}
-            error={!!errors.currency?.message}
-            helperText={errors.currency?.message}
-            label={translate('CURRENCY')}
-            gridArea='currency'
-            required
-          />
-          
-          <SelectInput
-            {...register('category')}
-            options={GENDERS}
-            defaultValue={''}
-            value={watch('category')}
-            error={!!errors.category?.message}
-            helperText={errors.category?.message}
-            label={translate('CATEGORY')}
-            gridArea='category'
-            required
-          />
-          <SelectInput
-            {...register('symptom')}
-            options={GENDERS}
-            defaultValue={''}
-            value={watch('symptom')}
-            error={!!errors.symptom?.message}
-            helperText={errors.symptom?.message}
-            label={translate('SYMPTOM')}
-            gridArea='symptom'
-            required
-          />
+              {...register('currency')}
+              options={currencies?.map((item: any) => ({
+                value: item?._id,
+                label: item?.currency,
+              }))}
+              defaultValue={''}
+              value={watch('currency')}
+              error={!!errors.currency?.message}
+              helperText={errors.currency?.message}
+              label={translate('CURRENCY')}
+              gridArea='currency'
+              required
+              endAdornment={
+                <AddAdornmentButton
+                  onClick={() => setExchangeRateDialog({ open: true })}
+                />
+              }
+            />
+          )}
+          {categoryStatus !== 'COMPLETED' ? (
+            <Loading sx={{ gridArea: 'category' }} />
+          ) : (
+            <SelectInput
+              {...register('category')}
+              options={categories?.map((item: any) => ({
+                label: item?.name?.[lang] || item?.name?.['English'],
+                value: item?._id,
+              }))}
+              defaultValue={''}
+              value={watch('category')}
+              error={!!errors.category?.message}
+              helperText={errors.category?.message}
+              label={translate('CATEGORY')}
+              gridArea='category'
+              required
+              endAdornment={
+                <AddAdornmentButton
+                  onClick={() => setCategoryDialog({ open: true })}
+                />
+              }
+            />
+          )}
+          {symptomStatus !== 'COMPLETED' ? (
+            <Loading sx={{ gridArea: 'symptoms' }} />
+          ) : (
+            <SelectInput
+              {...register('symptoms')}
+              options={symptoms?.map((item: any) => ({
+                label: item?.name?.[lang] || item?.name?.['English'],
+                value: item?._id,
+              }))}
+              defaultValue={[]}
+              value={watch('symptoms')}
+              error={!!errors.symptoms?.message}
+              helperText={errors.symptoms?.message}
+              label={translate('SYMPTOM')}
+              gridArea='symptoms'
+              required
+              multiple
+              endAdornment={
+                <AddAdornmentButton
+                  onClick={() => setSymptomDialog({ open: true })}
+                />
+              }
+            />
+          )}
           <TextInput
             {...register('code')}
             label={translate('CODE')}
