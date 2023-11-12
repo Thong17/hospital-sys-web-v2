@@ -104,10 +104,9 @@ const ProductStock = () => {
         <TitleContainer text={translate('TITLE_PRODUCT_STOCK') as String}>
           <Stack direction={'row'} gap={1}></Stack>
         </TitleContainer>
-        <Stack direction={'row'}>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: PRODUCT_FORM_WIDTH }}>
+        <Stack direction={'row'} gap={3} pt={3}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: PRODUCT_FORM_WIDTH, height: '500px' }}>
             <Box
-              pt={5}
               sx={{
                 width: '100%',
                 display: 'grid',
