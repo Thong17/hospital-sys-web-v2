@@ -668,7 +668,7 @@ export const convertToFormData = (data: any) => {
 }
 
 export const isBase64 = (value: string) => {
-  return value.includes('base64')
+  return value?.includes('base64')
 }
 
 export const sumArrayValues = (array: number[]) => {

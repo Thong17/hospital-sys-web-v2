@@ -16,10 +16,11 @@ export const GridContainer = ({ children }: { children: any }) => {
   )
 }
 
-export const GridItem = ({ data }: { data: any }) => {
+export const GridItem = ({ data, onClick }: { data: any, onClick?: (data: any) => void }) => {
   const { theme } = useTheme()
   return (
     <Box
+      onClick={() => onClick && onClick(data)}
       sx={{
         position: 'relative',
         height: 200,
