@@ -20,6 +20,8 @@ import {
   convertBufferToArrayBuffer,
   debounce,
   downloadBuffer,
+  renderColorByValue,
+  sumArrayValues,
 } from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
@@ -65,6 +67,11 @@ const mapData = (
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onEditStock: (_data: any) => void
 ) => {
+  const color = renderColorByValue(
+    sumArrayValues(item?.stocks?.map((item: any) => item.remain)), 
+    sumArrayValues(item?.stocks?.map((item: any) => item.alertAt)), 
+    theme
+  )
   return {
     name: item?.name?.[lang] || item?.name?.['English'],
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
@@ -113,6 +120,7 @@ const mapData = (
           </Stack>
           <Stack
             direction={'row'}
+            justifyContent={'space-between'}
             gap={'5px'}
             sx={{
               '& button, & div': {
@@ -129,24 +137,24 @@ const mapData = (
               },
             }}
           >
-            <Box sx={{ width: '100%' }}>
+            <Box>
               <LocalOfferRoundedIcon className='icon' />
               <Typography>{currencyFormat(item?.price, <>&#36;</>)}</Typography>
             </Box>
             <Button
               onClick={() => onEditStock(item)}
               sx={{
-                backgroundColor: `${theme.color.info}22`,
+                backgroundColor: `${color}22`,
                 '&:hover': {
-                  backgroundColor: `${theme.color.info}44`,
+                  backgroundColor: `${color}44`,
                 },
                 '& *': {
-                  color: `${theme.color.info} !important`,
+                  color: `${color} !important`,
                 },
               }}
             >
               <MoveToInboxRoundedIcon className='icon' />
-              <Typography>{item?.price}</Typography>
+              <Typography>{sumArrayValues(item?.stocks?.map((item: any) => item.remain))}</Typography>
               <ArrowRightAltRoundedIcon
                 sx={{ fontSize: theme.responsive[device]?.text?.h3 }}
               />

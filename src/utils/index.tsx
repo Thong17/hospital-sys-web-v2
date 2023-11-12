@@ -546,6 +546,22 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
   }
 }
 
+export const renderColorByValue = (value: number, warn: number, theme: IThemeStyle) => {
+  switch (true) {
+    case value > warn:
+      return theme.color.success
+
+    case value > 0:
+      return theme.color.warning
+
+    case value <= 0:
+      return theme.color.error
+
+    default:
+      return theme.color.info
+  }
+}
+
 export const downloadBuffer = (buffer: any, filename: string) => {
   const url = window.URL.createObjectURL(
     new Blob([buffer], {
@@ -653,4 +669,13 @@ export const convertToFormData = (data: any) => {
 
 export const isBase64 = (value: string) => {
   return value.includes('base64')
+}
+
+export const sumArrayValues = (array: number[]) => {
+  let sum = 0
+  array.forEach((value: number) => {
+    if (typeof value !== 'number') return
+    sum += value
+  })
+  return sum
 }
