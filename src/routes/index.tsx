@@ -6,7 +6,7 @@ import User from 'pages/admin/user'
 import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail } from 'pages/operation'
-import { Product, ProductCreate, ProductDetail, ProductHistory, ProductUpdate } from 'pages/organize'
+import { Product, ProductCreate, ProductDetail, ProductHistory, ProductStock, ProductUpdate } from 'pages/organize'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
@@ -298,6 +298,14 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ menu: 'organize', route: 'product', action: 'detail' }}>
                         <ProductDetail />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'product/stock/:id',
+                element: (
+                    <AuthGuard role={{ menu: 'organize', route: 'product', action: 'stock' }}>
+                        <ProductStock />
                     </AuthGuard>
                 ),
             },

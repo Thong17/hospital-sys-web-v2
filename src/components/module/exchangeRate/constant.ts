@@ -1,3 +1,4 @@
+import { LanguageOptions } from 'contexts/language/interface'
 import * as yup from 'yup'
 
 export const initExchangeRate = {
@@ -11,3 +12,9 @@ export const exchangeRateSchema = yup.object().shape({
   currency: yup.string().required('PLEASE_SELECT_THE_CURRENCY'),
   description: yup.string().optional(),
 })
+
+export const mapCurrencyDetail = (data: any, lang: LanguageOptions) => {
+  return {
+    name: data?.name?.[lang] || data?.name?.['English'],
+  }
+}

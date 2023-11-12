@@ -1,5 +1,6 @@
 import { Layout } from 'components/layouts/Layout'
 import Product from './product'
+import ProductStock from './product/stock'
 import ProductCreate from './product/create'
 import ProductUpdate from './product/update'
 import ProductDetail from './product/detail'
@@ -56,4 +57,4 @@ const Organize = () => {
   )
 }
 
-export { Organize, Product, ProductCreate, ProductUpdate, ProductDetail, ProductHistory }
+export { Organize, Product, ProductCreate, ProductUpdate, ProductDetail, ProductStock, ProductHistory }

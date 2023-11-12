@@ -3,23 +3,48 @@ import Breadcrumb from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
 import { breadcrumbs } from '..'
 import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
-import { Box, DialogActions, Stack } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
-import { CancelButton, CreateButton, CustomizedButton, OptionButton, SearchButton } from 'components/shared/buttons/CustomButton'
-import useDevice from 'hooks/useDevice'
+import {
+  CancelButton,
+  CreateButton,
+  CustomizedButton,
+  OptionButton,
+  SearchButton,
+} from 'components/shared/buttons/CustomButton'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { convertBufferToArrayBuffer, debounce, downloadBuffer } from 'utils/index'
+import {
+  convertBufferToArrayBuffer,
+  debounce,
+  downloadBuffer,
+} from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import ProductImportTable from './components/ProductImportTable'
 import { selectProductList } from 'stores/product/selector'
-import { getProductDelete, getProductExport, getProductImport, getProductList, getProductValidate } from 'stores/product/action'
+import {
+  getProductDelete,
+  getProductExport,
+  getProductImport,
+  getProductList,
+  getProductValidate,
+} from 'stores/product/action'
+import { LanguageOptions } from 'contexts/language/interface'
+import useLanguage from 'hooks/useLanguage'
+import useDevice from 'hooks/useDevice'
+import { currencyFormat } from 'utils/index'
+import LocalOfferRoundedIcon from '@mui/icons-material/LocalOfferRounded'
+import MoveToInboxRoundedIcon from '@mui/icons-material/MoveToInboxRounded'
+import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
+import { Box, Button, Stack, Typography, DialogActions } from '@mui/material'
+import { IThemeStyle } from 'contexts/theme/interface'
+import ImageContainer from 'components/shared/containers/ImageContainer'
+import { DeviceOptions } from 'contexts/web/interface'
 
 const productColumns: ITableColumn<any>[] = [
   { label: translate('USERNAME'), id: 'username', sort: 'desc' },
@@ -29,16 +54,107 @@ const productColumns: ITableColumn<any>[] = [
   { label: translate('STATUS'), id: 'status' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
+const IMAGE_ITEM_HEIGHT = 125
 
 const mapData = (
   item: any,
+  lang: LanguageOptions,
+  theme: IThemeStyle,
+  device: DeviceOptions,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
-  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onEditStock: (_data: any) => void
 ) => {
   return {
-    ...item,
-    image: `${item?.images[0]?.filename}?bucket=${item?.images[0]?.bucketName}&mimetype=${item?.images[0]?.mimetype}`,
+    name: item?.name?.[lang] || item?.name?.['English'],
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    body: (
+      <>
+        <Box
+          sx={{
+            minHeight: `${IMAGE_ITEM_HEIGHT}px`,
+            height: `${IMAGE_ITEM_HEIGHT}px`,
+            borderRadius: theme.radius.ternary,
+            boxShadow: theme.shadow.quaternary,
+            '& img': { objectFit: 'cover', borderRadius: theme.radius.ternary },
+          }}
+        >
+          <ImageContainer
+            url={`${item?.images[0]?.filename}?bucket=${item?.images[0]?.bucketName}&mimetype=${item?.images[0]?.mimetype}`}
+          />
+        </Box>
+        <Stack
+          direction={'column'}
+          justifyContent={'space-between'}
+          sx={{
+            height: `calc(100% - ${IMAGE_ITEM_HEIGHT}px)`,
+            borderRadius: theme.radius.ternary,
+            boxShadow: theme.shadow.quaternary,
+            padding: '5px',
+          }}
+        >
+          <Stack direction={'column'} sx={{ padding: '0 5px' }}>
+            <Typography
+              noWrap
+              sx={{ fontSize: theme.responsive[device]?.text?.secondary }}
+            >
+              {item?.name?.[lang] || item?.name?.['English']}
+            </Typography>
+            <Typography
+              noWrap
+              sx={{
+                fontSize: theme.responsive[device]?.text?.quaternary,
+                color: theme.text.quaternary,
+                lineHeight: 1,
+              }}
+            >
+              {item?.description}
+            </Typography>
+          </Stack>
+          <Stack
+            direction={'row'}
+            gap={'5px'}
+            sx={{
+              '& button, & div': {
+                height: '23px',
+                borderRadius: theme.radius.primary,
+                display: 'flex',
+                justifyContent: 'start',
+                alignItems: 'center',
+                padding: '0 5px',
+                gap: '3px',
+                '& svg.icon': {
+                  fontSize: '13px',
+                },
+              },
+            }}
+          >
+            <Box sx={{ width: '100%' }}>
+              <LocalOfferRoundedIcon className='icon' />
+              <Typography>{currencyFormat(item?.price, <>&#36;</>)}</Typography>
+            </Box>
+            <Button
+              onClick={() => onEditStock(item)}
+              sx={{
+                backgroundColor: `${theme.color.info}22`,
+                '&:hover': {
+                  backgroundColor: `${theme.color.info}44`,
+                },
+                '& *': {
+                  color: `${theme.color.info} !important`,
+                },
+              }}
+            >
+              <MoveToInboxRoundedIcon className='icon' />
+              <Typography>{item?.price}</Typography>
+              <ArrowRightAltRoundedIcon
+                sx={{ fontSize: theme.responsive[device]?.text?.h3 }}
+              />
+            </Button>
+          </Stack>
+        </Stack>
+      </>
+    ),
   }
 }
 
@@ -48,6 +164,7 @@ const Product = () => {
   const confirm = useAlert()
   const { theme } = useTheme()
   const { device } = useDevice()
+  const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectProductList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(productColumns)
   const [queryParams, setQueryParams] = useSearchParams()
@@ -73,6 +190,10 @@ const Product = () => {
     navigate(`/organize/product/update/${data._id}`)
   }
 
+  const handleEditStock = (data: any) => {
+    navigate(`/organize/product/stock/${data?._id}`)
+  }
+
   const handleClick = (data: any) => {
     navigate(`/organize/product/detail/${data._id}`)
   }
@@ -89,7 +210,9 @@ const Product = () => {
       variant: 'error',
     })
       .then((confirmData: any) => {
-        dispatch(getProductDelete({ id: data._id, reason: confirmData?.reason }))
+        dispatch(
+          getProductDelete({ id: data._id, reason: confirmData?.reason })
+        )
           .unwrap()
           .then(() => fetchListProduct(queryParams))
           .catch(() => {})
@@ -179,7 +302,15 @@ const Product = () => {
   }
 
   return (
-    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} selectedOption={{ navbar: '/organize/product' }} />}>
+    <Layout
+      navbar={
+        <Breadcrumb
+          list={breadcrumbs}
+          step={2}
+          selectedOption={{ navbar: '/organize/product' }}
+        />
+      }
+    >
       <ContainerDialog
         justify='center'
         isOpen={importDialog.open}
@@ -214,10 +345,12 @@ const Product = () => {
             </Stack>
           </TitleContainer>
         </Box>
-        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
+        <Box
+          sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}
+        >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, handleEdit, handleDelete)
+              mapData(item, lang, theme, device, handleEdit, handleDelete, handleEditStock)
             )}
             columns={columns}
             onSort={handleSort}
