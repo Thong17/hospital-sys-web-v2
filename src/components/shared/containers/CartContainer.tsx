@@ -17,6 +17,8 @@ import useDevice from 'hooks/useDevice'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { StyledTypography } from '../table/Typography'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
+import { getTransactionCreate } from 'stores/transaction/action'
+import { useParams } from 'react-router'
 
 export const FORM_WIDTH_EXPANDED = 470
 export const FORM_WIDTH_COMPACTED = 60
@@ -30,9 +32,10 @@ const CartContainer = ({
   onSave: (data: any) => void
   onEnd: (data: any) => void
 }) => {
-  const { isOpenedCart } = useAppSelector(selectConfig)
+  const { id } = useParams()
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
+  const { isOpenedCart } = useAppSelector(selectConfig)
   const commentRef = useRef<any>(document.createElement('input'))
   const [productDialog, setProductDialog] = useState({ open: false })
   const [cardItems, setCardItems] = useState<any[]>([])
@@ -42,7 +45,35 @@ const CartContainer = ({
   }, [data])
 
   const handleAddProduct = (data: any) => {
-    setCardItems([...cardItems, { ...data, quantity: 1 }])
+    const { name, price, currency, product } = data || {}
+    dispatch(
+      getTransactionCreate({
+        description: name,
+        price,
+        currency: currency?._id,
+        product,
+        schedule: id,
+        quantity: 1,
+      })
+    )
+      .unwrap()
+      .then((response: any) => {
+        if (response?.code !== 'SUCCESS') return
+        const { data } = response
+        setCardItems([
+          ...cardItems,
+          {
+            name: data?.description,
+            price: data?.price,
+            currency: data?.currency,
+            quantity: data?.quantity,
+            total: data?.total,
+            note: data?.note,
+            discount: data?.discount,
+          },
+        ])
+      })
+      .catch(() => {})
   }
 
   return (
@@ -201,7 +232,7 @@ const ProductItem = ({ data }: { data: any }) => {
             }}
           >
             {`${translate('PRICE')}: `}
-            {currencyFormat(data?.price, data?.currency)}
+            {currencyFormat(data?.price, data?.currency?.symbol)}
           </Stack>
         </Stack>
       </Stack>
@@ -233,11 +264,12 @@ const ProductItem = ({ data }: { data: any }) => {
           }}
         >
           <RemoveRoundedIcon fontSize='small' />
-          <StyledTypography>{0}</StyledTypography>
+          <StyledTypography>{data?.quantity}</StyledTypography>
           <AddRoundedIcon fontSize='small' />
         </Stack>
       </Stack>
-      <Stack
+      {/* TODO: Add discount */}
+      {/* <Stack
         direction={'column'}
         justifyContent={'center'}
         alignItems={'start'}
@@ -252,7 +284,7 @@ const ProductItem = ({ data }: { data: any }) => {
           {translate('DISC')}
         </StyledTypography>
         <StyledTypography>{0}%</StyledTypography>
-      </Stack>
+      </Stack> */}
       <Stack
         direction={'column'}
         justifyContent={'center'}
@@ -267,7 +299,7 @@ const ProductItem = ({ data }: { data: any }) => {
         >
           {translate('TOTAL')}
         </StyledTypography>
-        <StyledTypography>{10}$</StyledTypography>
+        <StyledTypography>{currencyFormat(data?.total, '&#36;')}</StyledTypography>
       </Stack>
       <IconButton
         size='small'

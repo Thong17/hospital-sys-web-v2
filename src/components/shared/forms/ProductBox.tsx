@@ -31,11 +31,21 @@ export const mapData = (
     price: item?.price,
     _id: item?._id,
     image: item?.images[0],
-    body: <ProductBody 
-        onClick={(data: any) => onClick({ name: data?.name?.[lang] || data?.name?.['English'], price: data?.price, currency: data?.currency?.symbol, image: data?.images?.[0] })} 
-        stockColor={color} 
-        item={item} 
-    />,
+    body: (
+      <ProductBody
+        onClick={(data: any) =>
+          onClick({
+            name: data?.name?.['English'],
+            price: data?.price,
+            currency: data?.currency,
+            image: data?.images?.[0],
+            product: data?._id,
+          })
+        }
+        stockColor={color}
+        item={item}
+      />
+    ),
   }
 }
 
