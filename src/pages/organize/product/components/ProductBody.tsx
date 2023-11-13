@@ -88,7 +88,7 @@ const ProductBody = ({
         >
           <Box>
             <LocalOfferRoundedIcon className='icon' />
-            <Typography>{currencyFormat(item?.price, <>&#36;</>)}</Typography>
+            <Typography>{currencyFormat(item?.price, item?.currency?.symbol)}</Typography>
           </Box>
           <Button
             onClick={() => onEditStock && onEditStock(item)}

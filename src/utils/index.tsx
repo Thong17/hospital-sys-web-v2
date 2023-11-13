@@ -76,13 +76,10 @@ export const currencyFormat = (value: any, symbol: any, decimal = 0) => {
         '& p,': {
           lineHeight: 1,
         },
-        '& .currency-symbol': {
-          fontSize: '14px',
-        },
       }}
     >
       <span>{value?.toFixed(place).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') || 0}</span>
-      <span className='currency-symbol'>{symbol}</span>
+      <span className='currency-symbol' dangerouslySetInnerHTML={{ __html: symbol }} />
     </Box>
   )
 }
