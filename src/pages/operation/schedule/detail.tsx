@@ -258,7 +258,7 @@ const ScheduleDetail = () => {
                 />
               </Box>
             </Box>
-            <CartContainer data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
+            <CartContainer transactions={data?.transactions} data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
           </Stack>
         </form>
       </Container>

@@ -17,7 +17,10 @@ import useDevice from 'hooks/useDevice'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { StyledTypography } from '../table/Typography'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
-import { getTransactionCreate, getTransactionDelete } from 'stores/transaction/action'
+import {
+  getTransactionCreate,
+  getTransactionDelete,
+} from 'stores/transaction/action'
 import { useParams } from 'react-router'
 import useAlert from 'hooks/useAlert'
 
@@ -26,10 +29,12 @@ export const FORM_WIDTH_COMPACTED = 60
 
 const CartContainer = ({
   data,
+  transactions,
   onSave,
   onEnd,
 }: {
   data: any
+  transactions: any[]
   onSave: (data: any) => void
   onEnd: (data: any) => void
 }) => {
@@ -40,27 +45,48 @@ const CartContainer = ({
   const { isOpenedCart } = useAppSelector(selectConfig)
   const commentRef = useRef<any>(document.createElement('input'))
   const [productDialog, setProductDialog] = useState({ open: false })
-  const [cardItems, setCardItems] = useState<any[]>([])
+  const [cardItems, setCardItems] = useState<IProductItem[]>([])
   const productBoxRef = useRef<any>(null)
+
+  useEffect(() => {
+    if (!transactions) return
+    setCardItems(
+      transactions?.map((item: any) => ({
+        _id: item._id,
+        filename: item.product?.images?.[0]?.filename,
+        name: item.description,
+        price: item?.price,
+        quantity: item?.quantity,
+        total: item?.total,
+        symbol: item?.currency?.symbol,
+      }))
+    )
+
+    return () => {
+      setCardItems([])
+    }
+  }, [transactions])
 
   useEffect(() => {
     commentRef.current.value = data?.comment
   }, [data])
 
-  const handleRemoveProduct = (data: any) => {
+  const handleRemoveProduct = (_id: any) => {
     confirm({
       title: 'REMOVE_PRODUCT_TITLE',
       description: 'REMOVE_PRODUCT_DESCRIPTION',
       variant: 'error',
-      reason: true
+      reason: true,
     })
       .then(({ reason }: any) => {
-        dispatch(getTransactionDelete({ id: data?._id, reason }))
+        dispatch(getTransactionDelete({ id: _id, reason }))
           .unwrap()
           .then((response: any) => {
             if (response?.code !== 'SUCCESS') return
             const { data } = response
-            setCardItems((prev: any) => prev.filter((item: any) => item._id !== data?._id))
+            setCardItems((prev: any) =>
+              prev.filter((item: any) => item._id !== data?._id)
+            )
             productBoxRef.current?.fetchListProduct()
           })
           .catch(() => {})
@@ -90,12 +116,10 @@ const CartContainer = ({
             _id: data?._id,
             name: data?.description,
             price: data?.price,
-            currency: data?.currency,
+            symbol: data?.currency?.symbol,
             quantity: data?.quantity,
             total: data?.total,
-            note: data?.note,
-            discount: data?.discount,
-            image: data?.product?.images?.[0]
+            filename: data?.product?.images?.[0]?.filename,
           },
         ])
         productBoxRef.current?.fetchListProduct()
@@ -173,7 +197,17 @@ const CartContainer = ({
               gap='10px'
             >
               {cardItems.map((item: any, key: number) => (
-                <ProductItem data={item} key={key} onRemove={handleRemoveProduct} />
+                <ProductItem
+                  key={key}
+                  onRemove={handleRemoveProduct}
+                  _id={item?._id}
+                  filename={item?.filename}
+                  name={item?.name}
+                  price={item?.price}
+                  symbol={item?.currency?.symbol}
+                  total={item?.total}
+                  quantity={item?.quantity}
+                />
               ))}
             </Stack>
             <Stack gap='7px'>
@@ -211,10 +245,30 @@ const CartContainer = ({
     </>
   )
 }
-// TODO: product cart
+
 const PRODUCT_IMAGE_SIZE = 45
 
-export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: any) => void }) => {
+interface IProductItem {
+  _id: string
+  filename: string
+  name: string
+  price: number
+  symbol: string
+  total: number
+  quantity: number
+  onRemove?: (data: any) => void
+}
+
+export const ProductItem = ({
+  _id,
+  filename,
+  name,
+  price,
+  symbol,
+  total,
+  quantity,
+  onRemove,
+}: IProductItem) => {
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
@@ -240,7 +294,7 @@ export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: an
             boxShadow: theme.shadow.quaternary,
           }}
         >
-          <ImageContainer url={data?.image?.filename} />
+          <ImageContainer url={filename} />
         </Box>
         <Stack
           direction={'column'}
@@ -248,8 +302,8 @@ export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: an
           marginLeft={'7px'}
           marginTop={'-2px'}
         >
-          <Tooltip title={data?.name}>
-            <StyledTypography noWrap>{data?.name}</StyledTypography>
+          <Tooltip title={name}>
+            <StyledTypography noWrap>{name}</StyledTypography>
           </Tooltip>
           <Stack
             direction={'row'}
@@ -260,7 +314,7 @@ export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: an
             }}
           >
             {`${translate('PRICE')}: `}
-            {currencyFormat(data?.price, data?.currency?.symbol)}
+            {currencyFormat(price, symbol)}
           </Stack>
         </Stack>
       </Stack>
@@ -292,7 +346,7 @@ export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: an
           }}
         >
           <RemoveRoundedIcon fontSize='small' />
-          <StyledTypography>{data?.quantity}</StyledTypography>
+          <StyledTypography>{quantity}</StyledTypography>
           <AddRoundedIcon fontSize='small' />
         </Stack>
       </Stack>
@@ -327,10 +381,10 @@ export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: an
         >
           {translate('TOTAL')}
         </StyledTypography>
-        <StyledTypography>{currencyFormat(data?.total, '&#36;')}</StyledTypography>
+        <StyledTypography>{currencyFormat(total, '&#36;')}</StyledTypography>
       </Stack>
       <IconButton
-        onClick={() => onRemove(data)}
+        onClick={() => onRemove && onRemove(_id)}
         size='small'
         sx={{
           backgroundColor: `${theme.color.error}22`,
