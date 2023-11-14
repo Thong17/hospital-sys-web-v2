@@ -25,6 +25,12 @@ export const APP_MENU: any = [
         icon: <ArrowRightAltRoundedIcon />,
         permission: 'sale'
       },
+      {
+        route: '/pos/payment',
+        title: 'PAYMENT',
+        icon: <ArrowRightAltRoundedIcon />,
+        permission: 'payment'
+      },
     ]
   },
   {

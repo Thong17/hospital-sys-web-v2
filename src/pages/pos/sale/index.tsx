@@ -95,7 +95,7 @@ const Sale = () => {
         <Breadcrumb
           list={breadcrumbs}
           step={2}
-          selectedOption={{ navbar: '/organize/sale' }}
+          selectedOption={{ navbar: '/pos/sale' }}
         />
       }
     >

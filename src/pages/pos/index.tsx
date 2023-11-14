@@ -6,6 +6,8 @@ import { translate } from 'contexts/language/LanguageContext'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded'
 import Sale from './sale'
+import Payment from './payment'
+import PaymentDetail from './payment/detail'
 
 export const breadcrumbs: IBreadcrumb[] = [
   {
@@ -23,6 +25,12 @@ export const breadcrumbs: IBreadcrumb[] = [
       {
         href: '/pos/sale',
         label: translate('SALE'),
+        prefix: <PersonRoundedIcon />,
+        suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
+      },
+      {
+        href: '/pos/payment',
+        label: translate('PAYMENT'),
         prefix: <PersonRoundedIcon />,
         suffix: <AutoAwesomeRoundedIcon sx={{ '& *': { color: '#FDCC0D !important' } }} />
       }
@@ -44,4 +52,4 @@ const PointOfSale = () => {
   )
 }
 
-export { PointOfSale, Sale }
+export { PointOfSale, Sale, Payment, PaymentDetail }
