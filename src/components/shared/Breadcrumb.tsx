@@ -292,6 +292,9 @@ const ActionButton = ({
         backgroundColor: `${theme.color.info}22`,
         borderRadius: theme.radius.rounded,
         padding: '3px',
+        '& *': {
+          color: `${theme.color.info} !important`,
+        }
       }}
     >
       {onClickPrevious && (

@@ -25,12 +25,6 @@ export const APP_MENU: any = [
         icon: <ArrowRightAltRoundedIcon />,
         permission: 'sale'
       },
-      {
-        route: '/pos/stock',
-        title: 'STOCK',
-        icon: <ArrowRightAltRoundedIcon />,
-        permission: 'stock'
-      },
     ]
   },
   {

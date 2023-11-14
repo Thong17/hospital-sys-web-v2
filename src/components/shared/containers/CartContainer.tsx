@@ -214,7 +214,7 @@ const CartContainer = ({
 // TODO: product cart
 const PRODUCT_IMAGE_SIZE = 45
 
-const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: any) => void }) => {
+export const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: any) => void }) => {
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
