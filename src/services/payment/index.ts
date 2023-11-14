@@ -24,6 +24,17 @@ export class PaymentService {
             throw error
         }
     }
+    async complete({ id }: { id: String }) {
+        try {
+            const response = await axios.put(`/operation/payment/complete/${id}`)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async appendTransaction({ id, data }: { id: String, data: any }) {
         try {
             const response = await axios.put(`/operation/payment/transaction/append/${id}`, data)

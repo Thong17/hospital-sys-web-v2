@@ -6,15 +6,16 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
 import { CustomizedIconButton } from '../buttons/ActionButton'
-import { Box, Stack } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
 import { translate } from 'contexts/language/LanguageContext'
 import { CustomizedButton } from '../buttons/CustomButton'
 import { useEffect, useState } from 'react'
 import { ProductItem } from '../containers/CartContainer'
-import { getPaymentDetail } from 'stores/payment/action'
+import { getPaymentComplete, getPaymentDetail } from 'stores/payment/action'
 import { selectPaymentDetail } from 'stores/payment/selector'
+import { currencyFormat, sumArrayValues } from 'utils/index'
 
 const InvoiceForm = ({ id, onRemove }: { id?: string, onRemove: (data: any) => void }) => {
   const dispatch = useAppDispatch()
@@ -47,6 +48,12 @@ const InvoiceForm = ({ id, onRemove }: { id?: string, onRemove: (data: any) => v
     }
   }, [detail?.transactions])
 
+  const handleCompletePayment = () => {
+    if (!id) return
+    dispatch(getPaymentComplete({ id }))
+    dispatch(getPaymentDetail({ id }))
+  }
+  
   return (
     <Box
       sx={{
@@ -121,15 +128,16 @@ const InvoiceForm = ({ id, onRemove }: { id?: string, onRemove: (data: any) => v
                 gap: '7px',
               }}
             >
+              <Stack direction={'row'} gap={1} alignItems={'center'} sx={{ width: '100%', paddingLeft: '10px', boxSizing: 'border-box' }}>
+                <Typography>{translate('TOTAL')}:</Typography>
+                <Typography>{currencyFormat(sumArrayValues(detail?.transactions?.map((item: any) => item.total)))}</Typography>
+              </Stack>
               <CustomizedButton
-                color={theme.color.info}
-                fullWidth
-                label={translate('SAVE')}
-              />
-              <CustomizedButton
+                onClick={handleCompletePayment}
                 color={theme.color.success}
+                disabled={detail?.stage === 'COMPLETED'}
                 fullWidth
-                label={translate('PAYMENT')}
+                label={detail?.stage === 'COMPLETED' ? translate('COMPLETED') : translate('COMPLETE')}
               />
             </Box>
           </Stack>

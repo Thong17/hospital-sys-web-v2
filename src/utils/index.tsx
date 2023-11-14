@@ -597,15 +597,15 @@ export const renderCategory = (value: string, theme: any) => {
 
 export const renderStage = (value: string, theme: any) => {
   switch (true) {
-    case value === 'STARTED':
+    case ['STARTED'].includes(value):
       return <LabelStatus label={translate(value)} color={theme.color.info} />
 
-    case value === 'ACCEPTED':
+    case ['ACCEPTED', 'COMPLETED'].includes(value):
       return (
         <LabelStatus label={translate(value)} color={theme.color.success} />
       )
 
-    case ['REFUSED', 'ENDED'].includes(value):
+    case ['REFUSED', 'ENDED', 'REMOVED'].includes(value):
       return <LabelStatus label={translate(value)} color={theme.color.error} />
 
     default:
@@ -670,7 +670,7 @@ export const isBase64 = (value: string) => {
 
 export const sumArrayValues = (array: number[]) => {
   let sum = 0
-  array.forEach((value: number) => {
+  array?.forEach((value: number) => {
     if (typeof value !== 'number') return
     sum += value
   })
