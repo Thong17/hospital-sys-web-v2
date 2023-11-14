@@ -11,19 +11,46 @@ import useTheme from 'hooks/useTheme'
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
 import { translate } from 'contexts/language/LanguageContext'
 import { CustomizedButton } from '../buttons/CustomButton'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   getTransactionDelete,
 } from 'stores/transaction/action'
 import useAlert from 'hooks/useAlert'
 import { ProductItem } from '../containers/CartContainer'
+import { getPaymentDetail } from 'stores/payment/action'
+import { selectPaymentDetail } from 'stores/payment/selector'
 
-const InvoiceForm = () => {
+const InvoiceForm = ({ id }: { id?: string }) => {
   const dispatch = useAppDispatch()
   const { isOpenedCart } = useAppSelector(selectConfig)
   const [cardItems, setCardItems] = useState<any[]>([])
   const { theme } = useTheme()
   const confirm = useAlert()
+  const { data: detail } = useAppSelector(selectPaymentDetail)
+
+  useEffect(() => {
+    if (!id) return
+    dispatch(getPaymentDetail({ id }))
+  }, [id])
+
+  useEffect(() => {
+    if (!detail?.transactions) return
+    setCardItems(
+      detail?.transactions?.map((item: any) => ({
+        _id: item._id,
+        filename: item.product?.images?.[0]?.filename,
+        name: item.description,
+        price: item?.price,
+        quantity: item?.quantity,
+        total: item?.total,
+        symbol: item?.currency?.symbol,
+      }))
+    )
+
+    return () => {
+      setCardItems([])
+    }
+  }, [detail?.transactions])
 
   const handleRemoveProduct = (data: any) => {
     confirm({
@@ -99,9 +126,15 @@ const InvoiceForm = () => {
           >
             {cardItems.map((item: any, key: number) => (
               <ProductItem
-                data={item}
+                _id={item?._id}
                 key={key}
                 onRemove={handleRemoveProduct}
+                filename={item?.filename}
+                name={item?.name}
+                price={item?.price}
+                symbol={item?.currency?.symbol}
+                total={item?.total}
+                quantity={item?.quantity}
               />
             ))}
           </Stack>

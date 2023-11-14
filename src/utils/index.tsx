@@ -62,7 +62,7 @@ export const debounce = (cb: any, delay = 1000) => {
   }
 }
 
-export const currencyFormat = (value: any, symbol: any, decimal = 0) => {
+export const currencyFormat = (value: any, symbol: any = '&#36;', decimal = 0) => {
   let place = value % 1 !== 0 ? 2 : decimal
 
   if (!value || typeof value !== 'number') return <span>0{symbol}</span>

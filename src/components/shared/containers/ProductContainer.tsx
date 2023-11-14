@@ -1,7 +1,3 @@
-import { Layout } from 'components/layouts/Layout'
-import Breadcrumb from 'components/shared/Breadcrumb'
-import Container from 'components/shared/Container'
-import { breadcrumbs } from '..'
 import { StickyTable } from 'components/shared/table/StickyTable'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
@@ -12,17 +8,15 @@ import { useEffect } from 'react'
 import { debounce, renderColorByValue, sumArrayValues } from 'utils/index'
 import { useSearchParams } from 'react-router-dom'
 import useLanguage from 'hooks/useLanguage'
-import useDevice from 'hooks/useDevice'
 import { Box, Stack } from '@mui/material'
 import { LanguageOptions } from 'contexts/language/interface'
 import { IThemeStyle } from 'contexts/theme/interface'
 import { selectProductList } from 'stores/product/selector'
 import { getProductList } from 'stores/product/action'
 import ProductBody from 'pages/organize/product/components/ProductBody'
-import InvoiceForm from 'components/shared/forms/InvoiceForm'
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
-import { INVOICE_FORM_WIDTH_COMPACTED, INVOICE_FORM_WIDTH_EXPANDED } from './constant'
 import { selectConfig } from 'stores/config/selector'
+import { INVOICE_FORM_WIDTH_COMPACTED, INVOICE_FORM_WIDTH_EXPANDED } from 'pages/pos/sale/constant'
 
 const mapData = (
   item: any,
@@ -51,10 +45,9 @@ const mapData = (
   }
 }
 
-const Sale = () => {
+const ProductContainer = ({ onAddProduct }: { onAddProduct: (data: any) => void }) => {
   const dispatch = useAppDispatch()
   const { theme } = useTheme()
-  const { device } = useDevice()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectProductList)
   const [queryParams, setQueryParams] = useSearchParams()
@@ -85,65 +78,51 @@ const Sale = () => {
     handleChangeQuery({ search: value, page: 1 })
   }, 500)
 
-  const handleAddProduct = (data: any) => {
-    console.log(data)
-  }
-
   return (
-    <Layout
-      navbar={
-        <Breadcrumb
-          list={breadcrumbs}
-          step={2}
-          selectedOption={{ navbar: '/pos/sale' }}
-        />
-      }
-    >
-      <Container padding={`${theme.responsive[device]?.padding.side}px`}>
-        <Stack direction={'row'} gap={3}>
-          <Stack
-            direction={'column'}
-            sx={{
-              position: 'relative',
-              height: '100%',
-              width: `calc(100% - ${isOpenedCart ? INVOICE_FORM_WIDTH_EXPANDED : INVOICE_FORM_WIDTH_COMPACTED }px)`,
-              minHeight: `calc(100vh - ${
-                FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP
-              }px)`,
-            }}
-          >
-            <Box>
-              <TitleContainer text={translate('TITLE_SALE_LIST') as String}>
-                <Stack direction={'row'} gap={1}>
-                  <SearchButton onChange={handleChangeSearch} />
-                </Stack>
-              </TitleContainer>
-            </Box>
-            <Box
-              sx={{
-                padding: `3px 0`,
-                height: '100%'
-              }}
-            >
-              <StickyTable
-                rows={data?.map((item: any) =>
-                  mapData(item, lang, theme, handleAddProduct)
-                )}
-                columns={[]}
-                count={metaData?.total}
-                limit={metaData?.limit}
-                skip={metaData?.skip}
-                onChangeLimit={handleChangeLimit}
-                onChangePage={handleChangePage}
-                isGrid={true}
-              />
-            </Box>
-          </Stack>
-          <InvoiceForm transactions={[]} />
-        </Stack>
-      </Container>
-    </Layout>
+    
+      <Stack
+        direction={'column'}
+        sx={{
+          position: 'relative',
+          height: '100%',
+          width: `calc(100% - ${
+            isOpenedCart
+              ? INVOICE_FORM_WIDTH_EXPANDED
+              : INVOICE_FORM_WIDTH_COMPACTED
+          }px)`,
+          minHeight: `calc(100vh - ${
+            FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP
+          }px)`,
+        }}
+      >
+        <Box>
+          <TitleContainer text={translate('TITLE_SALE_LIST') as String}>
+            <Stack direction={'row'} gap={1}>
+              <SearchButton onChange={handleChangeSearch} />
+            </Stack>
+          </TitleContainer>
+        </Box>
+        <Box
+          sx={{
+            padding: `3px 0`,
+            height: '100%',
+          }}
+        >
+          <StickyTable
+            rows={data?.map((item: any) =>
+              mapData(item, lang, theme, onAddProduct)
+            )}
+            columns={[]}
+            count={metaData?.total}
+            limit={metaData?.limit}
+            skip={metaData?.skip}
+            onChangeLimit={handleChangeLimit}
+            onChangePage={handleChangePage}
+            isGrid={true}
+          />
+        </Box>
+      </Stack>
   )
 }
 
-export default Sale
+export default ProductContainer

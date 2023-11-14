@@ -9,45 +9,55 @@ import { SearchButton } from 'components/shared/buttons/CustomButton'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect } from 'react'
-import { debounce } from 'utils/index'
-import { useSearchParams } from 'react-router-dom'
-import useLanguage from 'hooks/useLanguage'
+import { currencyFormat, debounce, renderStage, timeFormat } from 'utils/index'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import useDevice from 'hooks/useDevice'
-import { Box, Stack } from '@mui/material'
-import { LanguageOptions } from 'contexts/language/interface'
+import { Box, Stack, Typography } from '@mui/material'
 import { selectPaymentList } from 'stores/payment/selector'
 import { getPaymentList } from 'stores/payment/action'
+import { CustomizedIconButton } from 'components/shared/buttons/ActionButton'
+import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
 
 const paymentColumns: ITableColumn<any>[] = [
-  { label: translate('APPOINTMENT_TIME'), id: 'appointmentDate', sort: 'desc' },
-  { label: translate('DURATION'), id: 'duration' },
-  { label: translate('CATEGORY'), id: 'category' },
-  { label: translate('NOTE'), id: 'note' },
+  { label: translate('INVOICE'), id: 'invoice' },
+  { label: translate('DOCTOR'), id: 'doctor' },
   { label: translate('PATIENT'), id: 'patient' },
-  { label: translate('CONTACT'), id: 'contact' },
-  { label: translate('DOCTOR'), id: 'doctors' },
+  { label: translate('SUBTOTAL'), id: 'subtotal' },
+  { label: translate('TOTAL'), id: 'total' },
   { label: translate('STAGE'), id: 'stage' },
+  { label: translate('CREATED_AT'), id: 'createdAt' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
 
 const mapData = (
   item: any,
-  lang: LanguageOptions,
+  theme: any,
+  onClick: (id: string) => void
 ) => {
-
   return {
-    name: item?.name?.[lang] || item?.name?.['English'],
-    price: item?.price,
     _id: item?._id,
-    image: item?.images[0],
+    invoice: item?.invoice?.split('-')[1],
+    subtotal: currencyFormat(item?.subtotal),
+    total: currencyFormat(item?.total),
+    patient: <Stack>
+      <Typography>{item?.schedule?.patient?.username}</Typography>
+      <Typography color={theme.text.quaternary} variant={'p' as any}>{item?.schedule?.patient?.contact || '...'}</Typography>
+    </Stack>,
+    doctor: <Stack>
+      <Typography>{item?.schedule?.doctor?.username}</Typography>
+      <Typography color={theme.text.quaternary} variant={'p' as any}>{item?.schedule?.doctor?.contact || '...'}</Typography>
+    </Stack>,
+    stage: renderStage(item.stage, theme),
+    createdAt: timeFormat(item.createdAt, 'DD MMM YYYY'),
+    action: <CustomizedIconButton onClick={() => onClick(item?._id)} icon={<ArrowRightAltRoundedIcon />} />
   }
 }
 
 const Payment = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { theme } = useTheme()
   const { device } = useDevice()
-  const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectPaymentList)
   const [queryParams, setQueryParams] = useSearchParams()
 
@@ -76,6 +86,10 @@ const Payment = () => {
     handleChangeQuery({ search: value, page: 1 })
   }, 500)
 
+  const handleClick = (id: string) => {
+    navigate(`/pos/payment/${id}`)
+  }
+
   return (
     <Layout
       navbar={
@@ -102,7 +116,7 @@ const Payment = () => {
         >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, lang)
+              mapData(item, theme, handleClick)
             )}
             columns={paymentColumns}
             count={metaData?.total}
