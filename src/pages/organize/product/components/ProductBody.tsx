@@ -91,7 +91,10 @@ const ProductBody = ({
             <Typography>{currencyFormat(item?.price, item?.currency?.symbol)}</Typography>
           </Box>
           <Button
-            onClick={() => onEditStock && onEditStock(item)}
+            onClick={(event: any) => {
+              event.stopPropagation()
+              onEditStock && onEditStock(item)
+            }}
             sx={{
               backgroundColor: `${stockColor}22`,
               '&:hover': {

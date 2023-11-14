@@ -10,7 +10,7 @@ import useTheme from 'hooks/useTheme'
 import TitleContainer from '../containers/TitleContainer'
 import { translate } from 'contexts/language/LanguageContext'
 import { SearchButton } from '../buttons/CustomButton'
-import { useEffect } from 'react'
+import { forwardRef, useEffect, useImperativeHandle } from 'react'
 import { getProductList } from 'stores/product/action'
 import ProductBody from 'pages/organize/product/components/ProductBody'
 import { IThemeStyle } from 'contexts/theme/interface'
@@ -49,7 +49,7 @@ export const mapData = (
   }
 }
 
-const ProductBox = ({
+const ProductBox = forwardRef(({
   isOpen = false,
   onClose,
   onAddProduct,
@@ -57,15 +57,23 @@ const ProductBox = ({
   isOpen: boolean
   onClose: () => void
   onAddProduct: (data: any) => void
-}) => {
+}, ref) => {
   const { theme } = useTheme()
   const { lang } = useLanguage()
   const dispatch = useAppDispatch()
   const [queryParams, setQueryParams] = useSearchParams()
   const { data, metaData } = useAppSelector(selectProductList)
 
-  useEffect(() => {
+  const fetchListProduct = () => {
     dispatch(getProductList({ params: queryParams }))
+  }
+
+  useImperativeHandle(ref, () => ({
+    fetchListProduct,
+  }))
+
+  useEffect(() => {
+    fetchListProduct()
   }, [queryParams])
 
   const handleChangeQuery = (newQuery: any) => {
@@ -137,6 +145,6 @@ const ProductBox = ({
       </Box>
     </Dialog>
   )
-}
+})
 
 export default ProductBox

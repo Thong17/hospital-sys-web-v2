@@ -58,7 +58,7 @@ const ProductDetail = ({
           </Typography>
         </LabelDetail>
         <LabelDetail label={translate('PRICE') as String}>
-          <Typography>{currencyFormat(product?.price, <>&#36;</>)}</Typography>
+          <Typography>{currencyFormat(product?.price, product?.currency?.symbol)}</Typography>
         </LabelDetail>
       </Box>
       <Stack direction={'column'} gap={2} pt={2}>

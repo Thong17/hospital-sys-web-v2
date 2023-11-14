@@ -39,6 +39,7 @@ const CartContainer = ({
   const commentRef = useRef<any>(document.createElement('input'))
   const [productDialog, setProductDialog] = useState({ open: false })
   const [cardItems, setCardItems] = useState<any[]>([])
+  const productBoxRef = useRef<any>(null)
 
   useEffect(() => {
     commentRef.current.value = data?.comment
@@ -72,6 +73,7 @@ const CartContainer = ({
             discount: data?.discount,
           },
         ])
+        productBoxRef.current?.fetchListProduct()
       })
       .catch(() => {})
   }
@@ -79,6 +81,7 @@ const CartContainer = ({
   return (
     <>
       <ProductBox
+        ref={productBoxRef}
         isOpen={productDialog.open}
         onClose={() => setProductDialog({ open: false })}
         onAddProduct={handleAddProduct}

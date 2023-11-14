@@ -57,6 +57,7 @@ export const mapData = (
     theme
   )
   return {
+    _id: item?._id,
     name: item?.name?.[lang] || item?.name?.['English'],
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
     body: (
