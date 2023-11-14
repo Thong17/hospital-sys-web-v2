@@ -24,6 +24,28 @@ export class PaymentService {
             throw error
         }
     }
+    async appendTransaction({ id, data }: { id: String, data: any }) {
+        try {
+            const response = await axios.put(`/operation/payment/transaction/append/${id}`, data)
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
+    async removeTransaction({ id, transactionId, reason }: { id: String, transactionId: any, reason: string }) {
+        try {
+            const response = await axios.put(`/operation/payment/transaction/remove/${id}`, { transactionId, reason })
+            notify(response?.data?.message, 'success')
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async accept({ id, reason }: { id: String, reason: String }) {
         try {
             const response = await axios.post(`/operation/payment/accept/${id}`, { note: reason })

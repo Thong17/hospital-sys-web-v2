@@ -12,20 +12,15 @@ import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
 import { translate } from 'contexts/language/LanguageContext'
 import { CustomizedButton } from '../buttons/CustomButton'
 import { useEffect, useState } from 'react'
-import {
-  getTransactionDelete,
-} from 'stores/transaction/action'
-import useAlert from 'hooks/useAlert'
 import { ProductItem } from '../containers/CartContainer'
 import { getPaymentDetail } from 'stores/payment/action'
 import { selectPaymentDetail } from 'stores/payment/selector'
 
-const InvoiceForm = ({ id }: { id?: string }) => {
+const InvoiceForm = ({ id, onRemove }: { id?: string, onRemove: (data: any) => void }) => {
   const dispatch = useAppDispatch()
   const { isOpenedCart } = useAppSelector(selectConfig)
   const [cardItems, setCardItems] = useState<any[]>([])
   const { theme } = useTheme()
-  const confirm = useAlert()
   const { data: detail } = useAppSelector(selectPaymentDetail)
 
   useEffect(() => {
@@ -51,28 +46,6 @@ const InvoiceForm = ({ id }: { id?: string }) => {
       setCardItems([])
     }
   }, [detail?.transactions])
-
-  const handleRemoveProduct = (data: any) => {
-    confirm({
-      title: 'REMOVE_PRODUCT_TITLE',
-      description: 'REMOVE_PRODUCT_DESCRIPTION',
-      variant: 'error',
-      reason: true,
-    })
-      .then(({ reason }: any) => {
-        dispatch(getTransactionDelete({ id: data?._id, reason }))
-          .unwrap()
-          .then((response: any) => {
-            if (response?.code !== 'SUCCESS') return
-            const { data } = response
-            setCardItems((prev: any) =>
-              prev.filter((item: any) => item._id !== data?._id)
-            )
-          })
-          .catch(() => {})
-      })
-      .catch(() => {})
-  }
 
   return (
     <Box
@@ -128,7 +101,7 @@ const InvoiceForm = ({ id }: { id?: string }) => {
               <ProductItem
                 _id={item?._id}
                 key={key}
-                onRemove={handleRemoveProduct}
+                onRemove={onRemove}
                 filename={item?.filename}
                 name={item?.name}
                 price={item?.price}

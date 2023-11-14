@@ -14,6 +14,16 @@ export const getPaymentUpdate: any = createAsyncThunk(
     serviceWrapper(service.update)
 )
 
+export const getPaymentAppendTransaction: any = createAsyncThunk(
+    'payment/appendTransaction',
+    serviceWrapper(service.appendTransaction)
+)
+
+export const getPaymentRemoveTransaction: any = createAsyncThunk(
+    'payment/removeTransaction',
+    serviceWrapper(service.removeTransaction)
+)
+
 export const getPaymentDelete: any = createAsyncThunk(
     'payment/delete',
     serviceWrapper(service.delete)

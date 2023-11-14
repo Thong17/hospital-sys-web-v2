@@ -4,7 +4,7 @@ import TitleContainer from 'components/shared/containers/TitleContainer'
 import { SearchButton } from 'components/shared/buttons/CustomButton'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { useEffect } from 'react'
+import { forwardRef, useEffect, useImperativeHandle } from 'react'
 import { debounce, renderColorByValue, sumArrayValues } from 'utils/index'
 import { useSearchParams } from 'react-router-dom'
 import useLanguage from 'hooks/useLanguage'
@@ -45,7 +45,7 @@ const mapData = (
   }
 }
 
-const ProductContainer = ({ onAddProduct }: { onAddProduct: (data: any) => void }) => {
+const ProductContainer = forwardRef(({ onAddProduct }: { onAddProduct: (data: any) => void }, ref) => {
   const dispatch = useAppDispatch()
   const { theme } = useTheme()
   const { lang } = useLanguage()
@@ -53,12 +53,16 @@ const ProductContainer = ({ onAddProduct }: { onAddProduct: (data: any) => void 
   const [queryParams, setQueryParams] = useSearchParams()
   const { isOpenedCart } = useAppSelector(selectConfig)
 
-  const fetchListSale = (queryParams: any) => {
+  const fetchListProduct = (queryParams: any) => {
     dispatch(getProductList({ params: queryParams }))
   }
 
+  useImperativeHandle(ref, () => ({
+    fetchListProduct,
+  }))
+
   useEffect(() => {
-    fetchListSale(queryParams)
+    fetchListProduct(queryParams)
   }, [queryParams])
 
   const handleChangeQuery = (newQuery: any) => {
@@ -79,7 +83,6 @@ const ProductContainer = ({ onAddProduct }: { onAddProduct: (data: any) => void 
   }, 500)
 
   return (
-    
       <Stack
         direction={'column'}
         sx={{
@@ -123,6 +126,6 @@ const ProductContainer = ({ onAddProduct }: { onAddProduct: (data: any) => void 
         </Box>
       </Stack>
   )
-}
+})
 
 export default ProductContainer
