@@ -95,6 +95,7 @@ const CartContainer = ({
             total: data?.total,
             note: data?.note,
             discount: data?.discount,
+            image: data?.product?.images?.[0]
           },
         ])
         productBoxRef.current?.fetchListProduct()
