@@ -17,8 +17,9 @@ import useDevice from 'hooks/useDevice'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import { StyledTypography } from '../table/Typography'
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
-import { getTransactionCreate } from 'stores/transaction/action'
+import { getTransactionCreate, getTransactionDelete } from 'stores/transaction/action'
 import { useParams } from 'react-router'
+import useAlert from 'hooks/useAlert'
 
 export const FORM_WIDTH_EXPANDED = 470
 export const FORM_WIDTH_COMPACTED = 60
@@ -33,6 +34,7 @@ const CartContainer = ({
   onEnd: (data: any) => void
 }) => {
   const { id } = useParams()
+  const confirm = useAlert()
   const { theme } = useTheme()
   const dispatch = useAppDispatch()
   const { isOpenedCart } = useAppSelector(selectConfig)
@@ -44,6 +46,27 @@ const CartContainer = ({
   useEffect(() => {
     commentRef.current.value = data?.comment
   }, [data])
+
+  const handleRemoveProduct = (data: any) => {
+    confirm({
+      title: 'REMOVE_PRODUCT_TITLE',
+      description: 'REMOVE_PRODUCT_DESCRIPTION',
+      variant: 'error',
+      reason: true
+    })
+      .then(({ reason }: any) => {
+        dispatch(getTransactionDelete({ id: data?._id, reason }))
+          .unwrap()
+          .then((response: any) => {
+            if (response?.code !== 'SUCCESS') return
+            const { data } = response
+            setCardItems((prev: any) => prev.filter((item: any) => item._id !== data?._id))
+            productBoxRef.current?.fetchListProduct()
+          })
+          .catch(() => {})
+      })
+      .catch(() => {})
+  }
 
   const handleAddProduct = (data: any) => {
     const { name, price, currency, product } = data || {}
@@ -64,6 +87,7 @@ const CartContainer = ({
         setCardItems([
           ...cardItems,
           {
+            _id: data?._id,
             name: data?.description,
             price: data?.price,
             currency: data?.currency,
@@ -148,7 +172,7 @@ const CartContainer = ({
               gap='10px'
             >
               {cardItems.map((item: any, key: number) => (
-                <ProductItem data={item} key={key} />
+                <ProductItem data={item} key={key} onRemove={handleRemoveProduct} />
               ))}
             </Stack>
             <Stack gap='7px'>
@@ -189,7 +213,7 @@ const CartContainer = ({
 // TODO: product cart
 const PRODUCT_IMAGE_SIZE = 45
 
-const ProductItem = ({ data }: { data: any }) => {
+const ProductItem = ({ data, onRemove }: { data: any, onRemove: (data: any) => void }) => {
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
@@ -305,6 +329,7 @@ const ProductItem = ({ data }: { data: any }) => {
         <StyledTypography>{currencyFormat(data?.total, '&#36;')}</StyledTypography>
       </Stack>
       <IconButton
+        onClick={() => onRemove(data)}
         size='small'
         sx={{
           backgroundColor: `${theme.color.error}22`,
