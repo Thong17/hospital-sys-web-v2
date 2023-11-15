@@ -139,7 +139,7 @@ const Sale = () => {
               />
             </Box>
           </Stack>
-          <InvoiceForm transactions={[]} />
+          <InvoiceForm onRemove={() => {}} />
         </Stack>
       </Container>
     </Layout>
