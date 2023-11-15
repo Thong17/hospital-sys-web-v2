@@ -30,9 +30,11 @@ import ListTable from 'components/shared/table/ListTable'
 import useLanguage from 'hooks/useLanguage'
 import {
   CancelButton,
-  UpdateButton,
+  CreateButton,
 } from 'components/shared/buttons/CustomButton'
 import { getExchangeRateList } from 'stores/exchangeRate/action'
+import { getStockCreate, getStockList } from 'stores/stock/action'
+import { selectStockList } from 'stores/stock/selector'
 
 const ProductStock = () => {
   const { id } = useParams()
@@ -40,6 +42,7 @@ const ProductStock = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { data } = useAppSelector(selectProductDetail)
+  const { data: stockList } = useAppSelector(selectStockList)
   const { data: currencies, status: currencyStatus } = useAppSelector(
     selectExchangeRateList
   )
@@ -62,10 +65,20 @@ const ProductStock = () => {
   }, [currencyStatus])
 
   useEffect(() => {
+    if (!id) return
+    const params = new URLSearchParams()
+    params.append('productId', id)
+    dispatch(getStockList({ params }))
+  }, [id])
+
+  useEffect(() => {
     dispatch(getProductDetail({ id }))
   }, [id])
 
-  const onSubmit = () => {}
+  const onSubmit = (data: any) => {
+    if (!id) return
+    dispatch(getStockCreate({ ...data, product: id }))
+  }
 
   return (
     <Layout
@@ -104,10 +117,9 @@ const ProductStock = () => {
         <TitleContainer text={translate('TITLE_PRODUCT_STOCK') as String}>
           <Stack direction={'row'} gap={1}></Stack>
         </TitleContainer>
-        <Stack direction={'row'}>
-          <form onSubmit={handleSubmit(onSubmit)} style={{ width: PRODUCT_FORM_WIDTH }}>
+        <Stack direction={'row'} gap={3} pt={3}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: PRODUCT_FORM_WIDTH, height: '500px' }}>
             <Box
-              pt={5}
               sx={{
                 width: '100%',
                 display: 'grid',
@@ -200,14 +212,14 @@ const ProductStock = () => {
                 sx={{ gridArea: 'action' }}
               >
                 <CancelButton onClick={() => navigate(-1)} />
-                <UpdateButton
+                <CreateButton
                   type='submit'
                   onClick={handleSubmit(onSubmit)}
                 />
               </Stack>
             </Box>
           </form>
-          <ProductDetail data={data} />
+          <ProductDetail product={data} stocks={stockList} />
         </Stack>
       </Container>
     </Layout>

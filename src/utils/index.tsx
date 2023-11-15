@@ -62,7 +62,7 @@ export const debounce = (cb: any, delay = 1000) => {
   }
 }
 
-export const currencyFormat = (value: any, symbol: any, decimal = 0) => {
+export const currencyFormat = (value: any, symbol: any = '&#36;', decimal = 0) => {
   let place = value % 1 !== 0 ? 2 : decimal
 
   if (!value || typeof value !== 'number') return <span>0{symbol}</span>
@@ -76,13 +76,10 @@ export const currencyFormat = (value: any, symbol: any, decimal = 0) => {
         '& p,': {
           lineHeight: 1,
         },
-        '& .currency-symbol': {
-          fontSize: '14px',
-        },
       }}
     >
       <span>{value?.toFixed(place).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') || 0}</span>
-      <span className='currency-symbol'>{symbol}</span>
+      <span className='currency-symbol' dangerouslySetInnerHTML={{ __html: symbol }} />
     </Box>
   )
 }
@@ -546,6 +543,22 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
   }
 }
 
+export const renderColorByValue = (value: number, warn: number, theme: IThemeStyle) => {
+  switch (true) {
+    case value > warn:
+      return theme.color.success
+
+    case value > 0:
+      return theme.color.warning
+
+    case value <= 0:
+      return theme.color.error
+
+    default:
+      return theme.color.info
+  }
+}
+
 export const downloadBuffer = (buffer: any, filename: string) => {
   const url = window.URL.createObjectURL(
     new Blob([buffer], {
@@ -584,15 +597,15 @@ export const renderCategory = (value: string, theme: any) => {
 
 export const renderStage = (value: string, theme: any) => {
   switch (true) {
-    case value === 'STARTED':
+    case ['STARTED'].includes(value):
       return <LabelStatus label={translate(value)} color={theme.color.info} />
 
-    case value === 'ACCEPTED':
+    case ['ACCEPTED', 'COMPLETED'].includes(value):
       return (
         <LabelStatus label={translate(value)} color={theme.color.success} />
       )
 
-    case ['REFUSED', 'ENDED'].includes(value):
+    case ['REFUSED', 'ENDED', 'REMOVED'].includes(value):
       return <LabelStatus label={translate(value)} color={theme.color.error} />
 
     default:
@@ -652,5 +665,14 @@ export const convertToFormData = (data: any) => {
 }
 
 export const isBase64 = (value: string) => {
-  return value.includes('base64')
+  return value?.includes('base64')
+}
+
+export const sumArrayValues = (array: number[]) => {
+  let sum = 0
+  array?.forEach((value: number) => {
+    if (typeof value !== 'number') return
+    sum += value
+  })
+  return sum
 }

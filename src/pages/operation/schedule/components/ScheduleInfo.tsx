@@ -12,6 +12,7 @@ const ScheduleInfo = ({ data }: any) => {
         backgroundColor: theme.layout.sidebar,
         padding: '0 20px',
         borderRadius: theme.radius.ternary,
+        boxShadow: theme.shadow.quaternary,
       }}
     >
       <Stack direction={'row'}>

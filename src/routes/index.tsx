@@ -7,6 +7,7 @@ import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail } from 'pages/operation'
 import { Product, ProductCreate, ProductDetail, ProductHistory, ProductStock, ProductUpdate } from 'pages/organize'
+import { Payment, PaymentDetail, PointOfSale, Sale } from 'pages/pos'
 import { RouteObject } from 'react-router'
 
 const routes: RouteObject[] = [
@@ -314,6 +315,36 @@ const routes: RouteObject[] = [
                 element: (
                     <AuthGuard role={{ menu: 'organize', route: 'product', action: 'detail' }}>
                         <ProductHistory />
+                    </AuthGuard>
+                ),
+            },
+        ],
+    },
+    {
+        path: '/pos',
+        element: <PointOfSale />,
+        children: [
+            {
+                path: 'sale',
+                element: (
+                    <AuthGuard role={{ menu: 'pos', route: 'sale', action: 'list' }}>
+                        <Sale />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'payment',
+                element: (
+                    <AuthGuard role={{ menu: 'pos', route: 'payment', action: 'list' }}>
+                        <Payment />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'payment/:id',
+                element: (
+                    <AuthGuard role={{ menu: 'pos', route: 'payment', action: 'detail' }}>
+                        <PaymentDetail />
                     </AuthGuard>
                 ),
             },

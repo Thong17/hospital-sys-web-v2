@@ -26,10 +26,10 @@ export const APP_MENU: any = [
         permission: 'sale'
       },
       {
-        route: '/pos/stock',
-        title: 'STOCK',
+        route: '/pos/payment',
+        title: 'PAYMENT',
         icon: <ArrowRightAltRoundedIcon />,
-        permission: 'stock'
+        permission: 'payment'
       },
     ]
   },

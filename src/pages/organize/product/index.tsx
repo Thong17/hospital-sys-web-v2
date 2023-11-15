@@ -2,7 +2,7 @@ import { Layout } from 'components/layouts/Layout'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import Container from 'components/shared/Container'
 import { breadcrumbs } from '..'
-import { ITableColumn, StickyTable } from 'components/shared/table/StickyTable'
+import { StickyTable } from 'components/shared/table/StickyTable'
 import useTheme from 'hooks/useTheme'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import {
@@ -20,6 +20,8 @@ import {
   convertBufferToArrayBuffer,
   debounce,
   downloadBuffer,
+  renderColorByValue,
+  sumArrayValues,
 } from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
@@ -37,123 +39,29 @@ import {
 import { LanguageOptions } from 'contexts/language/interface'
 import useLanguage from 'hooks/useLanguage'
 import useDevice from 'hooks/useDevice'
-import { currencyFormat } from 'utils/index'
-import LocalOfferRoundedIcon from '@mui/icons-material/LocalOfferRounded'
-import MoveToInboxRoundedIcon from '@mui/icons-material/MoveToInboxRounded'
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
-import { Box, Button, Stack, Typography, DialogActions } from '@mui/material'
+import { Box, Stack, DialogActions } from '@mui/material'
 import { IThemeStyle } from 'contexts/theme/interface'
-import ImageContainer from 'components/shared/containers/ImageContainer'
-import { DeviceOptions } from 'contexts/web/interface'
+import ProductBody from './components/ProductBody'
 
-const productColumns: ITableColumn<any>[] = [
-  { label: translate('USERNAME'), id: 'username', sort: 'desc' },
-  { label: translate('FULL_NAME'), id: 'fullName', sort: 'desc' },
-  { label: translate('GENDER'), id: 'gender' },
-  { label: translate('RATE'), id: 'rate' },
-  { label: translate('STATUS'), id: 'status' },
-  { label: translate('ACTION'), id: 'action', align: 'right' },
-]
-const IMAGE_ITEM_HEIGHT = 125
-
-const mapData = (
+export const mapData = (
   item: any,
   lang: LanguageOptions,
   theme: IThemeStyle,
-  device: DeviceOptions,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onEditStock: (_data: any) => void
 ) => {
+  const color = renderColorByValue(
+    sumArrayValues(item?.stocks?.map((item: any) => item.remain)), 
+    sumArrayValues(item?.stocks?.map((item: any) => item.alertAt)), 
+    theme
+  )
   return {
+    _id: item?._id,
     name: item?.name?.[lang] || item?.name?.['English'],
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
     body: (
-      <>
-        <Box
-          sx={{
-            minHeight: `${IMAGE_ITEM_HEIGHT}px`,
-            height: `${IMAGE_ITEM_HEIGHT}px`,
-            borderRadius: theme.radius.ternary,
-            boxShadow: theme.shadow.quaternary,
-            '& img': { objectFit: 'cover', borderRadius: theme.radius.ternary },
-          }}
-        >
-          <ImageContainer
-            url={`${item?.images[0]?.filename}?bucket=${item?.images[0]?.bucketName}&mimetype=${item?.images[0]?.mimetype}`}
-          />
-        </Box>
-        <Stack
-          direction={'column'}
-          justifyContent={'space-between'}
-          sx={{
-            height: `calc(100% - ${IMAGE_ITEM_HEIGHT}px)`,
-            borderRadius: theme.radius.ternary,
-            boxShadow: theme.shadow.quaternary,
-            padding: '5px',
-          }}
-        >
-          <Stack direction={'column'} sx={{ padding: '0 5px' }}>
-            <Typography
-              noWrap
-              sx={{ fontSize: theme.responsive[device]?.text?.secondary }}
-            >
-              {item?.name?.[lang] || item?.name?.['English']}
-            </Typography>
-            <Typography
-              noWrap
-              sx={{
-                fontSize: theme.responsive[device]?.text?.quaternary,
-                color: theme.text.quaternary,
-                lineHeight: 1,
-              }}
-            >
-              {item?.description}
-            </Typography>
-          </Stack>
-          <Stack
-            direction={'row'}
-            gap={'5px'}
-            sx={{
-              '& button, & div': {
-                height: '23px',
-                borderRadius: theme.radius.primary,
-                display: 'flex',
-                justifyContent: 'start',
-                alignItems: 'center',
-                padding: '0 5px',
-                gap: '3px',
-                '& svg.icon': {
-                  fontSize: '13px',
-                },
-              },
-            }}
-          >
-            <Box sx={{ width: '100%' }}>
-              <LocalOfferRoundedIcon className='icon' />
-              <Typography>{currencyFormat(item?.price, <>&#36;</>)}</Typography>
-            </Box>
-            <Button
-              onClick={() => onEditStock(item)}
-              sx={{
-                backgroundColor: `${theme.color.info}22`,
-                '&:hover': {
-                  backgroundColor: `${theme.color.info}44`,
-                },
-                '& *': {
-                  color: `${theme.color.info} !important`,
-                },
-              }}
-            >
-              <MoveToInboxRoundedIcon className='icon' />
-              <Typography>{item?.price}</Typography>
-              <ArrowRightAltRoundedIcon
-                sx={{ fontSize: theme.responsive[device]?.text?.h3 }}
-              />
-            </Button>
-          </Stack>
-        </Stack>
-      </>
+      <ProductBody onEditStock={onEditStock} stockColor={color} item={item} />
     ),
   }
 }
@@ -166,7 +74,6 @@ const Product = () => {
   const { device } = useDevice()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectProductList)
-  const [columns, setColumns] = useState<ITableColumn<any>[]>(productColumns)
   const [queryParams, setQueryParams] = useSearchParams()
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
 
@@ -241,20 +148,6 @@ const Product = () => {
         setImportDialog({ open: true, data: response?.data })
       })
       .catch(() => {})
-  }
-
-  const handleSort = (column: any) => {
-    const toggleSort = (value: 'asc' | 'desc') => {
-      if (value === 'asc') return 'desc'
-      return 'asc'
-    }
-    const sort = toggleSort(column.sort)
-    handleChangeQuery({ [column.id]: sort })
-    setColumns((prev: any) =>
-      prev.map((item: any) =>
-        item.id === column.id ? { ...item, sort } : item
-      )
-    )
   }
 
   const handleChangeQuery = (newQuery: any) => {
@@ -350,10 +243,9 @@ const Product = () => {
         >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, lang, theme, device, handleEdit, handleDelete, handleEditStock)
+              mapData(item, lang, theme, handleEdit, handleDelete, handleEditStock)
             )}
-            columns={columns}
-            onSort={handleSort}
+            columns={[]}
             count={metaData?.total}
             limit={metaData?.limit}
             skip={metaData?.skip}

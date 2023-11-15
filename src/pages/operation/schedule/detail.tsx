@@ -76,7 +76,7 @@ const ScheduleDetail = () => {
   })
 
   useEffect(() => {
-    if (!data || status !== 'COMPLETED') return
+    if (!data?.patientRecord || status !== 'COMPLETED') return
     reset(data.patientRecord)
   }, [data, status])
 
@@ -214,7 +214,7 @@ const ScheduleDetail = () => {
                   gridArea='condition'
                 />
                 {categoryStatus !== 'COMPLETED' ? (
-                  <Loading sx={{ gridArea: 'categories' }} />
+                  <Loading sx={{ gridArea: 'treatments' }} />
                 ) : (
                   <SelectInput
                     {...register('treatments')}
@@ -258,7 +258,7 @@ const ScheduleDetail = () => {
                 />
               </Box>
             </Box>
-            <CartContainer data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
+            <CartContainer transactions={data?.transactions} data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
           </Stack>
         </form>
       </Container>

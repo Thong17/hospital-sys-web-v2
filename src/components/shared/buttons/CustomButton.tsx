@@ -39,7 +39,6 @@ export const CustomizedButton = ({
     <Tooltip title={tooltip}>
       <CustomButton
         {...props}
-        disabled={isLoading}
         sx={{
           backgroundColor: `${color || theme.color.info}22`,
           color: color || theme.color.info,

@@ -86,14 +86,14 @@ export const StickyTable = ({
             (!loading && pagination ? (
               <GridContainer>
                 {rows.slice(0, skip * limit + limit).map((row, index) => {
-                  return <GridItem data={row} key={index} />
+                  return <GridItem onClick={onClick} data={row} key={index} />
                 })}
               </GridContainer>
             ) : (
               !loading && (
                 <GridContainer>
                   {rows.map((row, index) => {
-                    return <GridItem data={row} key={index} />
+                    return <GridItem onClick={onClick} data={row} key={index} />
                   })}
                 </GridContainer>
               )
