@@ -18,14 +18,15 @@ interface ISchedule {
     }
     detail: {
         status: TypeStatus
-        data: any,
+        data: any
         error: any
+        records: any[]
     }
 }
 
 const initialState: ISchedule = {
     form: { isLoading: false },
-    detail: { status: 'INIT', data: null, error: null },
+    detail: { status: 'INIT', data: null, records: [], error: null },
     list: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
 
@@ -61,6 +62,7 @@ const scheduleSlice = createSlice({
             state.detail.error = null
             state.detail.status = 'COMPLETED'
             state.detail.data = action.payload?.data
+            state.detail.records = action.payload?.records
         })
     },
 })

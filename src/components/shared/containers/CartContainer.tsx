@@ -144,7 +144,7 @@ const CartContainer = ({
             FOOTER_HEIGHT + NAVBAR_HEIGHT + SPACE_TOP + SPACE_TOP
           }px)`,
           position: 'sticky',
-          top: '0',
+          top: '10px',
           borderRadius: theme.radius.ternary,
           padding: '10px',
           boxSizing: 'border-box',
