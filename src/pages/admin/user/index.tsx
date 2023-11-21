@@ -29,7 +29,6 @@ const userColumns: ITableColumn<any>[] = [
   { label: translate('USERNAME'), id: 'username', sort: 'desc' },
   { label: translate('POSITION'), id: 'segment' },
   { label: translate('ROLE'), id: 'role' },
-  { label: translate('CONTACT'), id: 'contact' },
   { label: translate('STATUS'), id: 'status' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
@@ -44,7 +43,6 @@ const mapData = (
     _id: item._id,
     username: item.username,
     segment: item.segment,
-    contact: item.contact,
     role: item.role?.name?.[lang] ?? item.role?.name?.['English'],
     status: item.status,
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,

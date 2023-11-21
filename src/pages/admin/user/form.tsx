@@ -31,8 +31,6 @@ export interface IUserForm {
   password: string
   segment: string
   role: string
-  email: string
-  contact: string
   status: boolean
   description: string
 }
@@ -101,7 +99,6 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
               gridTemplateAreas: `
                               'username username role'
                               'segment password password'
-                              'email email contact'
                               'description description description'
                               'status status status'
                               'action action action'
@@ -150,21 +147,6 @@ const form = ({ defaultValues }: { defaultValues: IUserForm }) => {
               type='password'
               required={!id}
               sx={{ gridArea: 'password' }}
-            />
-            <TextInput
-              {...register('email')}
-              label={translate('EMAIL')}
-              error={!!errors.email?.message}
-              helperText={errors.email?.message as ReactNode}
-              type='email'
-              sx={{ gridArea: 'email' }}
-            />
-            <TextInput
-              {...register('contact')}
-              label={translate('CONTACT')}
-              error={!!errors.contact?.message}
-              helperText={errors.contact?.message as ReactNode}
-              sx={{ gridArea: 'contact' }}
             />
             <TextInput
               {...register('description')}

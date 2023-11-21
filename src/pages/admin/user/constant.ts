@@ -5,8 +5,6 @@ export const initUser = {
   password: '',
   segment: '',
   role: '',
-  email: '',
-  contact: '',
   status: false,
   description: '',
 }
@@ -16,8 +14,6 @@ export const createUserSchema = yup.object().shape({
   password: yup.string().min(7).required('Please fill the password'),
   segment: yup.string().required('Please fill the segment'),
   role: yup.string().required(),
-  email: yup.string().optional(),
-  contact: yup.string().optional(),
   status: yup.boolean(),
   description: yup.string().optional(),
 })
@@ -27,8 +23,6 @@ export const updateUserSchema = yup.object().shape({
   password: yup.string().optional(),
   segment: yup.string().required('Please fill the segment'),
   role: yup.string().required(),
-  email: yup.string().optional(),
-  contact: yup.string().optional(),
   status: yup.boolean(),
   description: yup.string().optional(),
 })

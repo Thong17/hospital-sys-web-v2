@@ -2,7 +2,6 @@ import * as yup from 'yup'
 
 export const initPatient = {
   fullName: '',
-  username: '',
   gender: '',
   email: '',
   contact: '',
@@ -13,8 +12,7 @@ export const initPatient = {
 
 export const createPatientSchema = yup.object().shape({
   fullName: yup.string().optional(),
-  username: yup.string().min(2).required('PLEASE_FILL_THE_USERNAME'),
-  gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
+  gender: yup.string().optional(),
   email: yup.string().optional(),
   contact: yup.string().required('PLEASE_SELECT_THE_CONTACT'),
   dateOfBirth: yup.string().optional(),
@@ -24,8 +22,7 @@ export const createPatientSchema = yup.object().shape({
 
 export const updatePatientSchema = yup.object().shape({
   fullName: yup.string().optional(),
-  username: yup.string().min(2).required('PLEASE_FILL_THE_USERNAME'),
-  gender: yup.string().required('PLEASE_SELECT_THE_GENDER'),
+  gender: yup.string().optional(),
   email: yup.string().optional(),
   contact: yup.string().required('PLEASE_SELECT_THE_CONTACT'),
   dateOfBirth: yup.string().optional(),

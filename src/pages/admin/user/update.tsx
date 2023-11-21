@@ -63,8 +63,6 @@ const mapUserBody = (data: any): IUserForm => {
     username: data.username,
     role: data.role?._id ?? '',
     segment: data.segment,
-    email: data.email,
-    contact: data.contact,
     description: data.description,
     status: data.status,
     password: ''
