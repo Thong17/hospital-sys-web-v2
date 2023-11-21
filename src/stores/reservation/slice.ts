@@ -49,6 +49,7 @@ interface IReservation {
     detail: {
         status: TypeStatus
         data: any,
+        records: any[],
         error: any
     }
     history: {
@@ -71,7 +72,7 @@ const initialState: IReservation = {
     export: { isLoading: false, data: null, error: null },
     validate: { isLoading: false, data: null, error: null },
     import: { isLoading: false, data: null, error: null },
-    detail: { status: 'INIT', data: null, error: null },
+    detail: { status: 'INIT', data: null, records: [], error: null },
     history: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
     list: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
@@ -141,6 +142,7 @@ const reservationSlice = createSlice({
             state.detail.error = null
             state.detail.status = 'COMPLETED'
             state.detail.data = action.payload?.data
+            state.detail.records = action.payload?.records
         })
 
         // History
