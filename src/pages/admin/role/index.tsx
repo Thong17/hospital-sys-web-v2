@@ -257,7 +257,7 @@ const mapData = (
     status: item.status,
     description: item.description,
     createdAt: dateFormat(item.createdAt),
-    createdBy: item.createdBy,
+    createdBy: item.createdBy?.username,
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
   }
 }
