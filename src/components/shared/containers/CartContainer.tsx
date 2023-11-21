@@ -234,6 +234,7 @@ const CartContainer = ({
                 <CustomizedButton
                   color={theme.color.error}
                   fullWidth
+                  disabled={data?.stage === 'ENDED'}
                   onClick={() => onEnd({ comment: commentRef.current?.value })}
                   label={translate('END')}
                 />

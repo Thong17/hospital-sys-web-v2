@@ -7,8 +7,11 @@ import { Login, Register } from 'pages/auth'
 import Home from 'pages/home/Home'
 import { Operation, Reservation, ReservationCreate, ReservationDetail, ReservationHistory, ReservationUpdate, Schedule, ScheduleDetail } from 'pages/operation'
 import { Product, ProductCreate, ProductDetail, ProductHistory, ProductStock, ProductUpdate } from 'pages/organize'
+import Config from 'pages/config'
 import { Payment, PaymentDetail, PointOfSale, Sale } from 'pages/pos'
 import { RouteObject } from 'react-router'
+import { SaleReport } from 'pages/report/sale'
+import { TransactionReport } from 'pages/report/transaction'
 
 const routes: RouteObject[] = [
     {
@@ -357,6 +360,32 @@ const routes: RouteObject[] = [
                 ),
             },
         ],
+    },
+    {
+        path: '/report',
+        element: <PointOfSale />,
+        children: [
+            {
+                path: 'transaction',
+                element: (
+                    <AuthGuard role={{ menu: 'report', route: 'transaction', action: 'list' }}>
+                        <TransactionReport />
+                    </AuthGuard>
+                ),
+            },
+            {
+                path: 'sale',
+                element: (
+                    <AuthGuard role={{ menu: 'report', route: 'sale', action: 'list' }}>
+                        <SaleReport />
+                    </AuthGuard>
+                ),
+            },
+        ],
+    },
+    {
+        path: '/config',
+        element: <Config />
     },
     {
         path: '*',

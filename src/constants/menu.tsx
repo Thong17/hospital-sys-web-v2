@@ -6,6 +6,7 @@ import PriceChangeRoundedIcon from '@mui/icons-material/PriceChangeRounded'
 import WidgetsRoundedIcon from '@mui/icons-material/WidgetsRounded'
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded'
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded'
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 
 export const APP_MENU: any = [
   {
@@ -124,5 +125,10 @@ export const APP_MENU: any = [
         permission: 'sale',
       },
     ]
+  },
+  {
+    route: '/config',
+    title: 'CONFIG',
+    icon: <SettingsRoundedIcon />,
   },
 ]

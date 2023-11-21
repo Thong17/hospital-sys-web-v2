@@ -76,6 +76,7 @@ const Sidebar = () => {
         }}
       >
         {APP_MENU.map((nav: any, key: number) => {
+          if (!nav?.permission) return <SidebarItem key={key} nav={nav} />
           return checkAllFieldObject(user?.navigation?.[nav?.permission]) ? (
             <SidebarItem key={key} nav={nav} />
           ) : (
