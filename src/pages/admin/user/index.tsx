@@ -22,12 +22,14 @@ import { selectUserList } from 'stores/user/selector'
 import { getUserDelete, getUserExport, getUserImport, getUserList, getUserValidate } from 'stores/user/action'
 import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
+import SelectInput from 'components/shared/forms/SelectInput'
+import { SEGMENTS } from 'constants/options'
 
 const userColumns: ITableColumn<any>[] = [
   { label: translate('USERNAME'), id: 'username', sort: 'desc' },
-  { label: translate('SEGMENT'), id: 'segment' },
-  { label: translate('CONTACT'), id: 'contact' },
+  { label: translate('POSITION'), id: 'segment' },
   { label: translate('ROLE'), id: 'role' },
+  { label: translate('CONTACT'), id: 'contact' },
   { label: translate('STATUS'), id: 'status' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
@@ -49,6 +51,14 @@ const mapData = (
   }
 }
 
+const SEGMENT_FILTER_OPTIONS = [
+  {
+    value: 'ALL',
+    label: 'ALL',
+  },
+  ...SEGMENTS
+]
+
 const User = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -60,6 +70,7 @@ const User = () => {
   const [columns, setColumns] = useState<ITableColumn<any>[]>(userColumns)
   const [queryParams, setQueryParams] = useSearchParams()
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
+  const [segmentValue, setSegmentValue] = useState('GENERAL')
 
   const fetchListUser = (queryParams: any) => {
     dispatch(getUserList({ params: queryParams }))
@@ -147,6 +158,11 @@ const User = () => {
     setQueryParams({ ...query, ...newQuery })
   }
 
+  const handleChangeSegmentFilter = (event: any) => {
+    handleChangeQuery({ segment: event.target.value, page: 1 })
+    setSegmentValue(event.target.value)
+  }
+
   const handleChangePage = (page: string) => {
     handleChangeQuery({ page, limit: metaData?.limit })
   }
@@ -212,7 +228,8 @@ const User = () => {
       <Container padding='0'>
         <Box sx={{ paddingX: `${theme.responsive[device]?.padding.side}px` }}>
           <TitleContainer text={translate('TITLE_USER_LIST') as String}>
-            <Stack direction={'row'} gap={1}>
+            <Stack direction={'row'} justifyContent={'end'} gap={1} sx={{ width: '100%' }}>
+              <SelectInput options={SEGMENT_FILTER_OPTIONS} width={'130px'} value={segmentValue} onChange={handleChangeSegmentFilter} defaultValue={'GENERAL'} height='35px' />
               <SearchButton onChange={handleChangeSearch} />
               <OptionButton
                 onImport={handleValidationImport}
