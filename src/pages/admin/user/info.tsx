@@ -2,26 +2,42 @@ import { Layout } from 'components/layouts/Layout'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '..'
 import { translate } from 'contexts/language/LanguageContext'
-import UserForm, { IUserForm } from './form'
 import { useParams } from 'react-router'
 import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'app/store'
-import { selectUserDetail } from 'stores/user/selector'
-import { getUserDetail } from 'stores/user/action'
-import { initUser } from './constant'
+import { selectUserInfo } from 'stores/user/selector'
+import { getUserInfo } from 'stores/user/action'
 import Container from 'components/shared/Container'
+import { mapPatientBody } from '../patient/update'
+import PatientForm from '../patient/form'
+import DoctorForm from '../doctor/form'
+import { mapDoctorBody } from '../doctor/update'
 
 const UserUpdate = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
-  const { data } = useAppSelector(selectUserDetail)
+  const { data } = useAppSelector(selectUserInfo)
 
   useEffect(() => {
-    dispatch(getUserDetail({ id }))
+    dispatch(getUserInfo({ id }))
       .unwrap()
       .then(() => setIsLoading(false))
+      .catch(() => {})
   }, [id])
+
+  const renderUserForm = (type: string) => {
+    switch (true) {
+      case type === 'PATIENT':
+        return <PatientForm defaultValues={mapPatientBody(data?.info)} />
+
+      case type === 'DOCTOR':
+        return <DoctorForm defaultValues={mapDoctorBody(data?.info)} />
+    
+      default:
+        return <></>
+    }
+  }
 
   return (
     <Layout
@@ -34,39 +50,22 @@ const UserUpdate = () => {
               href: `/admin/user/update/${id}`,
               label: translate('UPDATE'),
             },
-            ...(data?.segment !== 'GENERAL'
-              ? [
-                  {
-                    id: 'info',
-                    href: `/admin/user/update/${id}/info`,
-                    label: translate('INFO'),
-                  },
-                ]
-              : []
-            )
+            {
+              id: 'info',
+              href: `/admin/user/update/${id}/info`,
+              label: translate('INFO'),
+            },
           ]}
-          step={3}
+          step={4}
           selectedOption={{ navbar: '/admin/user' }}
         />
       }
     >
       <Container>
-        {!isLoading && <UserForm defaultValues={mapUserBody(data)} />}
+        {!isLoading && renderUserForm(data?.user?.segment)}
       </Container>
     </Layout>
   )
-}
-
-const mapUserBody = (data: any): IUserForm => {
-  if (!data) return initUser
-  return {
-    username: data.username,
-    role: data.role?._id ?? '',
-    segment: data.segment,
-    description: data.description,
-    status: data.status,
-    password: ''
-  }
 }
 
 export default UserUpdate

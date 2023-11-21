@@ -48,10 +48,9 @@ const PatientUpdate = () => {
   )
 }
 
-const mapPatientBody = (data: any): IPatientForm => {
+export const mapPatientBody = (data: any): IPatientForm => {
   if (!data) return initPatient
   return {
-    username: data.username,
     fullName: data.fullName,
     dateOfBirth: inputDateFormat(data.dateOfBirth),
     gender: data.gender,

@@ -39,7 +39,7 @@ const mapData = (
   onAccept: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onRefuse: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
-  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
+  onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
 ) => {
   const { accept = false, refuse = false, update = false, delete: _delete = false } = user?.privilege?.operation?.reservation ?? {}
   return {

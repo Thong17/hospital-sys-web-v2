@@ -104,7 +104,7 @@ const PatientRecord = () => {
             )}
           </Stack>
         </Box>
-        <Stack direction={'column'} py={2}>
+        <Stack direction={'column'} py={2} gap={2}>
           {data?.records?.map((item: any, key: number) => {
             return <RecordDetail data={item} key={key} />
           })}
@@ -114,10 +114,9 @@ const PatientRecord = () => {
   )
 }
 
-const RecordDetail = ({ data }: any) => {
+export const RecordDetail = ({ data }: any) => {
   const { theme } = useTheme()
   const { lang } = useLanguage()
-  console.log(data?.patientRecord)
   return (
     <Box
       sx={{

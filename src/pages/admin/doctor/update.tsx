@@ -48,11 +48,10 @@ const DoctorUpdate = () => {
   )
 }
 
-const mapDoctorBody = (data: any): IDoctorForm => {
+export const mapDoctorBody = (data: any): IDoctorForm => {
   if (!data) return initDoctor
   return {
     fullName: data.fullName,
-    username: data.username,
     gender: data.gender,
     email: data.email,
     contact: data.contact,

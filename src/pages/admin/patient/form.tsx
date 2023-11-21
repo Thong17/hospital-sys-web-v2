@@ -23,7 +23,6 @@ import { GENDERS } from 'constants/options'
 
 export interface IPatientForm {
   fullName: string
-  username: string
   gender: string
   email: string
   contact: string
@@ -68,7 +67,7 @@ const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
             gridTemplateColumns: '1fr 1fr 1fr',
             gridGap: FORM_GAP,
             gridTemplateAreas: `
-                              'username fullName fullName'
+                              'fullName fullName fullName'
                               'dateOfBirth dateOfBirth gender'
                               'contact email email'
                               'description description description'
@@ -77,14 +76,6 @@ const form = ({ defaultValues }: { defaultValues: IPatientForm }) => {
                               `,
           }}
         >
-          <TextInput
-            {...register('username')}
-            label={translate('USERNAME')}
-            error={!!errors.username?.message}
-            helperText={errors.username?.message as ReactNode}
-            required
-            sx={{ gridArea: 'username' }}
-          />
           <TextInput
             {...register('fullName')}
             label={translate('FULL_NAME')}

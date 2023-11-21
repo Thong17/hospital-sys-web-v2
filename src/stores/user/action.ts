@@ -29,6 +29,11 @@ export const getUserDetail: any = createAsyncThunk(
     serviceWrapper(service.detail)
 )
 
+export const getUserInfo: any = createAsyncThunk(
+    'user/info',
+    serviceWrapper(service.info)
+)
+
 export const getUserHistory: any = createAsyncThunk(
     'user/history',
     serviceWrapper(service.history)

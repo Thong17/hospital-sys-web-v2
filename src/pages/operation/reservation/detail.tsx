@@ -16,7 +16,9 @@ import TitleContainer from 'components/shared/containers/TitleContainer'
 import { CustomizedIconButton, DeleteButton, EditButton } from 'components/shared/buttons/ActionButton'
 import useAlert from 'hooks/useAlert'
 import ActivityContainer from 'components/shared/containers/ActivityContainer'
-import { calculateDuration } from 'utils/index'
+import { calculateDuration, timeFormat } from 'utils/index'
+import { RecordDetail } from 'pages/admin/patient/record'
+import ArrowRightRoundedIcon from '@mui/icons-material/ArrowRightRounded'
 
 const ReservationDetail = () => {
   const dispatch = useAppDispatch()
@@ -24,7 +26,7 @@ const ReservationDetail = () => {
   const confirm = useAlert()
   const { id } = useParams()
   const { theme } = useTheme()
-  const { data } = useAppSelector(selectReservationDetail)
+  const { data, records } = useAppSelector(selectReservationDetail)
 
   useEffect(() => {
     dispatch(getReservationDetail({ id }))
@@ -88,7 +90,7 @@ const ReservationDetail = () => {
         <Stack direction={'column'} mb={2} sx={{ paddingTop: '20px', '& .section-container': { marginTop: '20px' } }}>
           <Stack sx={{ width: '100%' }} direction={'row'}>
             <LabelDetail label={translate('APPOINTMENT_DATE') as String}>
-              <Typography>{data?.appointmentDate || '...'}</Typography>
+              <Typography>{timeFormat(data?.appointmentDate, 'DD MMM, YYYY h:mm A') || '...'}</Typography>
             </LabelDetail>
             <LabelDetail label={translate('DURATION') as String}>
               <Typography>{calculateDuration(data?.duration) || '...'}</Typography>
@@ -104,7 +106,7 @@ const ReservationDetail = () => {
           </Stack>
           <Stack sx={{ width: '100%' }} direction={'row'}>
             <LabelDetail label={translate('PATIENT_NAME') as String}>
-              <Typography>{`${data?.patient?.lastName} ${data?.patient?.firstName}`}</Typography>
+              <Typography>{`${data?.patient?.fullName || data?.patient?.username}`}</Typography>
             </LabelDetail>
             <LabelDetail label={translate('PATIENT_CONTACT') as String}>
               <Typography>{data?.patient?.contact || '...'}</Typography>
@@ -115,6 +117,16 @@ const ReservationDetail = () => {
               <Typography>{data?.note || '...'}</Typography>
             </LabelDetail>
           </Stack>
+        </Stack>
+        
+        <Stack direction={'row'} alignItems={'center'}>
+          <ArrowRightRoundedIcon fontSize='large' sx={{ color: theme.text.tertiary, marginLeft: '-15px' }} />
+          <Typography>{translate('PATIENT_RECORDS')}</Typography>
+        </Stack>
+        <Stack direction={'column'} py={2} gap={2}>
+          {records?.map((item: any, key: number) => {
+            return <RecordDetail data={item} key={key} />
+          })}
         </Stack>
         <ActivityContainer data={data} />
       </Container>

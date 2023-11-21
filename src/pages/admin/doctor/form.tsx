@@ -33,7 +33,6 @@ import { GENDERS, SHIFT_DAY } from 'constants/options'
 
 export interface IDoctorForm {
   fullName: string
-  username: string
   gender: string
   email: string
   contact: string
@@ -119,7 +118,7 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
             gridTemplateColumns: '1fr 2fr 1fr 2fr',
             gridGap: FORM_GAP,
             gridTemplateAreas: `
-                              'username username fullName fullName'
+                              'fullName fullName fullName fullName'
                               'dateOfBirth dateOfBirth dateOfBirth gender'
                               'contact contact email email'
                               'specialties specialties specialties specialties'
@@ -131,14 +130,6 @@ const form = ({ defaultValues }: { defaultValues: IDoctorForm }) => {
                               `,
           }}
         >
-          <TextInput
-            {...register('username')}
-            label={translate('USERNAME')}
-            error={!!errors.username?.message}
-            helperText={errors.username?.message as ReactNode}
-            required
-            sx={{ gridArea: 'username' }}
-          />
           <TextInput
             {...register('fullName')}
             label={translate('FULL_NAME')}

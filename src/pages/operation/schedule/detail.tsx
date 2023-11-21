@@ -55,7 +55,7 @@ const ScheduleDetail = () => {
   const dispatch = useAppDispatch()
   const { id } = useParams()
   const { lang } = useLanguage()
-  const { data, status } = useAppSelector(selectScheduleDetail)
+  const { data, records, status } = useAppSelector(selectScheduleDetail)
   const { data: symptoms, status: symptomStatus } =
     useAppSelector(selectSymptomList)
   const { data: categories, status: categoryStatus } =
@@ -163,7 +163,7 @@ const ScheduleDetail = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack direction={'row'} gap={'10px'}>
             <Box sx={{ width: isOpenedCart ? `calc(100% - ${FORM_WIDTH_EXPANDED}px)` : `calc(100% - ${FORM_WIDTH_COMPACTED}px)`, height: 'fit-content' }}>
-              <ScheduleInfo data={data} />
+              <ScheduleInfo data={data} records={records} />
               <Box
                 sx={{
                   width: '100%',

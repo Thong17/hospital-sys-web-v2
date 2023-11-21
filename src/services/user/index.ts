@@ -46,6 +46,16 @@ export class UserService {
             throw error
         }
     }
+    async info({ id }: { id: String }) {
+        try {
+            const response = await axios.get(`/admin/user/info/${id}`)
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
     async history({ id }: { id: String }) {
         try {
             const response = await axios.get(`/admin/user/history/${id}`)
