@@ -21,6 +21,11 @@ export const selectUserDetail = createSelector(
     (state) => state
 )
 
+export const selectUserInfo = createSelector(
+    (state: RootState) => state.user.info,
+    (state) => state
+)
+
 export const selectUserHistory = createSelector(
     (state: RootState) => state.user.history,
     (state) => state

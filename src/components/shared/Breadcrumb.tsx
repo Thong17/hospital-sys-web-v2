@@ -93,7 +93,7 @@ const Breadcrumb = ({
       )}
       <StyledBreadcrumbs
         separator={<ShortcutRoundedIcon sx={{ fontSize: '23px' }} />}
-        maxItems={ width > TABLET_WIDTH ? 3 : 2 }
+        maxItems={ width > TABLET_WIDTH ? 4 : 2 }
         sx={{
           width: 'fit-content',
           marginLeft: '5px',

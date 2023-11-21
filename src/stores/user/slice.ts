@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserCreate, getUserDelete, getUserDetail, getUserExport, getUserHistory, getUserImport, getUserList, getUserUpdate, getUserValidate } from "./action";
+import { getUserCreate, getUserDelete, getUserDetail, getUserExport, getUserHistory, getUserImport, getUserInfo, getUserList, getUserUpdate, getUserValidate } from "./action";
 import { TypeStatus } from "stores/constant";
 
 interface IUser {
@@ -51,6 +51,11 @@ interface IUser {
         data: any,
         error: any
     }
+    info: {
+        status: TypeStatus
+        data: any,
+        error: any
+    }
     history: {
         status: TypeStatus
         data: any,
@@ -72,6 +77,7 @@ const initialState: IUser = {
     validate: { isLoading: false, data: null, error: null },
     import: { isLoading: false, data: null, error: null },
     detail: { status: 'INIT', data: null, error: null },
+    info: { status: 'INIT', data: null, error: null },
     history: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
     list: { status: 'INIT', data: [], error: null, metaData: { skip: 0, limit: 10, total: 0 } },
 }
@@ -141,6 +147,20 @@ const userSlice = createSlice({
             state.detail.error = null
             state.detail.status = 'COMPLETED'
             state.detail.data = action.payload?.data
+        })
+
+        // Info
+        builder.addCase(getUserInfo.pending, (state) => {
+            state.info.status = 'PENDING'
+        })
+        builder.addCase(getUserInfo.rejected, (state, action) => {
+            state.info.status = 'FAILED'
+            state.info.error = action.payload?.response?.data
+        })
+        builder.addCase(getUserInfo.fulfilled, (state, action) => {
+            state.info.error = null
+            state.info.status = 'COMPLETED'
+            state.info.data = action.payload?.data
         })
 
         // History

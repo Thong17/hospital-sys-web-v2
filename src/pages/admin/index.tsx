@@ -7,6 +7,7 @@ import RoleHistory from './role/history'
 import User from './user'
 import UserCreate from './user/create'
 import UserUpdate from './user/update'
+import UserInfo from './user/info'
 import UserDetail from './user/detail'
 import UserHistory from './user/history'
 import Doctor from './doctor'
@@ -83,4 +84,4 @@ const Admin = () => {
   )
 }
 
-export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserDetail, UserHistory, Doctor, DoctorCreate, DoctorUpdate, DoctorDetail, DoctorHistory, Patient, PatientCreate, PatientUpdate, PatientDetail, PatientHistory }
+export { Role, Admin, RoleCreate, RoleUpdate, RoleDetail, RoleHistory, User, UserCreate, UserUpdate, UserInfo, UserDetail, UserHistory, Doctor, DoctorCreate, DoctorUpdate, DoctorDetail, DoctorHistory, Patient, PatientCreate, PatientUpdate, PatientDetail, PatientHistory }
