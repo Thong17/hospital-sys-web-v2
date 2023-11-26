@@ -363,7 +363,7 @@ const routes: RouteObject[] = [
     },
     {
         path: '/report',
-        element: <PointOfSale />,
+        element: <SaleReport />,
         children: [
             {
                 path: 'transaction',

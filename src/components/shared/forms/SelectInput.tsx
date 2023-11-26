@@ -15,7 +15,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 
 const theme = getTheme()
 interface IOption {
-  label: string
+  label: any
   value: any
 }
 
