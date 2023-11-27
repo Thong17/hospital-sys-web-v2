@@ -82,18 +82,21 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
   useEffect(() => {
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getSpecialtyList({ params }))
   }, [])
 
   useEffect(() => {
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getDoctorList({ params }))
   }, [])
 
   useEffect(() => {
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getPatientList({ params }))
   }, [])
 
