@@ -11,7 +11,7 @@ import useDevice from 'hooks/useDevice'
 import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
-import {  CustomizedIconButton } from 'components/shared/buttons/ActionButton'
+import { CustomizedIconButton } from 'components/shared/buttons/ActionButton'
 import { debounce, renderStage, timeFormat } from 'utils/index'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { selectScheduleList } from 'stores/schedule/selector'
@@ -19,6 +19,7 @@ import { getScheduleList, getScheduleStart } from 'stores/schedule/action'
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded'
 import { DeviceOptions } from 'contexts/web/interface'
 import { IThemeStyle } from 'contexts/theme/interface'
+import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
 
 const scheduleColumns: ITableColumn<any>[] = [
   { label: translate('APPOINTMENT_DATE'), id: 'appointmentDate', maxWidth: 50 },
@@ -33,25 +34,65 @@ const mapData = (
   item: any,
   theme: IThemeStyle,
   device: DeviceOptions,
-  onStart: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
+  onStart: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  let action =
+    item.stage === 'ENDED' ? (
+      <CustomizedIconButton
+        onClick={(event) => onStart(event, item)}
+        icon={<ArrowRightAltRoundedIcon fontSize='small' />}
+      />
+    ) : (
+      <CustomizedIconButton
+        onClick={(event) => onStart(event, item)}
+        icon={<FmdGoodRoundedIcon fontSize='small' />}
+      />
+    )
   return {
     _id: item._id,
-    doctor: <Stack>
-      <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>{item.doctor?.username}</Typography>
-      <Typography color={theme.text.quaternary} sx={{ fontSize: theme.responsive[device]?.text.quaternary }}>{item.doctor?.contact || '...'}</Typography>
-    </Stack>,
-    patient: <Stack>
-      <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>{item.patient?.username}</Typography>
-      <Typography color={theme.text.quaternary} sx={{ fontSize: theme.responsive[device]?.text.quaternary }}>{item.patient?.contact || '...'}</Typography>
-    </Stack>,
-    appointmentDate: <Stack>
-      <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>{timeFormat(item.reservation?.appointmentDate, 'hh:mm A')}</Typography>
-      <Typography color={theme.text.quaternary} sx={{ fontSize: theme.responsive[device]?.text.quaternary }}>{timeFormat(item.reservation?.appointmentDate, 'DD MMMM YYYY') || '...'}</Typography>
-    </Stack>,
+    doctor: (
+      <Stack>
+        <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>
+          {item.doctor?.username}
+        </Typography>
+        <Typography
+          color={theme.text.quaternary}
+          sx={{ fontSize: theme.responsive[device]?.text.quaternary }}
+        >
+          {item.doctor?.contact || '...'}
+        </Typography>
+      </Stack>
+    ),
+    patient: (
+      <Stack>
+        <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>
+          {item.patient?.username}
+        </Typography>
+        <Typography
+          color={theme.text.quaternary}
+          sx={{ fontSize: theme.responsive[device]?.text.quaternary }}
+        >
+          {item.patient?.contact || '...'}
+        </Typography>
+      </Stack>
+    ),
+    appointmentDate: (
+      <Stack>
+        <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>
+          {timeFormat(item.reservation?.appointmentDate, 'hh:mm A')}
+        </Typography>
+        <Typography
+          color={theme.text.quaternary}
+          sx={{ fontSize: theme.responsive[device]?.text.quaternary }}
+        >
+          {timeFormat(item.reservation?.appointmentDate, 'DD MMMM YYYY') ||
+            '...'}
+        </Typography>
+      </Stack>
+    ),
     stage: renderStage(item.stage, theme),
     note: item.note,
-    action: <CustomizedIconButton onClick={(event) => onStart(event, item)} icon={<FmdGoodRoundedIcon />} />,
+    action,
   }
 }
 
@@ -80,7 +121,9 @@ const Schedule = () => {
     if (data?.startedAt) return navigate(`/operation/schedule/${data?._id}`)
     dispatch(getScheduleStart({ id: data?._id }))
       .unwrap()
-      .then(() => { navigate(`/operation/schedule/${data?._id}`) })
+      .then(() => {
+        navigate(`/operation/schedule/${data?._id}`)
+      })
       .catch(() => {})
   }
 
@@ -116,7 +159,15 @@ const Schedule = () => {
   }, 500)
 
   return (
-    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} selectedOption={{ navbar: '/operation/schedule' }} />}>
+    <Layout
+      navbar={
+        <Breadcrumb
+          list={breadcrumbs}
+          step={2}
+          selectedOption={{ navbar: '/operation/schedule' }}
+        />
+      }
+    >
       <Container padding='0'>
         <Box sx={{ paddingX: `${theme.responsive[device]?.padding.side}px` }}>
           <TitleContainer text={translate('TITLE_SCHEDULE_LIST') as String}>
@@ -125,7 +176,9 @@ const Schedule = () => {
             </Stack>
           </TitleContainer>
         </Box>
-        <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
+        <Box
+          sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}
+        >
           <StickyTable
             rows={data?.map((item: any) =>
               mapData(item, theme, device, handleStart)

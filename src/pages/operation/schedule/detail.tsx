@@ -188,6 +188,7 @@ const ScheduleDetail = () => {
                       label: item?.name?.[lang] || item?.name?.['English'],
                       value: item?._id,
                     }))}
+                    disabled={data?.stage === 'ENDED'}
                     defaultValue={[]}
                     value={watch('symptoms')}
                     error={!!errors.symptoms?.message}
@@ -207,6 +208,7 @@ const ScheduleDetail = () => {
                   {...register('condition')}
                   options={PATIENT_CONDITIONS}
                   defaultValue={''}
+                  disabled={data?.stage === 'ENDED'}
                   value={watch('condition')}
                   error={!!errors.condition?.message}
                   helperText={errors.condition?.message}
@@ -223,6 +225,7 @@ const ScheduleDetail = () => {
                       value: item?._id,
                     }))}
                     defaultValue={[]}
+                    disabled={data?.stage === 'ENDED'}
                     value={watch('treatments')}
                     error={!!errors.treatments?.message}
                     helperText={errors.treatments?.message}
@@ -240,6 +243,7 @@ const ScheduleDetail = () => {
                 <TextInput
                   {...register('diagnose')}
                   label={translate('DIAGNOSE')}
+                  disabled={data?.stage === 'ENDED'}
                   error={!!errors.diagnose?.message}
                   helperText={errors.diagnose?.message as ReactNode}
                   multiline
@@ -249,6 +253,7 @@ const ScheduleDetail = () => {
                 <TextInput
                   {...register('attachments')}
                   label={translate('ATTACHMENTS')}
+                  disabled={data?.stage === 'ENDED'}
                   error={!!errors.attachments?.message}
                   helperText={errors.attachments?.message as ReactNode}
                   type='file'
@@ -258,7 +263,7 @@ const ScheduleDetail = () => {
                 />
               </Box>
             </Box>
-            <CartContainer transactions={data?.transactions} data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
+            <CartContainer disabled={data?.stage === 'ENDED'} transactions={data?.transactions} data={data?.patientRecord} onSave={handleSave} onEnd={handleEnd} />
           </Stack>
         </form>
       </Container>
