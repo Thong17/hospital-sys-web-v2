@@ -12,14 +12,40 @@ import { getReportSale } from 'stores/report/action'
 import { selectReportSale } from 'stores/report/selector'
 import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded'
 import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded'
+import { useSearchParams } from 'react-router-dom'
+import SelectDateRange from 'components/shared/forms/DateRangePicker'
+import { timeFormat } from 'utils/index'
+
+const FILTER_CHART = [
+  { value: 'DAILY', label: translate('DAILY') },
+  { value: 'MONTHLY', label: translate('MONTHLY') },
+  { value: 'YEARLY', label: translate('YEARLY') },
+]
 
 export const SaleReport = () => {
   const dispatch = useAppDispatch()
   const { data } = useAppSelector(selectReportSale)
+  const [queryParams, setQueryParams] = useSearchParams()
 
   useEffect(() => {
-    dispatch(getReportSale())
-  }, [])
+    dispatch(getReportSale({ params: queryParams }))
+  }, [queryParams])
+
+  const handleChangeQuery = (newQuery: any) => {
+    const query = Object.fromEntries(queryParams.entries())
+    setQueryParams({ ...query, ...newQuery })
+  }
+
+  const handleChangeChart = (event: any) => {
+    const value = event.target.value
+    handleChangeQuery({ chart: value })
+  }
+
+  const onChangeDateSelection = (data: any) => {
+    const startDate = timeFormat(data.selection?.startDate, 'yyyy-M-D')
+    const endDate = timeFormat(data.selection?.endDate, 'yyyy-M-D')
+    handleChangeQuery({ startDate, endDate })
+  }
 
   return (
     <Layout>
@@ -41,11 +67,17 @@ export const SaleReport = () => {
         <TitleContainer text={translate('TITLE_SALE_REPORT') as String}>
           <Stack direction={'row'} gap={1}>
             <SelectInput
-              options={[{ value: 'DAILY', label: translate('DAILY') }]}
+              options={FILTER_CHART}
+              onChange={handleChangeChart}
               width={'130px'}
               defaultValue={'DAILY'}
               height='35px'
             />
+            <SelectDateRange value={[{
+              startDate: new Date(queryParams.get('startDate') || ''),
+              endDate: new Date(queryParams.get('endDate') || ''),
+              key: 'selection',
+            }]} onChange={onChangeDateSelection} />
           </Stack>
         </TitleContainer>
         <CustomAreaChart
