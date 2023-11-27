@@ -113,16 +113,16 @@ export const APP_MENU: any = [
     permission: 'report',
     children: [
       {
-        route: '/report/transaction',
-        title: 'TRANSACTION',
-        icon: <ArrowRightAltRoundedIcon />,
-        permission: 'transaction',
-      },
-      {
         route: '/report/sale',
         title: 'SALE',
         icon: <ArrowRightAltRoundedIcon />,
         permission: 'sale',
+      },
+      {
+        route: '/report/product',
+        title: 'PRODUCT',
+        icon: <ArrowRightAltRoundedIcon />,
+        permission: 'product',
       },
     ]
   },

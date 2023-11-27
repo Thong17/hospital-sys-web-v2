@@ -15,6 +15,8 @@ import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded'
 import { useSearchParams } from 'react-router-dom'
 import SelectDateRange from 'components/shared/forms/DateRangePicker'
 import { timeFormat } from 'utils/index'
+import Breadcrumb from 'components/shared/Breadcrumb'
+import { breadcrumbs } from '.'
 
 const FILTER_CHART = [
   { value: 'DAILY', label: translate('DAILY') },
@@ -48,7 +50,7 @@ export const SaleReport = () => {
   }
 
   return (
-    <Layout>
+    <Layout navbar={<Breadcrumb list={breadcrumbs} step={2} selectedOption={{ navbar: '/report/sale' }} />}>
       <Container>
         <Stack direction={'row'} p={2} gap={2} sx={{ overflowX: 'auto' }}>
           <SummaryContainer
@@ -74,8 +76,8 @@ export const SaleReport = () => {
               height='35px'
             />
             <SelectDateRange value={[{
-              startDate: new Date(queryParams.get('startDate') || ''),
-              endDate: new Date(queryParams.get('endDate') || ''),
+              startDate: new Date(queryParams.get('startDate') || new Date()),
+              endDate: new Date(queryParams.get('endDate') || new Date()),
               key: 'selection',
             }]} onChange={onChangeDateSelection} />
           </Stack>

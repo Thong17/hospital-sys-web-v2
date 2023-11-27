@@ -11,7 +11,8 @@ import Config from 'pages/config'
 import { Payment, PaymentDetail, PointOfSale, Sale } from 'pages/pos'
 import { RouteObject } from 'react-router'
 import { SaleReport } from 'pages/report/sale'
-import { TransactionReport } from 'pages/report/transaction'
+import { Report } from 'pages/report'
+import { ProductReport } from 'pages/report/product'
 
 const routes: RouteObject[] = [
     {
@@ -363,13 +364,13 @@ const routes: RouteObject[] = [
     },
     {
         path: '/report',
-        element: <SaleReport />,
+        element: <Report />,
         children: [
             {
-                path: 'transaction',
+                path: 'product',
                 element: (
-                    <AuthGuard role={{ menu: 'report', route: 'transaction', action: 'list' }}>
-                        <TransactionReport />
+                    <AuthGuard role={{ menu: 'report', route: 'product', action: 'list' }}>
+                        <ProductReport />
                     </AuthGuard>
                 ),
             },
