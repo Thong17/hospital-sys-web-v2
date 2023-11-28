@@ -32,11 +32,13 @@ const CartContainer = ({
   transactions,
   onSave,
   onEnd,
+  disabled = false,
 }: {
   data: any
   transactions: any[]
   onSave: (data: any) => void
   onEnd: (data: any) => void
+  disabled?: boolean
 }) => {
   const { id } = useParams()
   const confirm = useAlert()
@@ -162,6 +164,7 @@ const CartContainer = ({
         >
           {isOpenedCart && (
             <CustomizedButton
+              disabled={disabled}
               onClick={() => setProductDialog({ open: true })}
               fullWidth
               label={
@@ -199,7 +202,7 @@ const CartContainer = ({
               {cardItems.map((item: any, key: number) => (
                 <ProductItem
                   key={key}
-                  onRemove={handleRemoveProduct}
+                  {...(!disabled && { onRemove: handleRemoveProduct })}
                   _id={item?._id}
                   filename={item?.filename}
                   name={item?.name}
@@ -212,6 +215,7 @@ const CartContainer = ({
             </Stack>
             <Stack gap='7px'>
               <TextInput
+                disabled={disabled}
                 inputProps={{ ref: commentRef }}
                 label={translate('COMMENT')}
                 multiline
@@ -225,18 +229,33 @@ const CartContainer = ({
                   gap: '7px',
                 }}
               >
-                <CustomizedButton
-                  color={theme.color.info}
-                  fullWidth
-                  onClick={() => onSave({ comment: commentRef.current?.value })}
-                  label={translate('SAVE')}
-                />
-                <CustomizedButton
-                  color={theme.color.error}
-                  fullWidth
-                  onClick={() => onEnd({ comment: commentRef.current?.value })}
-                  label={translate('END')}
-                />
+                {disabled ? (
+                  <CustomizedButton
+                    fullWidth
+                    disabled
+                    label={translate('ENDED')}
+                  />
+                ) : (
+                  <>
+                    <CustomizedButton
+                      color={theme.color.info}
+                      fullWidth
+                      onClick={() =>
+                        onSave({ comment: commentRef.current?.value })
+                      }
+                      label={translate('SAVE')}
+                    />
+                    <CustomizedButton
+                      color={theme.color.error}
+                      fullWidth
+                      disabled={data?.stage === 'ENDED'}
+                      onClick={() =>
+                        onEnd({ comment: commentRef.current?.value })
+                      }
+                      label={translate('END')}
+                    />
+                  </>
+                )}
               </Box>
             </Stack>
           </Box>
@@ -383,23 +402,25 @@ export const ProductItem = ({
         </StyledTypography>
         <StyledTypography>{currencyFormat(total, '&#36;')}</StyledTypography>
       </Stack>
-      <IconButton
-        onClick={() => onRemove && onRemove(_id)}
-        size='small'
-        sx={{
-          backgroundColor: `${theme.color.error}22`,
-          color: theme.color.error,
-          position: 'absolute',
-          right: '10px',
-          top: '50%',
-          transform: 'translate(0, -50%)',
-          '&:hover': {
-            backgroundColor: `${theme.color.error}44`,
-          },
-        }}
-      >
-        <ClearRoundedIcon fontSize='small' />
-      </IconButton>
+      {onRemove && (
+        <IconButton
+          onClick={() => onRemove(_id)}
+          size='small'
+          sx={{
+            backgroundColor: `${theme.color.error}22`,
+            color: theme.color.error,
+            position: 'absolute',
+            right: '10px',
+            top: '50%',
+            transform: 'translate(0, -50%)',
+            '&:hover': {
+              backgroundColor: `${theme.color.error}44`,
+            },
+          }}
+        >
+          <ClearRoundedIcon fontSize='small' />
+        </IconButton>
+      )}
     </Stack>
   )
 }

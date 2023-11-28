@@ -34,6 +34,7 @@ import { categoryReducer } from 'stores/category/slice'
 import { productReducer } from 'stores/product/slice'
 import { stockReducer } from 'stores/stock/slice'
 import { paymentReducer } from 'stores/payment/slice'
+import { reportReducer } from 'stores/report/slice'
 
 const mainReducer = combineReducers({
   auth: authReducer,
@@ -53,6 +54,7 @@ const mainReducer = combineReducers({
   product: productReducer,
   stock: stockReducer,
   payment: paymentReducer,
+  report: reportReducer,
 })
 
 const rootReducer = (state: any, action: any) => {

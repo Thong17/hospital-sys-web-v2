@@ -48,7 +48,6 @@ export const CustomizedIconButton = ({
     <Tooltip title={tooltip}>
       <StyledIconButton
         {...props}
-        disabled={isLoading}
         size='small'
         styled={theme}
         color={color as any}

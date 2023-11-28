@@ -6,6 +6,7 @@ import PriceChangeRoundedIcon from '@mui/icons-material/PriceChangeRounded'
 import WidgetsRoundedIcon from '@mui/icons-material/WidgetsRounded'
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded'
 import TodayRoundedIcon from '@mui/icons-material/TodayRounded'
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded'
 
 export const APP_MENU: any = [
   {
@@ -112,17 +113,22 @@ export const APP_MENU: any = [
     permission: 'report',
     children: [
       {
-        route: '/report/transaction',
-        title: 'TRANSACTION',
-        icon: <ArrowRightAltRoundedIcon />,
-        permission: 'transaction',
-      },
-      {
         route: '/report/sale',
         title: 'SALE',
         icon: <ArrowRightAltRoundedIcon />,
         permission: 'sale',
       },
+      {
+        route: '/report/product',
+        title: 'PRODUCT',
+        icon: <ArrowRightAltRoundedIcon />,
+        permission: 'product',
+      },
     ]
+  },
+  {
+    route: '/config',
+    title: 'CONFIG',
+    icon: <SettingsRoundedIcon />,
   },
 ]

@@ -63,8 +63,8 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
   const dispatch = useAppDispatch()
   const [patientDialog, setPatientDialog] = useState({ open: false })
   const { isLoading } = useAppSelector(selectReservationCreate)
-  const { data, status } = useAppSelector(selectSpecialtyList)
-  const { data: doctors, status: doctorStatus } =
+  const { data } = useAppSelector(selectSpecialtyList)
+  const { data: doctors } =
     useAppSelector(selectDoctorList)
   const { data: patients, status: patientStatus } =
     useAppSelector(selectPatientList)
@@ -80,25 +80,25 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
   })
 
   useEffect(() => {
-    if (status !== 'INIT') return
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getSpecialtyList({ params }))
-  }, [status])
+  }, [])
 
   useEffect(() => {
-    if (doctorStatus !== 'INIT') return
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getDoctorList({ params }))
-  }, [doctorStatus])
+  }, [])
 
   useEffect(() => {
-    if (patientStatus !== 'INIT') return
     const params = new URLSearchParams()
     params.append('limit', '0')
+    params.append('status', 'true')
     dispatch(getPatientList({ params }))
-  }, [patientStatus])
+  }, [])
 
   useEffect(() => {
     reset(defaultValues)
@@ -193,7 +193,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
               <SelectInput
                 {...register('patient')}
                 options={patients?.map((item: any) => ({
-                  label: item?.username,
+                  label: item?.user?.username,
                   value: item?._id,
                 }))}
                 defaultValue={''}
@@ -227,7 +227,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
             <SelectInput
               {...register('doctors')}
               options={doctors?.map((item: any) => ({
-                label: <span>{`${item?.username}`}<span className='hidden-label'>{` - ${translate(
+                label: <span>{`${item?.user?.username}`}<span className='hidden-label'>{` - ${translate(
                   'SPECIALTY_ON'
                 )}: ${item.specialties
                   ?.map(

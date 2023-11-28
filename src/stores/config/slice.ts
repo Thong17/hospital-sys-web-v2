@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IConfig {
+    theme: string
     isOpenedCart: boolean
     isOpenedSidebar: boolean
     isAttachedSidebar: boolean
@@ -8,6 +9,7 @@ interface IConfig {
 }
 
 const initialState: IConfig = {
+    theme: 'Light',
     isOpenedCart: false,
     isOpenedSidebar: false,
     isAttachedSidebar: true,
@@ -18,6 +20,9 @@ const configSlice = createSlice({
     name: 'config',
     initialState,
     reducers: {
+        changeTheme: (state, action) => {
+            state.theme = action.payload
+        },
         toggleOpenCart: (state) => {
             state.isOpenedCart = !state.isOpenedCart
         },
