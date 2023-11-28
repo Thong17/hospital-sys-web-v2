@@ -8,3 +8,8 @@ export const getReportSale: any = createAsyncThunk(
     'report/sale',
     serviceWrapper(service.sale)
 )
+
+export const getReportProduct: any = createAsyncThunk(
+    'report/product',
+    serviceWrapper(service.product)
+)

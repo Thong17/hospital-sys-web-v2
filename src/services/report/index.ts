@@ -12,4 +12,14 @@ export class ReportService {
             throw error
         }
     }
+    async product({ params }: { params?: URLSearchParams }) {
+        try {
+            const response = await axios.get('/report/product', { params })
+            return response
+        } catch (error: any) {
+            console.error(error)
+            notify(error?.response?.data?.message, 'error')
+            throw error
+        }
+    }
 }

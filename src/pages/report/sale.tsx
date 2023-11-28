@@ -14,7 +14,7 @@ import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded
 import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded'
 import { useSearchParams } from 'react-router-dom'
 import SelectDateRange from 'components/shared/forms/DateRangePicker'
-import { timeFormat } from 'utils/index'
+import { currencyFormat, timeFormat } from 'utils/index'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '.'
 import useTheme from 'hooks/useTheme'
@@ -57,21 +57,21 @@ export const SaleReport = () => {
         <Stack direction={'row'} p={2} gap={2} sx={{ overflowX: 'auto' }}>
           <SummaryContainer
             label={translate('TOTAL_SALE')}
-            value={data?.totalPayment}
+            value={currencyFormat(data?.totalPayment)}
             icon={<MonetizationOnRoundedIcon fontSize='large' />}
             color={theme.color.info}
             children={undefined}
           />
           <SummaryContainer
             label={translate('TOTAL_PROFIT')}
-            value={data?.totalPayment - data?.totalCost}
+            value={currencyFormat(data?.totalPayment - data?.totalCost)}
             icon={<EqualizerRoundedIcon fontSize='large' />}
             color={(data?.totalPayment - data?.totalCost) > 0 ? theme.color.success : theme.color.error}
             children={undefined}
           />
           <SummaryContainer
             label={translate('TOTAL_EXPENSE')}
-            value={data?.totalCost}
+            value={currencyFormat(data?.totalCost)}
             icon={<EqualizerRoundedIcon fontSize='large' />}
             color={theme.color.error}
             children={undefined}

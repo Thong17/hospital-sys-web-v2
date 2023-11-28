@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material'
 import useDevice from 'hooks/useDevice'
 import useTheme from 'hooks/useTheme'
-import { currencyFormat } from 'utils/index'
 
 interface ISummaryContainer {
   label: any
@@ -55,7 +54,7 @@ const SummaryContainer = ({
           sx={{ fontSize: theme.responsive[device]?.text.h1 }}
         >
           {icon}
-          <Box component={'span'}>{currencyFormat(value)}</Box>
+          <Box component={'span'}>{value}</Box>
         </Stack>
         {children}
       </Stack>
