@@ -108,7 +108,7 @@ const InvoiceForm = ({ id, onRemove }: { id?: string, onRemove: (data: any) => v
               <ProductItem
                 _id={item?._id}
                 key={key}
-                onRemove={onRemove}
+                {...(detail?.stage !== 'COMPLETED' && { onRemove: onRemove })}
                 filename={item?.filename}
                 name={item?.name}
                 price={item?.price}

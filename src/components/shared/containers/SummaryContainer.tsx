@@ -7,6 +7,7 @@ interface ISummaryContainer {
   label: any
   value: any
   icon: any
+  color?: string
   children: any
 }
 
@@ -14,6 +15,7 @@ const SummaryContainer = ({
   label,
   value,
   icon,
+  color,
   children,
 }: ISummaryContainer) => {
   const { theme } = useTheme()
@@ -37,7 +39,8 @@ const SummaryContainer = ({
       <Stack
         direction={'row'}
         sx={{
-          backgroundColor: theme.background.secondary,
+          backgroundColor: `${color}22` || theme.background.secondary,
+          color: color || theme.text.secondary,
           width: '100%',
           height: '100%',
           borderRadius: theme.radius.secondary,

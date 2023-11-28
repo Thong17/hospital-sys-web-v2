@@ -17,6 +17,7 @@ import SelectDateRange from 'components/shared/forms/DateRangePicker'
 import { timeFormat } from 'utils/index'
 import Breadcrumb from 'components/shared/Breadcrumb'
 import { breadcrumbs } from '.'
+import useTheme from 'hooks/useTheme'
 
 const FILTER_CHART = [
   { value: 'DAILY', label: translate('DAILY') },
@@ -26,6 +27,7 @@ const FILTER_CHART = [
 
 export const SaleReport = () => {
   const dispatch = useAppDispatch()
+  const { theme } = useTheme()
   const { data } = useAppSelector(selectReportSale)
   const [queryParams, setQueryParams] = useSearchParams()
 
@@ -57,12 +59,21 @@ export const SaleReport = () => {
             label={translate('TOTAL_SALE')}
             value={data?.totalPayment}
             icon={<MonetizationOnRoundedIcon fontSize='large' />}
+            color={theme.color.info}
             children={undefined}
           />
           <SummaryContainer
             label={translate('TOTAL_PROFIT')}
             value={data?.totalPayment - data?.totalCost}
             icon={<EqualizerRoundedIcon fontSize='large' />}
+            color={(data?.totalPayment - data?.totalCost) > 0 ? theme.color.success : theme.color.error}
+            children={undefined}
+          />
+          <SummaryContainer
+            label={translate('TOTAL_EXPENSE')}
+            value={data?.totalCost}
+            icon={<EqualizerRoundedIcon fontSize='large' />}
+            color={theme.color.error}
             children={undefined}
           />
         </Stack>
