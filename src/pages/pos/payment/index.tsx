@@ -59,7 +59,7 @@ const Payment = () => {
   const { theme } = useTheme()
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectPaymentList)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
 
   const fetchListPayment = (queryParams: any) => {
     dispatch(getPaymentList({ params: queryParams }))

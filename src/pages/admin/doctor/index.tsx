@@ -54,7 +54,7 @@ const Doctor = () => {
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectDoctorList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(doctorColumns)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
 
   const fetchListDoctor = (queryParams: any) => {

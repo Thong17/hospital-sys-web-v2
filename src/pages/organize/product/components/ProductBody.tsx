@@ -1,8 +1,7 @@
 import { currencyFormat, sumArrayValues } from 'utils/index'
 import LocalOfferRoundedIcon from '@mui/icons-material/LocalOfferRounded'
 import MoveToInboxRoundedIcon from '@mui/icons-material/MoveToInboxRounded'
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import ImageContainer from 'components/shared/containers/ImageContainer'
 import useTheme from 'hooks/useTheme'
 import useLanguage from 'hooks/useLanguage'
@@ -25,13 +24,14 @@ const ProductBody = ({
   const { lang } = useLanguage()
   const { device } = useDevice()
   return (
-    <Box onClick={() => onClick && onClick(item)}>
+    <Box onClick={() => onClick && onClick(item)} sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
       <Box
         sx={{
           minHeight: `${IMAGE_ITEM_HEIGHT}px`,
           height: `${IMAGE_ITEM_HEIGHT}px`,
           borderRadius: theme.radius.ternary,
           boxShadow: theme.shadow.quaternary,
+          border: theme.border.quaternary,
           '& img': { objectFit: 'cover', borderRadius: theme.radius.ternary },
         }}
       >
@@ -46,6 +46,7 @@ const ProductBody = ({
           height: `calc(100% - ${IMAGE_ITEM_HEIGHT}px)`,
           borderRadius: theme.radius.ternary,
           boxShadow: theme.shadow.quaternary,
+          border: theme.border.quaternary,
           padding: '5px',
         }}
       >
@@ -64,7 +65,7 @@ const ProductBody = ({
               lineHeight: 1,
             }}
           >
-            {item?.description}
+            {item?.description || '...'}
           </Typography>
         </Stack>
         <Stack
@@ -75,27 +76,31 @@ const ProductBody = ({
             '& button, & div': {
               height: '23px',
               borderRadius: theme.radius.primary,
-              display: 'flex',
-              justifyContent: 'start',
-              alignItems: 'center',
               padding: '0 5px',
               gap: '3px',
+              boxSizing: 'border-box',
               '& svg.icon': {
                 fontSize: '13px',
               },
             },
+            '& div': {
+              display: 'flex',
+              justifyContent: 'start',
+              alignItems: 'center',
+            }
           }}
         >
           <Box>
             <LocalOfferRoundedIcon className='icon' />
             <Typography>{currencyFormat(item?.price, item?.currency?.symbol)}</Typography>
           </Box>
-          <Button
+          <Box
             onClick={(event: any) => {
               event.stopPropagation()
               onEditStock && onEditStock(item)
             }}
             sx={{
+              cursor: 'pointer',
               backgroundColor: `${stockColor}22`,
               '&:hover': {
                 backgroundColor: `${stockColor}44`,
@@ -109,10 +114,7 @@ const ProductBody = ({
             <Typography>
               {sumArrayValues(item?.stocks?.map((item: any) => item.remain))}
             </Typography>
-            <ArrowRightAltRoundedIcon
-              sx={{ fontSize: theme.responsive[device]?.text?.h3 }}
-            />
-          </Button>
+          </Box>
         </Stack>
       </Stack>
     </Box>

@@ -103,7 +103,7 @@ const Schedule = () => {
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectScheduleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(scheduleColumns)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
 
   const fetchListSchedule = (queryParams: any) => {
     dispatch(getScheduleList({ params: queryParams }))

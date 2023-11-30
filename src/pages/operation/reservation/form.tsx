@@ -193,7 +193,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
               <SelectInput
                 {...register('patient')}
                 options={patients?.map((item: any) => ({
-                  label: item?.user?.username,
+                  label: item?.user?.username || item?.fullName,
                   value: item?._id,
                 }))}
                 defaultValue={''}
@@ -227,7 +227,7 @@ const form = ({ defaultValues }: { defaultValues: IReservationForm }) => {
             <SelectInput
               {...register('doctors')}
               options={doctors?.map((item: any) => ({
-                label: <span>{`${item?.user?.username}`}<span className='hidden-label'>{` - ${translate(
+                label: <span>{`${item?.user?.username || item?.fullName}`}<span className='hidden-label'>{` - ${translate(
                   'SPECIALTY_ON'
                 )}: ${item.specialties
                   ?.map(

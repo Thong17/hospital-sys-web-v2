@@ -61,7 +61,7 @@ const ProductBox = forwardRef(({
   const { theme } = useTheme()
   const { lang } = useLanguage()
   const dispatch = useAppDispatch()
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const { data, metaData } = useAppSelector(selectProductList)
 
   const fetchListProduct = () => {

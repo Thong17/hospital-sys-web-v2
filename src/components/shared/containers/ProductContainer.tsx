@@ -50,7 +50,7 @@ const ProductContainer = forwardRef(({ onAddProduct }: { onAddProduct: (data: an
   const { theme } = useTheme()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectProductList)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const { isOpenedCart } = useAppSelector(selectConfig)
 
   const fetchListProduct = (queryParams: any) => {

@@ -21,7 +21,9 @@ import { currencyFormat } from 'utils/index'
 const productColumns: ITableColumn<any>[] = [
   { label: translate('NAME'), id: 'name' },
   { label: translate('PRICE'), id: 'price' },
+  { label: translate('SOLD_QUANTITY'), id: 'soldQuantity' },
   { label: translate('TOTAL_SALE'), id: 'totalSale' },
+  { label: translate('TOTAL_PROFIT'), id: 'totalProfit' },
 ]
 
 const mapData = (
@@ -30,6 +32,9 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
+    soldQuantity: item.soldQuantity,
+    totalProfit: currencyFormat(item.totalSale - item.totalCost),
+    totalSale: currencyFormat(item.totalSale),
     name: item.name?.[lang] || item.name?.['English'],
     price: currencyFormat(item.price, item.currency?.symbol),
   }
@@ -41,11 +46,11 @@ export const ProductReport = () => {
   const dispatch = useAppDispatch()
   const { theme } = useTheme()
   const { lang }  =useLanguage()
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
 
   useEffect(() => {
-    dispatch(getReportProduct({}))
-  }, [])
+    dispatch(getReportProduct({ params: queryParams }))
+  }, [queryParams])
 
   const handleChangeQuery = (newQuery: any) => {
     const query = Object.fromEntries(queryParams.entries())
