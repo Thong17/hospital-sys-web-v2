@@ -37,6 +37,8 @@ const SummaryContainer = ({
       </Box>
       <Stack
         direction={'row'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
         sx={{
           backgroundColor: `${color}22` || theme.background.secondary,
           color: color || theme.text.secondary,

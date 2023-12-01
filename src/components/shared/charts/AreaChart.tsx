@@ -3,11 +3,11 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid } fro
 import { currencyFormat } from 'utils/index'
 
 const CustomizedDot = (props: any) => {
-  const { cx, cy, payload } = props
+  const { cx, cy, payload, onClick } = props
   const { theme } = useTheme()
 
   return (
-    <g transform={`translate(${cx},${cy})`}>
+    <g onClick={() => onClick(payload)} transform={`translate(${cx},${cy})`}>
       <foreignObject x={-60} y={-5} textAnchor='middle' width='150' height='25'>
         <div style={{ position: 'relative' }}>
           <span
@@ -45,6 +45,7 @@ export const CustomAreaChart = ({
   height = 350,
   labels,
   data,
+  onClick,
 }: any) => {
   const { theme } = useTheme()
   return (
@@ -73,7 +74,7 @@ export const CustomAreaChart = ({
               key={key}
               type='monotone'
               dataKey={item.name}
-              dot={<CustomizedDot data={item} />}
+              dot={<CustomizedDot onClick={(item: any) => onClick(item)} data={item} />}
               stroke={theme.text.tertiary}
               fill='url(#colorUv)'
             />

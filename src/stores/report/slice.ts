@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getReportProduct, getReportSale } from "./action";
+import { getReportProduct, getReportSale, getReportTransaction } from "./action";
 
 interface IReport {
     sale: {
@@ -12,11 +12,17 @@ interface IReport {
         data: any,
         error: any
     }
+    transactions: {
+        isLoading: boolean,
+        data: any[],
+        error: any
+    }
 }
 
 const initialState: IReport = {
     sale: { isLoading: false, data: null, error: null },
     product: { isLoading: false, data: null, error: null },
+    transactions: { isLoading: false, data: [], error: null },
 }
 
 const reportSlice = createSlice({
@@ -48,6 +54,19 @@ const reportSlice = createSlice({
             state.product.error = null
             state.product.isLoading = false
             state.product.data = action.payload
+        })
+
+        builder.addCase(getReportTransaction.pending, (state) => {
+            state.transactions.isLoading = true
+        })
+        builder.addCase(getReportTransaction.rejected, (state, action) => {
+            state.transactions.isLoading = false
+            state.transactions.error = action.payload?.response?.data
+        })
+        builder.addCase(getReportTransaction.fulfilled, (state, action) => {
+            state.transactions.error = null
+            state.transactions.isLoading = false
+            state.transactions.data = action.payload
         })
     },
 })
