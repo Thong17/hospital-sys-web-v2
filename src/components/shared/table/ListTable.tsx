@@ -16,6 +16,7 @@ const ListTable = ({ list }: { list: any[] }) => {
         border: theme.border.dashed,
         overflowY: 'auto',
         height: '100%',
+        width: '51vw'
       }}
     >
       {list?.map((item: any, key: number) => (
@@ -42,7 +43,7 @@ const Item = ({ data }: any) => {
     >
       {Object.keys(data || {}).map((item: any, key: number) => {
         return (
-          <Stack key={key}>
+          <Stack key={key} sx={{ width: '30%' }}>
             <Typography sx={{ color: theme.text.quaternary, fontSize: theme.responsive[device]?.text.tertiary }}>{translate(item.toUpperCase()) as String}</Typography>
             <Typography>{data?.[item] ?? '...'}</Typography>
           </Stack>

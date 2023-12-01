@@ -13,7 +13,7 @@ const FormDialog = ({
   onClose: () => void
   list?: ReactNode
   justify?: 'end' | 'start' | 'center'
-  form: ReactNode
+  form?: ReactNode
 }) => {
   const { theme } = useTheme()
   return (

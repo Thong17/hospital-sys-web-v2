@@ -13,3 +13,8 @@ export const getReportProduct: any = createAsyncThunk(
     'report/product',
     serviceWrapper(service.product)
 )
+
+export const getReportTransaction: any = createAsyncThunk(
+    'report/transaction',
+    serviceWrapper(service.listTransactions)
+)
