@@ -322,7 +322,7 @@ export const ProductItem = ({
           marginTop={'-2px'}
         >
           <Tooltip title={name}>
-            <StyledTypography noWrap>{name}</StyledTypography>
+            <StyledTypography >{name}</StyledTypography>
           </Tooltip>
           <Stack
             direction={'row'}

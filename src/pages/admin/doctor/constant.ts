@@ -10,7 +10,7 @@ export const initDoctor = {
   dateOfBirth: '',
   startTime: '',
   endTime: '',
-  status: false,
+  status: true,
   description: '',
 }
 

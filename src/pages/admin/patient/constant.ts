@@ -6,7 +6,7 @@ export const initPatient = {
   email: '',
   contact: '',
   dateOfBirth: '',
-  status: false,
+  status: true,
   description: '',
 }
 

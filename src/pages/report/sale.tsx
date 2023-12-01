@@ -29,7 +29,7 @@ export const SaleReport = () => {
   const dispatch = useAppDispatch()
   const { theme } = useTheme()
   const { data } = useAppSelector(selectReportSale)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
 
   useEffect(() => {
     dispatch(getReportSale({ params: queryParams }))

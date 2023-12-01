@@ -66,7 +66,7 @@ const User = () => {
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectUserList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(userColumns)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
   const [segmentValue, setSegmentValue] = useState('GENERAL')
 

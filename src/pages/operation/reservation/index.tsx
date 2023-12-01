@@ -66,7 +66,7 @@ const Reservation = () => {
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectReservationList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(reservationColumns)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
 
   const fetchListReservation = (queryParams: any) => {
     dispatch(getReservationList({ params: queryParams }))

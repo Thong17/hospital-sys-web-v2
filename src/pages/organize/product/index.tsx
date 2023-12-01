@@ -74,7 +74,7 @@ const Product = () => {
   const { device } = useDevice()
   const { lang } = useLanguage()
   const { data, metaData } = useAppSelector(selectProductList)
-  const [queryParams, setQueryParams] = useSearchParams()
+  const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
 
   const fetchListProduct = (queryParams: any) => {
