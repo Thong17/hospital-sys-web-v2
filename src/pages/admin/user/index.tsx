@@ -28,8 +28,9 @@ import { SEGMENTS } from 'constants/options'
 
 const userColumns: ITableColumn<any>[] = [
   { label: translate('USERNAME'), id: 'username', sort: 'desc' },
-  { label: translate('POSITION'), id: 'segment' },
+  { label: translate('SEGMENT'), id: 'segment' },
   { label: translate('ROLE'), id: 'role' },
+  { label: translate('DESCRIPTION'), id: 'description' },
   { label: translate('STATUS'), id: 'status' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
@@ -44,6 +45,7 @@ const mapData = (
     _id: item._id,
     username: item.username,
     segment: item.segment,
+    description: item.description,
     role: item.role?.name?.[lang] ?? item.role?.name?.['English'],
     status: item.status,
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,

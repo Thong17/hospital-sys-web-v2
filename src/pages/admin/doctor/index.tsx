@@ -12,7 +12,7 @@ import { translate } from 'contexts/language/LanguageContext'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { useEffect, useState } from 'react'
 import { ActionButton } from 'components/shared/buttons/ActionButton'
-import { convertBufferToArrayBuffer, debounce, downloadBuffer } from 'utils/index'
+import { contactFormat, convertBufferToArrayBuffer, debounce, downloadBuffer } from 'utils/index'
 import { useNavigate } from 'react-router'
 import useAlert from 'hooks/useAlert'
 import { useSearchParams } from 'react-router-dom'
@@ -23,9 +23,9 @@ import { selectSession } from 'stores/session/selector'
 import { getDoctorDelete, getDoctorExport, getDoctorImport, getDoctorList, getDoctorValidate } from 'stores/doctor/action'
 
 const doctorColumns: ITableColumn<any>[] = [
-  { label: translate('USERNAME'), id: 'username', sort: 'desc' },
   { label: translate('FULL_NAME'), id: 'fullName', sort: 'desc' },
   { label: translate('GENDER'), id: 'gender' },
+  { label: translate('CONTACT'), id: 'contact' },
   { label: translate('RATE'), id: 'rate' },
   { label: translate('STATUS'), id: 'status' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
@@ -38,7 +38,7 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    username: item.username,
+    contact: contactFormat(item.contact),
     fullName: item.fullName,
     gender: item.gender,
     rate: item.rate,
