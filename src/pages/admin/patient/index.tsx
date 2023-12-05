@@ -22,6 +22,7 @@ import {
   CustomizedIconButton,
 } from 'components/shared/buttons/ActionButton'
 import {
+  contactFormat,
   convertBufferToArrayBuffer,
   debounce,
   downloadBuffer,
@@ -44,7 +45,6 @@ import {
 } from 'stores/patient/action'
 
 const patientColumns: ITableColumn<any>[] = [
-  { label: translate('NAME'), id: 'username', sort: 'desc' },
   { label: translate('FULL_NAME'), id: 'fullName' },
   { label: translate('GENDER'), id: 'gender' },
   { label: translate('DATE_OF_BIRTH'), id: 'dateOfBirth' },
@@ -62,12 +62,11 @@ const mapData = (
 ) => {
   return {
     _id: item._id,
-    username: item.username,
     fullName: item.fullName,
     gender: item.gender,
-    dateOfBirth: timeFormat(item.dateOfBirth, 'DD MMM YYYY'),
+    dateOfBirth: item.dateOfBirth ? timeFormat(item.dateOfBirth, 'DD MMM YYYY') : '...',
     point: item.point,
-    contact: item.contact,
+    contact: contactFormat(item.contact),
     status: item.status,
     action: (
       <ActionButton data={item} onDelete={onDelete} onEdit={onEdit}>

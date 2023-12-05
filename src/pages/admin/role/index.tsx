@@ -40,8 +40,8 @@ const roleColumns: ITableColumn<any>[] = [
   { label: translate('NAME'), id: 'name', sort: 'desc' },
   { label: translate('STATUS'), id: 'status' },
   { label: translate('DESCRIPTION'), id: 'description' },
-  { label: translate('CREATED_BY'), id: 'createdBy' },
-  { label: translate('CREATED_AT'), id: 'createdAt', sort: 'desc' },
+  { label: translate('UPDATED_BY'), id: 'updatedBy' },
+  { label: translate('UPDATED_AT'), id: 'updatedAt', sort: 'desc' },
   { label: translate('ACTION'), id: 'action', align: 'right' },
 ]
 
@@ -259,8 +259,8 @@ const mapData = (
     name: item.name?.[lang] ?? item.name?.['English'],
     status: item.status,
     description: item.description,
-    createdAt: dateFormat(item.createdAt),
-    createdBy: item.createdBy?.username,
+    updatedAt: dateFormat(item.updatedAt),
+    updatedBy: item.updatedBy?.username,
     action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
   }
 }

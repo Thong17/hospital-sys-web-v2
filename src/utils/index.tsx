@@ -180,6 +180,14 @@ export const dateFullYear = (date = null) => {
   return year
 }
 
+export const contactFormat = (contact: any, format: string = '($1) $2-$3') => {
+  if (typeof contact !== 'string') return '...'
+  
+  contact = contact.replace(/\D/g, '')
+  if (contact.length === 9) return contact.replace(/(\d{3})(\d{3})(\d{3})/, format)
+  return contact.replace(/(\d{3})(\d{3})(\d{4})/, format)
+}
+
 export const formatAttendanceDate = (dayString: any) => {
   const today = new Date()
   const year = today.getFullYear().toString()

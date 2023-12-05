@@ -6,6 +6,8 @@ import ImageContainer from 'components/shared/containers/ImageContainer'
 import useTheme from 'hooks/useTheme'
 import useLanguage from 'hooks/useLanguage'
 import useDevice from 'hooks/useDevice'
+import { useAppSelector } from 'app/store'
+import { selectSession } from 'stores/session/selector'
 
 const IMAGE_ITEM_HEIGHT = 125
 
@@ -23,6 +25,8 @@ const ProductBody = ({
   const { theme } = useTheme()
   const { lang } = useLanguage()
   const { device } = useDevice()
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.organize?.stock || {}
   return (
     <Box onClick={() => onClick && onClick(item)} sx={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
       <Box
@@ -94,7 +98,7 @@ const ProductBody = ({
             <LocalOfferRoundedIcon className='icon' />
             <Typography>{currencyFormat(item?.price, item?.currency?.symbol)}</Typography>
           </Box>
-          <Box
+          {privilege?.detail && <Box
             onClick={(event: any) => {
               event.stopPropagation()
               onEditStock && onEditStock(item)
@@ -114,7 +118,7 @@ const ProductBody = ({
             <Typography>
               {sumArrayValues(item?.stocks?.map((item: any) => item.remain))}
             </Typography>
-          </Box>
+          </Box>}
         </Stack>
       </Stack>
     </Box>

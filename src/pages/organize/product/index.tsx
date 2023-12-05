@@ -42,6 +42,7 @@ import useDevice from 'hooks/useDevice'
 import { Box, Stack, DialogActions } from '@mui/material'
 import { IThemeStyle } from 'contexts/theme/interface'
 import ProductBody from './components/ProductBody'
+import { selectSession } from 'stores/session/selector'
 
 export const mapData = (
   item: any,
@@ -76,6 +77,8 @@ const Product = () => {
   const { data, metaData } = useAppSelector(selectProductList)
   const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.organize?.product || {}
 
   const fetchListProduct = (queryParams: any) => {
     dispatch(getProductList({ params: queryParams }))
@@ -230,10 +233,10 @@ const Product = () => {
           <TitleContainer text={translate('TITLE_PRODUCT_LIST') as String}>
             <Stack direction={'row'} gap={1}>
               <SearchButton onChange={handleChangeSearch} />
-              <OptionButton
-                onImport={handleValidationImport}
-                onExport={handleExport}
-              />
+              {(privilege?.import || privilege?.export) && <OptionButton
+                onImport={privilege?.import && handleValidationImport}
+                onExport={privilege?.export && handleExport}
+              />}
               <CreateButton onClick={handleCreate} />
             </Stack>
           </TitleContainer>
