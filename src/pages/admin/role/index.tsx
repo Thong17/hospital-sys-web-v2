@@ -34,6 +34,7 @@ import RoleImportTable from './components/RoleImportTable'
 import TitleContainer from 'components/shared/containers/TitleContainer'
 import useTheme from 'hooks/useTheme'
 import useDevice from 'hooks/useDevice'
+import { selectSession } from 'stores/session/selector'
 
 const roleColumns: ITableColumn<any>[] = [
   { label: translate('NAME'), id: 'name', sort: 'desc' },
@@ -51,6 +52,8 @@ const Role = () => {
   const { theme } = useTheme()
   const { device } = useDevice()
   const { lang } = useLanguage()
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.admin?.role || {}
   const { data, metaData } = useAppSelector(selectRoleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(roleColumns)
   const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
@@ -217,10 +220,10 @@ const Role = () => {
           <TitleContainer text={translate('TITLE_ROLE_LIST') as String}>
             <Stack direction={'row'} gap={1}>
               <SearchButton onChange={handleChangeSearch} />
-              <OptionButton
-                onImport={handleValidationImport}
-                onExport={handleExport}
-              />
+              {(privilege?.import || privilege?.export) && <OptionButton
+                onImport={privilege?.import && handleValidationImport}
+                onExport={privilege?.export && handleExport}
+              />}
               <CreateButton onClick={handleCreate} />
             </Stack>
           </TitleContainer>

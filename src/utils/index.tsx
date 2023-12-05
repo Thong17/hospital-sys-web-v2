@@ -535,7 +535,7 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
     case ['delete', 'reject', 'WEAK'].includes(color as any):
       return theme.color.error
 
-    case ['update', 'NEED_SCHEDULE'].includes(color as any):
+    case ['update', 'import', 'NEED_SCHEDULE'].includes(color as any):
       return theme.color.warning
 
     default:

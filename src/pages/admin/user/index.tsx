@@ -23,6 +23,7 @@ import { getUserDelete, getUserExport, getUserImport, getUserList, getUserValida
 import useLanguage from 'hooks/useLanguage'
 import { LanguageOptions } from 'contexts/language/interface'
 import SelectInput from 'components/shared/forms/SelectInput'
+import { selectSession } from 'stores/session/selector'
 import { SEGMENTS } from 'constants/options'
 
 const userColumns: ITableColumn<any>[] = [
@@ -69,6 +70,8 @@ const User = () => {
   const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
   const [segmentValue, setSegmentValue] = useState('GENERAL')
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.admin?.user || {}
 
   const fetchListUser = (queryParams: any) => {
     dispatch(getUserList({ params: queryParams }))
@@ -229,10 +232,10 @@ const User = () => {
             <Stack direction={'row'} justifyContent={'end'} gap={1} sx={{ width: '100%' }}>
               <SelectInput options={SEGMENT_FILTER_OPTIONS} width={'130px'} value={segmentValue} onChange={handleChangeSegmentFilter} defaultValue={'GENERAL'} height='35px' />
               <SearchButton onChange={handleChangeSearch} />
-              <OptionButton
-                onImport={handleValidationImport}
-                onExport={handleExport}
-              />
+              {(privilege?.import || privilege?.export) && <OptionButton
+                onImport={privilege?.import && handleValidationImport}
+                onExport={privilege?.export && handleExport}
+              />}
               <CreateButton onClick={handleCreate} />
             </Stack>
           </TitleContainer>

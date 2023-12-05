@@ -34,6 +34,7 @@ import ContainerDialog from 'components/shared/dialogs/Dialog'
 import PatientImportTable from './components/PatientImportTable'
 import { selectPatientList } from 'stores/patient/selector'
 import FolderRoundedIcon from '@mui/icons-material/FolderRounded'
+import { selectSession } from 'stores/session/selector'
 import {
   getPatientDelete,
   getPatientExport,
@@ -93,6 +94,8 @@ const Patient = () => {
   const [columns, setColumns] = useState<ITableColumn<any>[]>(patientColumns)
   const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.admin?.patient || {}
 
   const fetchListPatient = (queryParams: any) => {
     dispatch(getPatientList({ params: queryParams }))
@@ -261,10 +264,10 @@ const Patient = () => {
           <TitleContainer text={translate('TITLE_PATIENT_LIST') as String}>
             <Stack direction={'row'} gap={1}>
               <SearchButton onChange={handleChangeSearch} />
-              <OptionButton
-                onImport={handleValidationImport}
-                onExport={handleExport}
-              />
+              {(privilege?.import || privilege?.export) && <OptionButton
+                onImport={privilege?.import && handleValidationImport}
+                onExport={privilege?.export && handleExport}
+              />}
               <CreateButton onClick={handleCreate} />
             </Stack>
           </TitleContainer>

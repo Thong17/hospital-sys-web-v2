@@ -19,6 +19,7 @@ import { useSearchParams } from 'react-router-dom'
 import ContainerDialog from 'components/shared/dialogs/Dialog'
 import DoctorImportTable from './components/DoctorImportTable'
 import { selectDoctorList } from 'stores/doctor/selector'
+import { selectSession } from 'stores/session/selector'
 import { getDoctorDelete, getDoctorExport, getDoctorImport, getDoctorList, getDoctorValidate } from 'stores/doctor/action'
 
 const doctorColumns: ITableColumn<any>[] = [
@@ -56,6 +57,8 @@ const Doctor = () => {
   const [columns, setColumns] = useState<ITableColumn<any>[]>(doctorColumns)
   const [queryParams, setQueryParams] = useSearchParams({ limit: '5' })
   const [importDialog, setImportDialog] = useState({ open: false, data: [] })
+  const { user } = useAppSelector(selectSession)
+  const privilege = user?.privilege?.admin?.doctor || {}
 
   const fetchListDoctor = (queryParams: any) => {
     dispatch(getDoctorList({ params: queryParams }))
@@ -210,10 +213,10 @@ const Doctor = () => {
           <TitleContainer text={translate('TITLE_DOCTOR_LIST') as String}>
             <Stack direction={'row'} gap={1}>
               <SearchButton onChange={handleChangeSearch} />
-              <OptionButton
-                onImport={handleValidationImport}
-                onExport={handleExport}
-              />
+              {(privilege?.import || privilege?.export) && <OptionButton
+                onImport={privilege?.import && handleValidationImport}
+                onExport={privilege?.export && handleExport}
+              />}
               <CreateButton onClick={handleCreate} />
             </Stack>
           </TitleContainer>

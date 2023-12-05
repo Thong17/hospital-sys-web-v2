@@ -166,7 +166,7 @@ export const OptionButton = ({
   onImport,
   onExport,
   ...props
-}: IButton & { onImport: (_event: React.ChangeEvent<HTMLInputElement>) => void; onExport: () => void }) => {
+}: IButton & { onImport?: (_event: React.ChangeEvent<HTMLInputElement>) => void; onExport?: () => void }) => {
   const { theme } = useTheme()
   const [anchorEl, setAnchorEl] = useState<any>(null)
   return (
@@ -204,17 +204,17 @@ export const OptionButton = ({
         }}
         sx={{ marginTop: '5px' }}
       >
-        <MenuItem>
+        {onImport && <MenuItem>
           <label htmlFor='export-file' style={{ display: 'flex', alignItems: 'center' }}>
             <FileUploadRoundedIcon sx={{ marginRight: '5px' }} />
             {translate('IMPORT')}
             <input type='file' onChange={onImport} name='export-file' id='export-file' style={{ display: 'none' }} />
           </label>
-        </MenuItem>
-        <MenuItem onClick={onExport}>
+        </MenuItem>}
+        {onExport && <MenuItem onClick={onExport}>
           <DownloadRoundedIcon sx={{ marginRight: '5px' }} />
           {translate('EXPORT')}
-        </MenuItem>
+        </MenuItem>}
       </Menu>
     </>
   )
