@@ -224,14 +224,14 @@ const Role = () => {
                 onImport={privilege?.import && handleValidationImport}
                 onExport={privilege?.export && handleExport}
               />}
-              <CreateButton onClick={handleCreate} />
+              {privilege?.create && <CreateButton onClick={handleCreate} />}
             </Stack>
           </TitleContainer>
         </Box>
         <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, lang, handleEdit, handleDelete)
+              mapData(item, user, lang, handleEdit, handleDelete)
             )}
             columns={columns}
             onSort={handleSort}
@@ -250,10 +250,12 @@ const Role = () => {
 
 const mapData = (
   item: any,
+  user: any,
   lang: string,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  const { update = false, delete: _delete = false } = user?.privilege?.admin?.role ?? {}
   return {
     _id: item._id,
     name: item.name?.[lang] ?? item.name?.['English'],
@@ -261,7 +263,7 @@ const mapData = (
     description: item.description,
     updatedAt: dateFormat(item.updatedAt),
     updatedBy: item.updatedBy?.username,
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: <ActionButton data={item} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
   }
 }
 

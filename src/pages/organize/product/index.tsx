@@ -46,6 +46,7 @@ import { selectSession } from 'stores/session/selector'
 
 export const mapData = (
   item: any,
+  user: any,
   lang: LanguageOptions,
   theme: IThemeStyle,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
@@ -57,10 +58,11 @@ export const mapData = (
     sumArrayValues(item?.stocks?.map((item: any) => item.alertAt)), 
     theme
   )
+  const { update = false, delete: _delete = false } = user?.privilege?.organize?.product ?? {}
   return {
     _id: item?._id,
     name: item?.name?.[lang] || item?.name?.['English'],
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: <ActionButton data={item} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
     body: (
       <ProductBody onEditStock={onEditStock} stockColor={color} item={item} />
     ),
@@ -237,7 +239,7 @@ const Product = () => {
                 onImport={privilege?.import && handleValidationImport}
                 onExport={privilege?.export && handleExport}
               />}
-              <CreateButton onClick={handleCreate} />
+              {privilege?.create && <CreateButton onClick={handleCreate} />}
             </Stack>
           </TitleContainer>
         </Box>
@@ -246,7 +248,7 @@ const Product = () => {
         >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, lang, theme, handleEdit, handleDelete, handleEditStock)
+              mapData(item, user, lang, theme, handleEdit, handleDelete, handleEditStock)
             )}
             columns={[]}
             count={metaData?.total}

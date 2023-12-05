@@ -33,9 +33,11 @@ const doctorColumns: ITableColumn<any>[] = [
 
 const mapData = (
   item: any,
+  user: any,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  const { update = false, delete: _delete = false } = user?.privilege?.admin?.doctor ?? {}
   return {
     _id: item._id,
     contact: contactFormat(item.contact),
@@ -43,7 +45,7 @@ const mapData = (
     gender: item.gender,
     rate: item.rate,
     status: item.status,
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: <ActionButton data={item} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
   }
 }
 
@@ -217,14 +219,14 @@ const Doctor = () => {
                 onImport={privilege?.import && handleValidationImport}
                 onExport={privilege?.export && handleExport}
               />}
-              <CreateButton onClick={handleCreate} />
+              {privilege?.create && <CreateButton onClick={handleCreate} />}
             </Stack>
           </TitleContainer>
         </Box>
         <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, handleEdit, handleDelete)
+              mapData(item, user, handleEdit, handleDelete)
             )}
             columns={columns}
             onSort={handleSort}

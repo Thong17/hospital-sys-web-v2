@@ -37,10 +37,12 @@ const userColumns: ITableColumn<any>[] = [
 
 const mapData = (
   item: any,
+  user: any,
   lang: LanguageOptions,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  const { update = false, delete: _delete = false } = user?.privilege?.admin?.user ?? {}
   return {
     _id: item._id,
     username: item.username,
@@ -48,7 +50,7 @@ const mapData = (
     description: item.description,
     role: item.role?.name?.[lang] ?? item.role?.name?.['English'],
     status: item.status,
-    action: <ActionButton data={item} onDelete={onDelete} onEdit={onEdit} />,
+    action: <ActionButton data={item} onDelete={_delete && onDelete} onEdit={update && onEdit} />,
   }
 }
 
@@ -238,14 +240,14 @@ const User = () => {
                 onImport={privilege?.import && handleValidationImport}
                 onExport={privilege?.export && handleExport}
               />}
-              <CreateButton onClick={handleCreate} />
+              {privilege?.create && <CreateButton onClick={handleCreate} />}
             </Stack>
           </TitleContainer>
         </Box>
         <Box sx={{ padding: `3px ${theme.responsive[device]?.padding.side}px` }}>
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, lang, handleEdit, handleDelete)
+              mapData(item, user, lang, handleEdit, handleDelete)
             )}
             columns={columns}
             onSort={handleSort}

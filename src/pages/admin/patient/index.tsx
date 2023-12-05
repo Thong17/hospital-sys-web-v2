@@ -56,10 +56,12 @@ const patientColumns: ITableColumn<any>[] = [
 
 const mapData = (
   item: any,
+  user: any,
   onEdit: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onDelete: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void,
   onClickRecord: (_data: any) => void
 ) => {
+  const { update = false, delete: _delete = false } = user?.privilege?.admin?.patient ?? {}
   return {
     _id: item._id,
     fullName: item.fullName,
@@ -69,7 +71,7 @@ const mapData = (
     contact: contactFormat(item.contact),
     status: item.status,
     action: (
-      <ActionButton data={item} onDelete={onDelete} onEdit={onEdit}>
+      <ActionButton data={item} onDelete={_delete && onDelete} onEdit={update && onEdit}>
         <CustomizedIconButton
           onClick={(event: any) => {
             event.stopPropagation()
@@ -267,7 +269,7 @@ const Patient = () => {
                 onImport={privilege?.import && handleValidationImport}
                 onExport={privilege?.export && handleExport}
               />}
-              <CreateButton onClick={handleCreate} />
+              {privilege?.create && <CreateButton onClick={handleCreate} />}
             </Stack>
           </TitleContainer>
         </Box>
@@ -276,7 +278,7 @@ const Patient = () => {
         >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, handleEdit, handleDelete, handleClickRecord)
+              mapData(item, user, handleEdit, handleDelete, handleClickRecord)
             )}
             columns={columns}
             onSort={handleSort}
