@@ -56,7 +56,7 @@ const mapData = (
     doctor: (
       <Stack>
         <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>
-          {item.doctor?.username || item.doctor?.fullName}
+          {item.doctor?.user?.username || item.doctor?.fullName}
         </Typography>
         <Typography
           color={theme.text.quaternary}
@@ -69,7 +69,7 @@ const mapData = (
     patient: (
       <Stack>
         <Typography sx={{ fontSize: theme.responsive[device]?.text.tertiary }}>
-          {item.patient?.username || item.patient?.fullName}
+          {item.patient?.user?.username || item.patient?.fullName}
         </Typography>
         <Typography
           color={theme.text.quaternary}
