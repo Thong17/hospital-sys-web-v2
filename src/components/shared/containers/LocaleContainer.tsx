@@ -30,7 +30,7 @@ export const LocaleDetail = ({ label, data }: ILocaleDetail) => {
               return (
                 <Stack key={index} direction={'row'} alignItems={'center'} gap={1}>
                   <ItemContainer text={language?.substring(0, 2)} />
-                  <Typography lineHeight={1} fontSize={theme.responsive[device]?.text.primary}>{data?.[language] || data?.['English']}</Typography>
+                  <Typography lineHeight={1} fontSize={theme.responsive[device]?.text.primary}>{data?.[language] || '...'}</Typography>
                 </Stack>
               )
             })}

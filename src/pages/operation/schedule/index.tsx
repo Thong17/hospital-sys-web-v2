@@ -20,6 +20,7 @@ import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded'
 import { DeviceOptions } from 'contexts/web/interface'
 import { IThemeStyle } from 'contexts/theme/interface'
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded'
+import { selectSession } from 'stores/session/selector'
 
 const scheduleColumns: ITableColumn<any>[] = [
   { label: translate('APPOINTMENT_DATE'), id: 'appointmentDate', maxWidth: 50 },
@@ -32,21 +33,23 @@ const scheduleColumns: ITableColumn<any>[] = [
 
 const mapData = (
   item: any,
+  user: any,
   theme: IThemeStyle,
   device: DeviceOptions,
   onStart: (event: React.MouseEvent<HTMLButtonElement>, _data: any) => void
 ) => {
+  const { start = false, end = false } = user?.privilege?.operation?.schedule ?? {}
   let action =
     item.stage === 'ENDED' ? (
-      <CustomizedIconButton
+      start ? <CustomizedIconButton
         onClick={(event) => onStart(event, item)}
         icon={<ArrowRightAltRoundedIcon fontSize='small' />}
-      />
+      /> : <></>
     ) : (
-      <CustomizedIconButton
+      end ? <CustomizedIconButton
         onClick={(event) => onStart(event, item)}
         icon={<FmdGoodRoundedIcon fontSize='small' />}
-      />
+      /> : <></>
     )
   return {
     _id: item._id,
@@ -100,6 +103,7 @@ const Schedule = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { theme } = useTheme()
+  const { user } = useAppSelector(selectSession)
   const { device } = useDevice()
   const { data, metaData } = useAppSelector(selectScheduleList)
   const [columns, setColumns] = useState<ITableColumn<any>[]>(scheduleColumns)
@@ -181,7 +185,7 @@ const Schedule = () => {
         >
           <StickyTable
             rows={data?.map((item: any) =>
-              mapData(item, theme, device, handleStart)
+              mapData(item, user, theme, device, handleStart)
             )}
             columns={columns}
             onSort={handleSort}

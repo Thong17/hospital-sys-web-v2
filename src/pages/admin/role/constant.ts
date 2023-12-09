@@ -3,7 +3,7 @@ import * as yup from 'yup'
 
 export const initRole = {
   name: {},
-  status: false,
+  status: true,
   description: undefined,
   privilege: {},
   navigation: {},

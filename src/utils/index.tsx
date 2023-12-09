@@ -540,7 +540,7 @@ export const renderColor = (color: String, theme: IThemeStyle) => {
     case ['create', 'approve', 'HEALTHY'].includes(color as any):
       return theme.color.success
 
-    case ['delete', 'reject', 'WEAK'].includes(color as any):
+    case ['delete', 'reject', 'refuse', 'end', 'WEAK'].includes(color as any):
       return theme.color.error
 
     case ['update', 'import', 'NEED_SCHEDULE'].includes(color as any):
