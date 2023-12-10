@@ -30,6 +30,39 @@ interface ISelectProps extends SelectProps {
   onRemoveOption?: (_data: any) => void
 }
 
+export const BorderLessSelect = styled(Select)(
+  ({
+    height = '45px',
+    endAdornment,
+  }: {
+    height?: string
+    endAdornment?: any
+  }) => ({
+    borderRadius: theme.radius.primary,
+    height,
+    border: 'none',
+    '& *': {
+      border: 'none !important',
+      boxShadow: 'none !important'
+    },
+    '& svg.MuiSvgIcon-root': {
+      marginRight: endAdornment ? '37px' : '0',
+    },
+    '& .remove-btn, & .hidden-label': {
+      display: 'none',
+    },
+    '& fieldset': {
+      border: 'none',
+    },
+    '& fieldset:hover': {
+      border: 'none',
+    },
+    '&.Mui-focused fieldset': {
+      border: 'none',
+    },
+  })
+)
+
 export const StyledSelectInput = styled(Select)(
   ({
     height = '45px',

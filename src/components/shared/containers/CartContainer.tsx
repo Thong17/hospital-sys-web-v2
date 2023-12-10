@@ -2,7 +2,15 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { selectConfig } from 'stores/config/selector'
 import { CustomizedIconButton } from '../buttons/ActionButton'
-import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import useTheme from 'hooks/useTheme'
 import { FOOTER_HEIGHT, NAVBAR_HEIGHT, SPACE_TOP } from 'constants/layout'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
@@ -23,6 +31,14 @@ import {
 } from 'stores/transaction/action'
 import { useParams } from 'react-router'
 import useAlert from 'hooks/useAlert'
+import {
+  MEDICINE_TAKEN_DAY,
+  MEDICINE_TAKEN_TIME,
+  MEDICINE_TAKEN_TYPE,
+} from 'constants/options'
+import { AutoCompleteInput } from '../forms/AutoComplete'
+import { selectSession } from 'stores/session/selector'
+import { BorderLessSelect } from '../forms/SelectInput'
 
 export const FORM_WIDTH_EXPANDED = 470
 export const FORM_WIDTH_COMPACTED = 60
@@ -48,6 +64,7 @@ const CartContainer = ({
   const commentRef = useRef<any>(document.createElement('input'))
   const [productDialog, setProductDialog] = useState({ open: false })
   const [cardItems, setCardItems] = useState<IProductItem[]>([])
+  const [editItemForm, setEditItemForm] = useState<any>({ _id: null })
   const productBoxRef = useRef<any>(null)
 
   useEffect(() => {
@@ -196,7 +213,7 @@ const CartContainer = ({
           >
             <Stack
               direction={'column'}
-              sx={{ height: '100%', padding: '10px 0' }}
+              sx={{ height: '50vh', padding: '10px 8px', overflowY: 'auto' }}
               gap='10px'
             >
               {cardItems.map((item: any, key: number) => (
@@ -210,7 +227,19 @@ const CartContainer = ({
                   symbol={item?.currency?.symbol}
                   total={item?.total}
                   quantity={item?.quantity}
-                />
+                  onClick={
+                    editItemForm?._id !== item?._id
+                      ? setEditItemForm
+                      : undefined
+                  }
+                >
+                  {editItemForm?._id === item?._id && (
+                    <ProductItemForm
+                      data={item}
+                      onCancel={() => setEditItemForm({ _id: null })}
+                    />
+                  )}
+                </ProductItem>
               ))}
             </Stack>
             <Stack gap='7px'>
@@ -276,101 +305,240 @@ interface IProductItem {
   total: number
   quantity: number
   onRemove?: (data: any) => void
+  onClick?: (data: any) => void
+  onCancel?: () => void
+  onUpdate?: (data: any) => void
+  children?: any
 }
 
-export const ProductItem = ({
-  _id,
-  filename,
-  name,
-  price,
-  symbol,
-  total,
-  quantity,
-  onRemove,
-}: IProductItem) => {
+export const ProductItemForm = (props: any) => {
+  const { data, onCancel, onUpdate } = props
+  const { theme } = useTheme()
+  const { user } = useAppSelector(selectSession)
+  return (
+    <Box
+      px={1}
+      pb={1}
+      sx={{
+        width: '100%',
+        display: 'grid',
+        paddingTop: '30px',
+        boxSizing: 'border-box',
+        gridTemplateColumns: '1fr 1fr 1fr 1fr',
+        gridGap: 23,
+        gridTemplateAreas:
+          user?.segment === 'GENERAL'
+            ? `
+                  'description description description description'
+                  'price price price quantity'
+                  'dose dose tablet tablet'
+                  'when when how how'
+                  'note note note note'
+                  'action action action action'
+                  `
+            : `
+                  'dose dose how how'
+                  'when when tablet tablet'
+                  'note note note note'
+                  'action action action action'
+                  `,
+      }}
+    >
+      {user?.segment === 'GENERAL' && (
+        <>
+          <TextInput
+            label={translate('DESCRIPTION')}
+            sx={{ gridArea: 'description' }}
+            defaultValue={data?.name}
+          />
+          <TextInput
+            label={translate('PRICE')}
+            sx={{ gridArea: 'price' }}
+            defaultValue={data?.price}
+            InputProps={{
+              endAdornment: <span style={{ padding: '0 10px' }}>$</span>,
+            }}
+          />
+          <TextInput
+            label={translate('QUANTITY')}
+            sx={{ gridArea: 'quantity' }}
+            defaultValue={data?.quantity}
+          />
+        </>
+      )}
+      <TextInput
+        label={translate('DOSE')}
+        sx={{ gridArea: 'dose' }}
+        defaultValue={data?.dose}
+        InputProps={{
+          endAdornment: (
+            <FormControl sx={{ width: '370px' }}>
+              <BorderLessSelect defaultValue={'DAY'} sx={{ textAlign: 'right' }}>
+                {MEDICINE_TAKEN_DAY.map((item: any, key: number) => (
+                  <MenuItem key={key} value={item.value}>
+                    {translate(item.label)}
+                  </MenuItem>
+                ))}
+              </BorderLessSelect>
+            </FormControl>
+          ),
+        }}
+      />
+      <AutoCompleteInput
+        freeSolo
+        options={MEDICINE_TAKEN_TYPE.map((option: any) => option.label)}
+        renderInput={(params) => (
+          <TextInput {...params} label={translate('HOW')} />
+        )}
+        sx={{ gridArea: 'how' }}
+      />
+      <TextInput
+        label={translate('TABLET')}
+        sx={{ gridArea: 'tablet' }}
+        defaultValue={data?.tablet}
+      />
+      <AutoCompleteInput
+        freeSolo
+        options={MEDICINE_TAKEN_TIME.map((option: any) => option.label)}
+        renderInput={(params) => (
+          <TextInput {...params} label={translate('WHEN')} />
+        )}
+        sx={{ gridArea: 'when' }}
+      />
+      <TextInput
+        label={translate('NOTE')}
+        sx={{ gridArea: 'note' }}
+        multiline
+      />
+      <Box
+        sx={{
+          width: '100%',
+          position: 'relative',
+          boxSizing: 'border-box',
+          display: 'flex',
+          gap: '13px',
+          gridArea: 'action',
+        }}
+      >
+        <CustomizedButton
+          color={theme.color.error}
+          fullWidth
+          label={translate('CANCEL')}
+          onClick={onCancel}
+        />
+        <CustomizedButton
+          color={theme.color.info}
+          fullWidth
+          label={translate('UPDATE')}
+          onClick={() => onUpdate && onUpdate({})}
+        />
+      </Box>
+    </Box>
+  )
+}
+
+export const ProductItem = (props: IProductItem) => {
+  const {
+    _id,
+    filename,
+    name,
+    price,
+    symbol,
+    total,
+    quantity,
+    onRemove,
+    onClick,
+    children,
+  } = props
   const { theme } = useTheme()
   const { device } = useDevice()
   return (
     <Stack
-      direction={'row'}
-      gap={'15px'}
       sx={{
         padding: '5px',
         position: 'relative',
-        border: theme.border.quaternary,
         borderRadius: theme.radius.ternary,
+        boxShadow: theme.shadow.quaternary,
       }}
     >
-      <Stack direction={'row'} width={'50%'} alignItems={'center'}>
-        <Box
-          sx={{
-            width: `${PRODUCT_IMAGE_SIZE}px`,
-            height: `${PRODUCT_IMAGE_SIZE}px`,
-            minWidth: `${PRODUCT_IMAGE_SIZE}px`,
-            minHeight: `${PRODUCT_IMAGE_SIZE}px`,
-            borderRadius: theme.radius.circle,
-            overflow: 'hidden',
-            boxShadow: theme.shadow.quaternary,
-          }}
-        >
-          <ImageContainer url={filename} />
-        </Box>
+      <Stack
+        onClick={() => onClick && onClick(props)}
+        direction={'row'}
+        gap={'15px'}
+        sx={{
+          cursor: onClick ? 'pointer' : 'default',
+        }}
+      >
+        <Stack direction={'row'} width={'50%'} alignItems={'center'}>
+          <Box
+            sx={{
+              width: `${PRODUCT_IMAGE_SIZE}px`,
+              height: `${PRODUCT_IMAGE_SIZE}px`,
+              minWidth: `${PRODUCT_IMAGE_SIZE}px`,
+              minHeight: `${PRODUCT_IMAGE_SIZE}px`,
+              borderRadius: theme.radius.circle,
+              overflow: 'hidden',
+              boxShadow: theme.shadow.quaternary,
+            }}
+          >
+            <ImageContainer url={filename} />
+          </Box>
+          <Stack
+            direction={'column'}
+            justifyContent={'center'}
+            marginLeft={'7px'}
+            marginTop={'-2px'}
+          >
+            <Tooltip title={name}>
+              <StyledTypography>{name}</StyledTypography>
+            </Tooltip>
+            <Stack
+              direction={'row'}
+              gap={'3px'}
+              sx={{
+                fontSize: theme.responsive[device]?.text.quaternary,
+                color: theme.text.tertiary,
+              }}
+            >
+              {`${translate('PRICE')}: `}
+              {currencyFormat(price, symbol)}
+            </Stack>
+          </Stack>
+        </Stack>
         <Stack
           direction={'column'}
           justifyContent={'center'}
-          marginLeft={'7px'}
-          marginTop={'-2px'}
+          alignItems={'center'}
+          width={'20%'}
         >
-          <Tooltip title={name}>
-            <StyledTypography >{name}</StyledTypography>
-          </Tooltip>
-          <Stack
-            direction={'row'}
-            gap={'3px'}
-            sx={{
+          <StyledTypography
+            style={{
               fontSize: theme.responsive[device]?.text.quaternary,
-              color: theme.text.tertiary,
+              color: theme.text.quaternary,
             }}
           >
-            {`${translate('PRICE')}: `}
-            {currencyFormat(price, symbol)}
+            {translate('QTY')}
+          </StyledTypography>
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            gap={'3px'}
+            sx={{
+              '& svg': {
+                padding: 0,
+                fontSize: theme.responsive[device]?.text.tertiary,
+                color: theme.text.secondary,
+              },
+              fontSize: theme.responsive[device]?.text.tertiary,
+            }}
+          >
+            <RemoveRoundedIcon fontSize='small' />
+            <StyledTypography>{quantity}</StyledTypography>
+            <AddRoundedIcon fontSize='small' />
           </Stack>
         </Stack>
-      </Stack>
-      <Stack
-        direction={'column'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        width={'20%'}
-      >
-        <StyledTypography
-          style={{
-            fontSize: theme.responsive[device]?.text.quaternary,
-            color: theme.text.quaternary,
-          }}
-        >
-          {translate('QTY')}
-        </StyledTypography>
-        <Stack
-          direction={'row'}
-          alignItems={'center'}
-          gap={'3px'}
-          sx={{
-            '& svg': {
-              padding: 0,
-              fontSize: theme.responsive[device]?.text.tertiary,
-              color: theme.text.secondary,
-            },
-            fontSize: theme.responsive[device]?.text.tertiary,
-          }}
-        >
-          <RemoveRoundedIcon fontSize='small' />
-          <StyledTypography>{quantity}</StyledTypography>
-          <AddRoundedIcon fontSize='small' />
-        </Stack>
-      </Stack>
-      {/* TODO: Add discount */}
-      {/* <Stack
+        {/* TODO: Add discount */}
+        {/* <Stack
         direction={'column'}
         justifyContent={'center'}
         alignItems={'start'}
@@ -386,41 +554,42 @@ export const ProductItem = ({
         </StyledTypography>
         <StyledTypography>{0}%</StyledTypography>
       </Stack> */}
-      <Stack
-        direction={'column'}
-        justifyContent={'center'}
-        alignItems={'start'}
-        width={'30%'}
-      >
-        <StyledTypography
-          style={{
-            fontSize: theme.responsive[device]?.text.quaternary,
-            color: theme.text.quaternary,
-          }}
+        <Stack
+          direction={'column'}
+          justifyContent={'center'}
+          alignItems={'start'}
+          width={'30%'}
         >
-          {translate('TOTAL')}
-        </StyledTypography>
-        <StyledTypography>{currencyFormat(total, '&#36;')}</StyledTypography>
+          <StyledTypography
+            style={{
+              fontSize: theme.responsive[device]?.text.quaternary,
+              color: theme.text.quaternary,
+            }}
+          >
+            {translate('TOTAL')}
+          </StyledTypography>
+          <StyledTypography>{currencyFormat(total, '&#36;')}</StyledTypography>
+        </Stack>
+        {onRemove && (
+          <IconButton
+            onClick={() => onRemove(_id)}
+            size='small'
+            sx={{
+              backgroundColor: `${theme.color.error}22`,
+              color: theme.color.error,
+              position: 'absolute',
+              right: '10px',
+              top: '13px',
+              '&:hover': {
+                backgroundColor: `${theme.color.error}44`,
+              },
+            }}
+          >
+            <ClearRoundedIcon fontSize='small' />
+          </IconButton>
+        )}
       </Stack>
-      {onRemove && (
-        <IconButton
-          onClick={() => onRemove(_id)}
-          size='small'
-          sx={{
-            backgroundColor: `${theme.color.error}22`,
-            color: theme.color.error,
-            position: 'absolute',
-            right: '10px',
-            top: '50%',
-            transform: 'translate(0, -50%)',
-            '&:hover': {
-              backgroundColor: `${theme.color.error}44`,
-            },
-          }}
-        >
-          <ClearRoundedIcon fontSize='small' />
-        </IconButton>
-      )}
+      {children}
     </Stack>
   )
 }

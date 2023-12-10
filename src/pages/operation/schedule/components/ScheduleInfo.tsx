@@ -5,7 +5,7 @@ import { translate } from 'contexts/language/LanguageContext'
 import useTheme from 'hooks/useTheme'
 import { RecordDetail } from 'pages/admin/patient/record'
 import { useState } from 'react'
-import { timeFormat } from 'utils/index'
+import { calculateYearOfDate } from 'utils/index'
 
 const ScheduleInfo = ({ data, records }: any) => {
   const { theme } = useTheme()
@@ -21,20 +21,20 @@ const ScheduleInfo = ({ data, records }: any) => {
     >
       <Stack direction={'row'}>
         {data?.patient?.fullName && (
-          <LabelDetail label={translate('FULL_NAME') as String}>
+          <LabelDetail label={translate('PATIENT_FULL_NAME') as String}>
             <Typography>{data?.patient?.fullName}</Typography>
           </LabelDetail>
         )}
-        <LabelDetail label={translate('USERNAME') as String}>
-          <Typography>{data?.patient?.username || '...'}</Typography>
+        <LabelDetail label={translate('PATIENT_NAME') as String}>
+          <Typography>{data?.patient?.user?.username || '...'}</Typography>
         </LabelDetail>
         <LabelDetail label={translate('GENDER') as String}>
           <Typography>{data?.patient?.gender || '...'}</Typography>
         </LabelDetail>
         {data?.patient?.dateOfBirth && (
-          <LabelDetail label={translate('DATE_OF_BIRTH') as String}>
+          <LabelDetail label={translate('AGE') as String}>
             <Typography>
-              {timeFormat(data?.patient?.dateOfBirth, 'DD MM YYYY')}
+              {calculateYearOfDate(data?.patient?.dateOfBirth)}
             </Typography>
           </LabelDetail>
         )}

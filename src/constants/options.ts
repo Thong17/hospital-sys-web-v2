@@ -30,3 +30,25 @@ export const SHIFT_DAY = [
     { value: 'SATURDAY', label: 'SATURDAY' },
     { value: 'SUNDAY', label: 'SUNDAY' },
 ]
+
+export const MEDICINE_TAKEN_TYPE = [
+    { value: 'DRINK', label: 'DRINK' },
+    { value: 'SPRAY', label: 'SPRAY' },
+    { value: 'INJECTION', label: 'INJECTION' },
+    { value: 'PUT_IN_MOUTH', label: 'PUT_IN_MOUTH' },
+    { value: 'MELT_IN_WATER', label: 'MELT_IN_WATER' },
+    { value: 'APPLY_ON_SKIN', label: 'APPLY_ON_SKIN' },
+]
+
+export const MEDICINE_TAKEN_TIME = [
+    { value: 'MORNING', label: 'MORNING' },
+    { value: 'AFTERNOON', label: 'AFTERNOON' },
+    { value: 'EVENING', label: 'EVENING' },
+    { value: 'NIGHT', label: 'NIGHT' },
+]
+
+export const MEDICINE_TAKEN_DAY = [
+    { value: 'DAY', label: 'DAY' },
+    { value: 'WEEK', label: 'WEEK' },
+    { value: 'MONTH', label: 'MONTH' },
+]
