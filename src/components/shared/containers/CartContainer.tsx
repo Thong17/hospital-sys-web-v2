@@ -17,7 +17,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { translate } from 'contexts/language/LanguageContext'
 import { CustomizedButton } from '../buttons/CustomButton'
 import { TextInput } from '../forms/TextInput'
-import { useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import ProductBox from '../forms/ProductBox'
 import ImageContainer from './ImageContainer'
 import { currencyFormat } from 'utils/index'
@@ -28,6 +28,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded'
 import {
   getTransactionCreate,
   getTransactionDelete,
+  getTransactionUpdate,
 } from 'stores/transaction/action'
 import { useParams } from 'react-router'
 import useAlert from 'hooks/useAlert'
@@ -35,12 +36,17 @@ import {
   MEDICINE_TAKEN_DAY,
   MEDICINE_TAKEN_TIME,
   MEDICINE_TAKEN_TYPE,
+  MEDICINE_WHEN_TAKEN,
 } from 'constants/options'
 import { AutoCompleteInput } from '../forms/AutoComplete'
 import { selectSession } from 'stores/session/selector'
 import { BorderLessSelect } from '../forms/SelectInput'
+import { SectionContainer } from './SectionContainer'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { updateMedicineSchema } from 'pages/operation/schedule/constant'
 
-export const FORM_WIDTH_EXPANDED = 470
+export const FORM_WIDTH_EXPANDED = 670
 export const FORM_WIDTH_COMPACTED = 60
 
 const CartContainer = ({
@@ -78,6 +84,7 @@ const CartContainer = ({
         quantity: item?.quantity,
         total: item?.total,
         symbol: item?.currency?.symbol,
+        schedules: [{ when: '', tablet: '', time: '' }],
       }))
     )
 
@@ -144,6 +151,18 @@ const CartContainer = ({
         productBoxRef.current?.fetchListProduct()
       })
       .catch(() => {})
+  }
+
+  const handleSubmitItem = (id: string, data: any) => {
+    if (!id || !data) return
+    const body: any = {}
+    body.detail = {
+      how: data.how,
+      dose: data.dose,
+      duration: data.duration,
+      schedules: data.schedules,
+    }
+    dispatch(getTransactionUpdate({ id, data: body }))
   }
 
   return (
@@ -237,6 +256,7 @@ const CartContainer = ({
                     <ProductItemForm
                       data={item}
                       onCancel={() => setEditItemForm({ _id: null })}
+                      onSubmit={(data: any) => handleSubmitItem(item?._id, data)}
                     />
                   )}
                 </ProductItem>
@@ -307,38 +327,45 @@ interface IProductItem {
   onRemove?: (data: any) => void
   onClick?: (data: any) => void
   onCancel?: () => void
-  onUpdate?: (data: any) => void
   children?: any
 }
 
 export const ProductItemForm = (props: any) => {
-  const { data, onCancel, onUpdate } = props
+  const { data, onCancel, onSubmit } = props
   const { theme } = useTheme()
   const { user } = useAppSelector(selectSession)
+  const {
+    getValues,
+    register,
+    formState: { errors },
+  } = useForm<any>({
+    resolver: yupResolver(updateMedicineSchema),
+    defaultValues: data,
+  })
   return (
     <Box
       px={1}
       pb={1}
+      pt={2}
       sx={{
         width: '100%',
         display: 'grid',
-        paddingTop: '30px',
         boxSizing: 'border-box',
-        gridTemplateColumns: '1fr 1fr 1fr 1fr',
-        gridGap: 23,
+        gridTemplateColumns: '170px 1fr 1fr 130px',
+        gridGap: 19,
         gridTemplateAreas:
           user?.segment === 'GENERAL'
             ? `
                   'description description description description'
                   'price price price quantity'
-                  'dose dose tablet tablet'
-                  'when when how how'
+                  'how how dose dose'
+                  'schedule schedule schedule schedule'
                   'note note note note'
                   'action action action action'
                   `
             : `
-                  'dose dose how how'
-                  'when when tablet tablet'
+                  'how how dose dose'
+                  'schedule schedule schedule schedule'
                   'note note note note'
                   'action action action action'
                   `,
@@ -347,33 +374,64 @@ export const ProductItemForm = (props: any) => {
       {user?.segment === 'GENERAL' && (
         <>
           <TextInput
+            {...register('description')}
             label={translate('DESCRIPTION')}
             sx={{ gridArea: 'description' }}
+            error={!!errors.description?.message}
+              helperText={errors.description?.message as ReactNode}
             defaultValue={data?.name}
           />
           <TextInput
+            {...register('price')}
             label={translate('PRICE')}
             sx={{ gridArea: 'price' }}
             defaultValue={data?.price}
+            error={!!errors.price?.message}
+            helperText={errors.price?.message as ReactNode}
             InputProps={{
               endAdornment: <span style={{ padding: '0 10px' }}>$</span>,
             }}
           />
           <TextInput
+            {...register('quantity')}
             label={translate('QUANTITY')}
             sx={{ gridArea: 'quantity' }}
+            error={!!errors.quantity?.message}
+            helperText={errors.quantity?.message as ReactNode}
             defaultValue={data?.quantity}
           />
         </>
       )}
+      <AutoCompleteInput
+        freeSolo
+        options={MEDICINE_TAKEN_TYPE.map((option: any) => option.label)}
+        renderInput={(params) => (
+          <TextInput
+            {...params}
+            {...register('how')}
+            label={translate('HOW')}
+            error={!!errors.how?.message}
+            helperText={errors.how?.message as ReactNode}
+          />
+        )}
+        sx={{ gridArea: 'how' }}
+      />
       <TextInput
+        {...register('dose')}
         label={translate('DOSE')}
         sx={{ gridArea: 'dose' }}
         defaultValue={data?.dose}
+        error={!!errors.dose?.message}
+        helperText={errors.dose?.message as ReactNode}
         InputProps={{
           endAdornment: (
             <FormControl sx={{ width: '370px' }}>
-              <BorderLessSelect defaultValue={'DAY'} sx={{ textAlign: 'right' }}>
+              <BorderLessSelect
+                {...register('duration')}
+                defaultValue={'DAY'}
+                sx={{ textAlign: 'right' }}
+                error={!!errors.duration?.message}
+              >
                 {MEDICINE_TAKEN_DAY.map((item: any, key: number) => (
                   <MenuItem key={key} value={item.value}>
                     {translate(item.label)}
@@ -384,30 +442,91 @@ export const ProductItemForm = (props: any) => {
           ),
         }}
       />
-      <AutoCompleteInput
-        freeSolo
-        options={MEDICINE_TAKEN_TYPE.map((option: any) => option.label)}
-        renderInput={(params) => (
-          <TextInput {...params} label={translate('HOW')} />
-        )}
-        sx={{ gridArea: 'how' }}
-      />
-      <TextInput
-        label={translate('TABLET')}
-        sx={{ gridArea: 'tablet' }}
-        defaultValue={data?.tablet}
-      />
-      <AutoCompleteInput
-        freeSolo
-        options={MEDICINE_TAKEN_TIME.map((option: any) => option.label)}
-        renderInput={(params) => (
-          <TextInput {...params} label={translate('WHEN')} />
-        )}
-        sx={{ gridArea: 'when' }}
-      />
+      <SectionContainer
+        label={translate('SCHEDULE')}
+        sx={{ gridArea: 'schedule', marginTop: '10px' }}
+      >
+        {/* TODO: Schedule */}
+        {data?.schedules?.map((item: any, key: number) => {
+          return (
+            <Stack key={key} direction='row' alignItems={'center'} gap={2}>
+              <AutoCompleteInput
+                freeSolo
+                options={MEDICINE_WHEN_TAKEN.map((option: any) => option.label)}
+                defaultValue={item?.when}
+                renderInput={(params) => (
+                  <TextInput
+                    {...params}
+                    label={translate('WHEN')}
+                    {...register(`schedules.${key}.when`)}
+                  />
+                )}
+                sx={{ gridArea: 'when' }}
+              />
+              <TextInput
+                label={translate('TABLET')}
+                sx={{ gridArea: 'tablet', width: '610px' }}
+                defaultValue={item?.tablet}
+                {...register(`schedules.${key}.tablet`)}
+                InputProps={{
+                  endAdornment: (
+                    <FormControl sx={{ width: '390px' }}>
+                      <BorderLessSelect
+                        defaultValue={item?.time}
+                        sx={{ textAlign: 'right' }}
+                        {...register(`schedules.${key}.time`)}
+                      >
+                        {MEDICINE_TAKEN_TIME.map((item: any, key: number) => (
+                          <MenuItem key={key} value={item.value}>
+                            {translate(item.label)}
+                          </MenuItem>
+                        ))}
+                      </BorderLessSelect>
+                    </FormControl>
+                  ),
+                }}
+              />
+              <Stack direction={'row'} gap={1}>
+                <IconButton
+                  size='small'
+                  sx={{
+                    backgroundColor: `${theme.color.info}22`,
+                    color: theme.color.info,
+                    width: '30px',
+                    height: '30px',
+                    '&:hover': {
+                      backgroundColor: `${theme.color.info}44`,
+                    },
+                  }}
+                >
+                  <AddRoundedIcon fontSize='small' />
+                </IconButton>
+                {data?.schedules?.length > 1 && (
+                  <IconButton
+                    size='small'
+                    sx={{
+                      backgroundColor: `${theme.color.error}22`,
+                      color: theme.color.error,
+                      width: '30px',
+                      height: '30px',
+                      '&:hover': {
+                        backgroundColor: `${theme.color.error}44`,
+                      },
+                    }}
+                  >
+                    <RemoveRoundedIcon fontSize='small' />
+                  </IconButton>
+                )}
+              </Stack>
+            </Stack>
+          )
+        })}
+      </SectionContainer>
+
       <TextInput
         label={translate('NOTE')}
         sx={{ gridArea: 'note' }}
+        {...register('note')}
         multiline
       />
       <Box
@@ -430,7 +549,7 @@ export const ProductItemForm = (props: any) => {
           color={theme.color.info}
           fullWidth
           label={translate('UPDATE')}
-          onClick={() => onUpdate && onUpdate({})}
+          onClick={() => onSubmit && onSubmit(getValues())}
         />
       </Box>
     </Box>

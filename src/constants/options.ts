@@ -52,3 +52,9 @@ export const MEDICINE_TAKEN_DAY = [
     { value: 'WEEK', label: 'WEEK' },
     { value: 'MONTH', label: 'MONTH' },
 ]
+
+export const MEDICINE_WHEN_TAKEN = [
+    { value: 'BEFORE_MEAL', label: 'BEFORE_MEAL' },
+    { value: 'AFTER_MEAL', label: 'AFTER_MEAL' },
+    { value: 'WITH_MEAL', label: 'WITH_MEAL' },
+]

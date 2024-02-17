@@ -29,7 +29,7 @@ Axios.interceptors.response.use(
       originalRequest._retry = true
       const { session } = store.getState()
       if (!session?.refreshToken) return Promise.reject(error)
-      Axios.post('/auth/refresh-token', { refreshToken: session?.refreshToken })
+      return Axios.post('/auth/refresh-token', { refreshToken: session?.refreshToken })
         .then((response) => {
           if (response.status === 200 || response.status === 201) {
             store.dispatch({ type: 'session/setSession', payload: response.data })

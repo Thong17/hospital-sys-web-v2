@@ -29,3 +29,10 @@ export const updatePatientHistorySchema = yup.object().shape({
   condition: yup.string().optional(),
   comment: yup.string().optional(),
 })
+
+export const updateMedicineSchema = yup.object().shape({
+  schedules: yup.array().optional(),
+  how: yup.string().optional(),
+  dose: yup.string().optional(),
+  duration: yup.string().optional(),
+})
