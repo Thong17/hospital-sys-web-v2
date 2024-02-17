@@ -48,6 +48,7 @@ import { updateMedicineSchema } from 'pages/operation/schedule/constant'
 
 export const FORM_WIDTH_EXPANDED = 670
 export const FORM_WIDTH_COMPACTED = 60
+const DEFAULT_SCHEDULE_OBJ = { when: '', tablet: '', time: '' }
 
 const CartContainer = ({
   data,
@@ -84,7 +85,7 @@ const CartContainer = ({
         quantity: item?.quantity,
         total: item?.total,
         symbol: item?.currency?.symbol,
-        schedules: [{ when: '', tablet: '', time: '' }],
+        schedules: [DEFAULT_SCHEDULE_OBJ],
       }))
     )
 
@@ -256,7 +257,9 @@ const CartContainer = ({
                     <ProductItemForm
                       data={item}
                       onCancel={() => setEditItemForm({ _id: null })}
-                      onSubmit={(data: any) => handleSubmitItem(item?._id, data)}
+                      onSubmit={(data: any) =>
+                        handleSubmitItem(item?._id, data)
+                      }
                     />
                   )}
                 </ProductItem>
@@ -335,6 +338,8 @@ export const ProductItemForm = (props: any) => {
   const { theme } = useTheme()
   const { user } = useAppSelector(selectSession)
   const {
+    watch,
+    setValue,
     getValues,
     register,
     formState: { errors },
@@ -378,7 +383,7 @@ export const ProductItemForm = (props: any) => {
             label={translate('DESCRIPTION')}
             sx={{ gridArea: 'description' }}
             error={!!errors.description?.message}
-              helperText={errors.description?.message as ReactNode}
+            helperText={errors.description?.message as ReactNode}
             defaultValue={data?.name}
           />
           <TextInput
@@ -446,64 +451,80 @@ export const ProductItemForm = (props: any) => {
         label={translate('SCHEDULE')}
         sx={{ gridArea: 'schedule', marginTop: '10px' }}
       >
-        {/* TODO: Schedule */}
-        {data?.schedules?.map((item: any, key: number) => {
-          return (
-            <Stack key={key} direction='row' alignItems={'center'} gap={2}>
-              <AutoCompleteInput
-                freeSolo
-                options={MEDICINE_WHEN_TAKEN.map((option: any) => option.label)}
-                defaultValue={item?.when}
-                renderInput={(params) => (
-                  <TextInput
-                    {...params}
-                    label={translate('WHEN')}
-                    {...register(`schedules.${key}.when`)}
-                  />
-                )}
-                sx={{ gridArea: 'when' }}
-              />
-              <TextInput
-                label={translate('TABLET')}
-                sx={{ gridArea: 'tablet', width: '610px' }}
-                defaultValue={item?.tablet}
-                {...register(`schedules.${key}.tablet`)}
-                InputProps={{
-                  endAdornment: (
-                    <FormControl sx={{ width: '390px' }}>
-                      <BorderLessSelect
-                        defaultValue={item?.time}
-                        sx={{ textAlign: 'right' }}
-                        {...register(`schedules.${key}.time`)}
-                      >
-                        {MEDICINE_TAKEN_TIME.map((item: any, key: number) => (
-                          <MenuItem key={key} value={item.value}>
-                            {translate(item.label)}
-                          </MenuItem>
-                        ))}
-                      </BorderLessSelect>
-                    </FormControl>
-                  ),
-                }}
-              />
-              <Stack direction={'row'} gap={1}>
-                <IconButton
-                  size='small'
-                  sx={{
-                    backgroundColor: `${theme.color.info}22`,
-                    color: theme.color.info,
-                    width: '30px',
-                    height: '30px',
-                    '&:hover': {
-                      backgroundColor: `${theme.color.info}44`,
-                    },
+        <Stack direction={'column'} gap={'20px'} width={'100%'}>
+          {watch('schedules')?.map((item: any, key: number) => {
+            return (
+              <Stack key={key} direction='row' alignItems={'center'} gap={2}>
+                <AutoCompleteInput
+                  freeSolo
+                  options={MEDICINE_WHEN_TAKEN.map(
+                    (option: any) => option.label
+                  )}
+                  defaultValue={item?.when}
+                  renderInput={(params) => (
+                    <TextInput
+                      {...params}
+                      label={translate('WHEN')}
+                      {...register(`schedules.${key}.when`)}
+                    />
+                  )}
+                  sx={{ gridArea: 'when' }}
+                />
+                <TextInput
+                  label={translate('TABLET')}
+                  sx={{ gridArea: 'tablet', width: '610px' }}
+                  defaultValue={item?.tablet}
+                  {...register(`schedules.${key}.tablet`)}
+                  InputProps={{
+                    endAdornment: (
+                      <FormControl sx={{ width: '390px' }}>
+                        <BorderLessSelect
+                          defaultValue={item?.time}
+                          sx={{ textAlign: 'right' }}
+                          {...register(`schedules.${key}.time`)}
+                        >
+                          {MEDICINE_TAKEN_TIME.map((item: any, key: number) => (
+                            <MenuItem key={key} value={item.value}>
+                              {translate(item.label)}
+                            </MenuItem>
+                          ))}
+                        </BorderLessSelect>
+                      </FormControl>
+                    ),
                   }}
-                >
-                  <AddRoundedIcon fontSize='small' />
-                </IconButton>
-                {data?.schedules?.length > 1 && (
+                />
+                <Stack direction={'row'} gap={1}>
                   <IconButton
                     size='small'
+                    onClick={() =>
+                      setValue('schedules', [
+                        ...getValues('schedules'),
+                        DEFAULT_SCHEDULE_OBJ,
+                      ])
+                    }
+                    sx={{
+                      backgroundColor: `${theme.color.info}22`,
+                      color: theme.color.info,
+                      width: '30px',
+                      height: '30px',
+                      '&:hover': {
+                        backgroundColor: `${theme.color.info}44`,
+                      },
+                    }}
+                  >
+                    <AddRoundedIcon fontSize='small' />
+                  </IconButton>
+                  <IconButton
+                    disabled={!(getValues('schedules')?.length > 1)}
+                    size='small'
+                    onClick={() =>
+                      setValue(
+                        'schedules',
+                        getValues('schedules')?.filter(
+                          (_item: any, itemKey: number) => itemKey !== key
+                        )
+                      )
+                    }
                     sx={{
                       backgroundColor: `${theme.color.error}22`,
                       color: theme.color.error,
@@ -516,11 +537,11 @@ export const ProductItemForm = (props: any) => {
                   >
                     <RemoveRoundedIcon fontSize='small' />
                   </IconButton>
-                )}
+                </Stack>
               </Stack>
-            </Stack>
-          )
-        })}
+            )
+          })}
+        </Stack>
       </SectionContainer>
 
       <TextInput
