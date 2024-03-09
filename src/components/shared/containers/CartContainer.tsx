@@ -712,7 +712,10 @@ export const ProductItem = (props: IProductItem) => {
         </Stack>
         {onRemove && (
           <IconButton
-            onClick={() => onRemove(_id)}
+            onClick={(event) => {
+              event.stopPropagation()
+              onRemove(_id)
+            }}
             size='small'
             sx={{
               backgroundColor: `${theme.color.error}22`,

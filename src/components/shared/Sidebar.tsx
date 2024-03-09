@@ -221,7 +221,7 @@ const SidebarItem = ({ nav }: any) => {
                             : '0s ease',
                         }}
                       >
-                        {item.title}
+                        {language[item.title as keyof typeof languages.English] || item.title}
                       </Typography>
                     </NavLink>
                   ) : (
