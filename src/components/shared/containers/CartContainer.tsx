@@ -85,7 +85,10 @@ const CartContainer = ({
         quantity: item?.quantity,
         total: item?.total,
         symbol: item?.currency?.symbol,
-        schedules: [DEFAULT_SCHEDULE_OBJ],
+        schedules: item?.detail?.schedules?.length > 0 ? item?.detail?.schedules : [DEFAULT_SCHEDULE_OBJ],
+        how: item?.detail?.how,
+        duration: item?.detail?.duration,
+        dose: item?.detail?.dose,
       }))
     )
 
@@ -410,6 +413,7 @@ export const ProductItemForm = (props: any) => {
       <AutoCompleteInput
         freeSolo
         options={MEDICINE_TAKEN_TYPE.map((option: any) => option.label)}
+        defaultValue={data?.how}
         renderInput={(params) => (
           <TextInput
             {...params}
